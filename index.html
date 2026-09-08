@@ -29,6 +29,22 @@
         transform-origin: top center;
         margin: 0 auto;
       }
+
+      /* Кнопки без hover — маркер AI-слопа, чек-лист антислоп-протокола. Пилюли — единственный
+         визуальный язык кнопок в макете, поэтому таргетим по форме/фону, а не по тексту. */
+      [class*="rounded-[999px]"] {
+        cursor: pointer;
+        transition: opacity 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+      }
+      div.bg-\[\#e8e4d6\].rounded-\[999px\]:hover {
+        background-color: #ffffff;
+        transform: translateY(-1px);
+      }
+      [data-pencil-name="Написать в Telegram"]:hover,
+      [data-pencil-name="Написать в WhatsApp"]:hover {
+        background-color: #ffffff0d;
+        transform: translateY(-1px);
+      }
     </style>
   </head>
   <body style="background-color: #080807">
