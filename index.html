@@ -26,8 +26,7 @@
 
       #scale-wrap {
         width: 958px;
-        transform-origin: top center;
-        margin: 0 auto;
+        transform-origin: top left;
       }
 
       /* Кнопки без hover — маркер AI-слопа, чек-лист антислоп-протокола. Пилюли — единственный
@@ -2253,9 +2252,11 @@
         var wrap = document.getElementById("scale-wrap");
         var DESIGN_WIDTH = 958;
         var DESIGN_HEIGHT = 9368;
+        var MAX_SCALE = 1.5;
         function fit() {
-          var scale = Math.min(1, window.innerWidth / DESIGN_WIDTH);
-          wrap.style.transform = "scale(" + scale + ")";
+          var scale = Math.min(window.innerWidth / DESIGN_WIDTH, MAX_SCALE);
+          var offsetX = (window.innerWidth - DESIGN_WIDTH * scale) / 2;
+          wrap.style.transform = "translateX(" + offsetX + "px) scale(" + scale + ")";
           document.body.style.height = DESIGN_HEIGHT * scale + "px";
         }
         fit();
