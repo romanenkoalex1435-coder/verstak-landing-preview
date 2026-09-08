@@ -12,8 +12,7 @@
 <style>
   *,::before,::after{box-sizing:border-box}
   html,body{margin:0;background:#080807;color:#e8e4d6;font-family:Geologica,system-ui,sans-serif;overflow-x:hidden}
-  .wrap{max-width:1180px;margin:0 auto;padding-left:24px;padding-right:24px}
-  @media(min-width:768px){.wrap{padding-left:40px;padding-right:40px}}
+  .wrap{width:100%;padding-left:clamp(24px,4vw,72px);padding-right:clamp(24px,4vw,72px)}
   .btn{border-radius:999px;padding:14px 26px;font-weight:500;font-size:15px;display:inline-flex;align-items:center;gap:12px;transition:background-color .15s ease,color .15s ease,transform .15s ease;cursor:pointer;white-space:nowrap}
   .btn-primary{background:#e8e4d6;color:#111110}
   .btn-primary:hover{background:#ffffff;transform:translateY(-1px)}
