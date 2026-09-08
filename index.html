@@ -1,2276 +1,419 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script>
-      tailwind = { config: { corePlugins: { preflight: false } } };
-    </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Geologica%3Awght%40100..900&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      *, ::before, ::after {
-        box-sizing: border-box;
-      }
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Верстак — программа учёта заявок и выездов</title>
+<script>tailwind = { config: { corePlugins: { preflight: false } } };</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&display=swap" rel="stylesheet" />
+<style>
+  *,::before,::after{box-sizing:border-box}
+  html,body{margin:0;background:#080807;color:#e8e4d6;font-family:Geologica,system-ui,sans-serif;overflow-x:hidden}
+  .wrap{max-width:1180px;margin:0 auto;padding-left:24px;padding-right:24px}
+  @media(min-width:768px){.wrap{padding-left:40px;padding-right:40px}}
+  .btn{border-radius:999px;padding:14px 26px;font-weight:500;font-size:15px;display:inline-flex;align-items:center;gap:12px;transition:background-color .15s ease,color .15s ease,transform .15s ease;cursor:pointer;white-space:nowrap}
+  .btn-primary{background:#e8e4d6;color:#111110}
+  .btn-primary:hover{background:#ffffff;transform:translateY(-1px)}
+  .btn-ghost{border:1px solid #e8e4d62e;color:#e8e4d6}
+  .btn-ghost:hover{background:#ffffff0d;transform:translateY(-1px)}
+  .eyebrow{font-size:12px;letter-spacing:.06em;font-weight:300;color:#e8e4d661;text-transform:uppercase}
+  summary{cursor:pointer}
+  summary::-webkit-details-marker{display:none}
+  summary::marker{content:""}
+  .plus{transition:transform .15s ease}
+  details[open] .plus{transform:rotate(45deg)}
+  a{color:inherit;text-decoration:none}
+</style>
+</head>
+<body>
 
-      html, body {
-        margin: 0;
-        overflow-x: hidden;
-        background-color: #080807;
-      }
+<header class="sticky top-0 z-40 backdrop-blur bg-[#080807]/90 border-b border-[#e8e4d614]">
+  <div class="wrap flex items-center justify-between h-20">
+    <div class="font-medium tracking-tight">Верстак</div>
+    <nav class="hidden md:flex items-center gap-8 text-sm text-[#e8e4d6b3]">
+      <a href="#constructor" class="hover:text-[#e8e4d6] transition-colors">Собрать программу</a>
+      <a href="#compare" class="hover:text-[#e8e4d6] transition-colors">Сравнение</a>
+      <a href="#work" class="hover:text-[#e8e4d6] transition-colors">Работы</a>
+      <a href="#process" class="hover:text-[#e8e4d6] transition-colors">Как работаем</a>
+      <a href="#faq" class="hover:text-[#e8e4d6] transition-colors">Связаться</a>
+    </nav>
+    <a href="#constructor" class="btn btn-primary !py-2.5 !px-5 !text-sm">Собрать программу</a>
+  </div>
+</header>
 
-      #scale-wrap {
-        width: 958px;
-        transform-origin: top left;
-      }
+<main>
 
-      /* Кнопки без hover — маркер AI-слопа, чек-лист антислоп-протокола. Пилюли — единственный
-         визуальный язык кнопок в макете, поэтому таргетим по форме/фону, а не по тексту. */
-      [class*="rounded-[999px]"] {
-        cursor: pointer;
-        transition: opacity 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
-      }
-      div.bg-\[\#e8e4d6\].rounded-\[999px\]:hover {
-        background-color: #ffffff;
-        transform: translateY(-1px);
-      }
-      [data-pencil-name="Написать в Telegram"]:hover,
-      [data-pencil-name="Написать в WhatsApp"]:hover {
-        background-color: #ffffff0d;
-        transform: translateY(-1px);
-      }
-    </style>
-  </head>
-  <body style="background-color: #080807">
-    <div id="scale-wrap"><div
-      data-pencil-name="01 · Главная — ВАРИАНТ САНИ (цены -25%, короче список)"
-      class="box-border w-[958px] h-[9368px] flex flex-col gap-0 justify-start items-start bg-[#080807] overflow-hidden relative"
-    >
-      <div
-        data-pencil-name="01 Герой"
-        class="box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[150px_38.32px_120px_38.32px] justify-start items-start overflow-hidden relative [z-index:0]"
-      >
-        <div
-          data-pencil-name="div"
-          class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-center"
-        >
-          <div
-            data-pencil-name="Соберите программу учёта под свой процес"
-            class="text-[49.82px]/[51px] box-border w-[576.65px] h-[153.89px] shrink-0 text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-1.59px] text-left"
-          >
-            Соберите программу учёта под свой процесс и увидьте цену сразу
+<!-- 01 HERO -->
+<section class="wrap pt-16 pb-16 md:pt-24 md:pb-24">
+  <h1 class="text-[36px] leading-[1.08] md:text-[56px] md:leading-[1.05] font-medium tracking-tight max-w-[760px]">
+    Соберите программу учёта под свой процесс и увидьте цену сразу
+  </h1>
+  <p class="mt-6 max-w-[560px] text-[15px] md:text-base text-[#e8e4d69e] font-light leading-relaxed">
+    Заявки, выездные бригады, фотоотчёты с объектов. Платите один раз — программа остаётся вашей, без ежемесячной подписки.
+  </p>
+
+  <div class="mt-8 flex flex-wrap gap-3">
+    <a href="#constructor" class="btn btn-primary">Собрать программу
+      <span class="w-[30px] h-[30px] rounded-full bg-[#111110] text-[#e8e4d6] flex items-center justify-center text-sm">→</span>
+    </a>
+    <a href="https://t.me/" class="btn btn-ghost">Написать в Telegram</a>
+    <a href="https://wa.me/" class="btn btn-ghost">Написать в WhatsApp</a>
+  </div>
+  <p class="mt-3 text-sm text-[#e8e4d680]">Отвечаю лично, без менеджеров и ботов — Александр</p>
+
+  <div class="mt-14 pt-8 border-t border-[#e8e4d61f] grid grid-cols-1 sm:grid-cols-3 gap-8">
+    <div>
+      <div class="text-xl font-medium">от 45 000 ₽</div>
+      <div class="text-sm text-[#e8e4d680] mt-1">один раз, программа ваша</div>
+    </div>
+    <div>
+      <div class="text-xl font-medium">2–3 недели</div>
+      <div class="text-sm text-[#e8e4d680] mt-1">от разбора задачи до запуска</div>
+    </div>
+    <div>
+      <div class="text-xl font-medium">96 000 ₽ в год</div>
+      <div class="text-sm text-[#e8e4d680] mt-1">столько стоит Okdesk на 5–10 человек</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 CONSTRUCTOR -->
+<section id="constructor" class="bg-[#e8e4d6] text-[#191817] py-16 md:py-24">
+  <div class="wrap">
+    <div class="eyebrow !text-[#19181773]">КОНСТРУКТОР</div>
+    <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[600px]">Соберите свою программу</h2>
+    <p class="mt-4 max-w-[520px] text-[#19181799] font-light">Отмечайте, что нужно. Смета собирается справа и считается сразу.</p>
+
+    <div class="mt-6 flex flex-wrap gap-2 text-sm">
+      <span class="px-4 py-2 rounded-full border border-[#19181724]">Цена сразу</span>
+      <span class="px-4 py-2 rounded-full border border-[#19181724]">Без регистрации</span>
+      <span class="px-4 py-2 rounded-full border border-[#19181724]">Ничего не навязываем</span>
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 items-start">
+      <div class="min-w-0">
+
+        <div class="text-xs tracking-wide text-[#19181773] font-medium">ШАГ 1 — НА ЧТО ЭТО ПОХОЖЕ У ВАС</div>
+        <div class="mt-4 space-y-3" id="step1">
+          <label class="flex gap-3 items-start p-4 rounded-2xl border border-[#19181724] cursor-pointer hover:border-[#19181766] transition-colors">
+            <input type="radio" name="step1" class="mt-1 shrink-0" />
+            <span>
+              <span class="block font-medium">Принимаем заявки и ведём клиентов</span>
+              <span class="block text-sm text-[#19181799] mt-0.5">Обращения в одном месте, ничего не теряется</span>
+              <span class="block text-xs text-[#191817bf] mt-1">Мастерская, сервисный центр, ремонт техники</span>
+            </span>
+          </label>
+          <label class="flex gap-3 items-start p-4 rounded-2xl border border-[#19181724] cursor-pointer hover:border-[#19181766] transition-colors">
+            <input type="radio" name="step1" class="mt-1 shrink-0" />
+            <span>
+              <span class="block font-medium">Ездим к клиенту бригадами</span>
+              <span class="block text-sm text-[#19181799] mt-0.5">Плюс мобильный экран монтажника и фотоотчёты</span>
+              <span class="block text-xs text-[#191817bf] mt-1">Монтаж, клининг, обслуживание оборудования</span>
+            </span>
+          </label>
+          <label class="flex gap-3 items-start p-4 rounded-2xl border border-[#19181724] cursor-pointer hover:border-[#19181766] transition-colors">
+            <input type="radio" name="step1" class="mt-1 shrink-0" />
+            <span>
+              <span class="block font-medium">Обслуживаем объекты по графику</span>
+              <span class="block text-sm text-[#19181799] mt-0.5">Программа сама напоминает, к кому пора ехать</span>
+              <span class="block text-xs text-[#191817bf] mt-1">Бассейны, вентиляция, кондиционеры, лифты</span>
+            </span>
+          </label>
+          <label class="flex gap-3 items-start p-4 rounded-2xl border border-[#19181724] cursor-pointer hover:border-[#19181766] transition-colors">
+            <input type="radio" name="step1" class="mt-1 shrink-0" />
+            <span>
+              <span class="block font-medium">Не знаю, нужно разобраться</span>
+              <span class="block text-sm text-[#19181799] mt-0.5">Опишем задачу вместе и подберём состав</span>
+            </span>
+          </label>
+        </div>
+        <p class="mt-3 text-xs text-[#19181773]">Выберите ближайшее — состав уточним при разборе задачи</p>
+
+        <div class="mt-10 text-xs tracking-wide text-[#19181773] font-medium">ШАГ 2 — ОСНОВА, ВХОДИТ ВСЕГДА</div>
+        <div class="mt-4 p-5 rounded-2xl border border-[#19181724]">
+          <div class="flex items-center justify-between gap-4">
+            <div class="font-medium">Учёт заявок и клиентов</div>
+            <div class="font-medium shrink-0">45 000 ₽</div>
           </div>
-          <div data-pencil-name="spacer" class="box-border w-full h-[22px] shrink-0"></div>
-          <div
-            data-pencil-name="Заявки, выездные бригады, фотоотчёты с о"
-            class="text-[15px]/[23px] box-border w-[600px] h-[46.5px] shrink-0 text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-          >
-            Заявки, выездные бригады, фотоотчёты с объектов. Платите один раз — программа остаётся
-            вашей, без ежемесячной подписки
-          </div>
-          <div data-pencil-name="spacer" class="box-border w-full h-[32px] shrink-0"></div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-fit shrink-0 flex flex-row gap-[12px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="a"
-              class="box-border w-[237.86px] shrink-0 h-[58px] flex flex-row gap-[12px] p-[14px_20px_14px_26px] justify-start items-center bg-[#e8e4d6] rounded-[999px]"
-            >
-              <div
-                data-pencil-name="Собрать программу"
-                class="text-[15px]/[23px] box-border text-[#111110] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap]"
-              >
-                Собрать программу
-              </div>
-              <div
-                data-pencil-name="→"
-                class="box-border w-[30px] shrink-0 h-[30px] flex flex-col gap-0 justify-center items-start bg-[#111110] rounded-[999px]"
-              >
-                <div
-                  class="text-[14px]/[22px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap]"
-                >
-                  →
-                </div>
-              </div>
-            </div>
-            <div
-              data-pencil-name="Написать в Telegram"
-              class="box-border w-[207.64px] shrink-0 h-[58px] flex flex-col gap-0 p-[14px_26px] justify-center items-start [border:1px_solid_#e8e4d62e] rounded-[999px]"
-            >
-              <div
-                class="text-[15px]/[23px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap]"
-              >
-                Написать в Telegram
-              </div>
-            </div>
-            <div
-              data-pencil-name="Написать в WhatsApp"
-              class="box-border w-[207.64px] shrink-0 h-[58px] flex flex-col gap-0 p-[14px_26px] justify-center items-start [border:1px_solid_#e8e4d62e] rounded-[999px]"
-            >
-              <div
-                class="text-[15px]/[23px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap]"
-              >
-                Написать в WhatsApp
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="один раз, программа ваша"
-            class="text-[13px]/[20px] box-border text-[#8f8b80] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-          >
-            Отвечаю лично, без менеджеров и ботов — Александр
-          </div>
-          <div data-pencil-name="spacer" class="box-border w-full h-[34px] shrink-0"></div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-[820px] h-fit shrink-0 flex flex-row gap-0 p-[1px_0px_0px_0px] justify-start items-start [border-width:1px_0px_0px_0px] [border-style:solid] [border-color:#e8e4d61f]"
-          >
-            <div
-              data-pencil-name="div"
-              class="box-border [flex:1_1_0] h-[72.13px] flex flex-col gap-[3px] p-[16px_23px_4px_0px] justify-start items-start [border-width:0px_1px_0px_0px] [border-style:solid] [border-color:#e8e4d612]"
-            >
-              <div
-                data-pencil-name="от 60 000 ₽"
-                class="text-[18.2px]/[28px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.36px] text-left [white-space:nowrap]"
-              >
-                от 45 000 ₽
-              </div>
-              <div
-                data-pencil-name="один раз, программа ваша"
-                class="text-[13.5px]/[21px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                один раз, программа ваша
-              </div>
-            </div>
-            <div
-              data-pencil-name="div"
-              class="box-border [flex:1_1_0] h-[72.13px] flex flex-col gap-[3px] p-[16px_23px_4px_0px] justify-start items-start [border-width:0px_1px_0px_0px] [border-style:solid] [border-color:#e8e4d612]"
-            >
-              <div
-                data-pencil-name="2–3 недели"
-                class="text-[18.2px]/[28px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.36px] text-left [white-space:nowrap]"
-              >
-                2–3 недели
-              </div>
-              <div
-                data-pencil-name="от разбора задачи до запуска"
-                class="text-[13.5px]/[21px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                от разбора задачи до запуска
-              </div>
-            </div>
-            <div
-              data-pencil-name="div"
-              class="box-border [flex:1_1_0] h-[72.13px] flex flex-col gap-[3px] p-[16px_0px_4px_0px] justify-start items-start"
-            >
-              <div
-                data-pencil-name="96 000 ₽ в год"
-                class="text-[18.2px]/[28px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.36px] text-left [white-space:nowrap]"
-              >
-                96 000 ₽ в год
-              </div>
-              <div
-                data-pencil-name="столько стоит Okdesk на 5–10 человек"
-                class="text-[13.5px]/[21px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                столько стоит Okdesk на 5–10 человек
-              </div>
-            </div>
-          </div>
+          <p class="text-sm text-[#19181799] mt-1">Статусы заявок · рабочий экран диспетчера</p>
+          <details class="mt-3 group">
+            <summary class="text-sm inline-flex items-center gap-1 text-[#19181799]">что входит <span class="plus">+</span></summary>
+            <ul class="mt-2 space-y-1 text-sm text-[#19181799] list-none pl-0">
+              <li>Список и карточка заявки: клиент, адрес, статус</li>
+              <li>Статусы под ваш процесс, а не типовые</li>
+              <li>Справочник клиентов с историей обращений</li>
+              <li>Поиск и фильтры по любому полю</li>
+              <li>Выгрузка в Excel одной кнопкой</li>
+            </ul>
+          </details>
+        </div>
+
+        <div class="mt-10 text-xs tracking-wide text-[#19181773] font-medium">ШАГ 3 — ЧТО ДОБАВИТЬ</div>
+        <div class="mt-4 space-y-3" id="addons">
+          <template data-addon data-title="Мобильный экран исполнителя" data-sub="Монтажник видит задачу в телефоне и не забудет отчитаться" data-price="+9 000 ₽" data-items="Список задач на день у каждого исполнителя|Кнопка «выехал» и «завершил» с отметкой времени|Работает в браузере телефона, ставить ничего не нужно"></template>
         </div>
       </div>
-      <div
-        data-pencil-name="02 Конструктор сметы"
-        class="box-border w-full h-[2801.06px] shrink-0 flex flex-col gap-0 p-[86.21px_38.32px_86.22px_38.32px] justify-start items-start relative [z-index:1]"
-      >
-        <div
-          data-pencil-name="КОНСТРУКТОР"
-          class="text-[12px]/[19px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.72px] text-left [white-space:nowrap]"
-        >
-          КОНСТРУКТОР
+
+      <aside class="lg:sticky lg:top-28 bg-white/50 rounded-2xl border border-[#19181724] p-6">
+        <div class="eyebrow !text-[#19181773]">ВАША СМЕТА</div>
+        <ul class="mt-4 space-y-2 text-sm" id="smeta-lines">
+          <li class="flex justify-between"><span>Основа: учёт заявок</span><span>45 000 ₽</span></li>
+        </ul>
+        <p class="text-xs text-[#19181780] mt-2" id="smeta-empty">Добавьте, что нужно — появится в смете</p>
+        <div class="mt-4 pt-4 border-t border-[#19181724] flex justify-between items-center">
+          <span class="text-sm text-[#19181799]">Итого</span>
+          <span class="text-2xl font-semibold" id="smeta-total">45 000 ₽</span>
         </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[18.01px] shrink-0"></div>
-        <div
-          data-pencil-name="Соберите свою программу"
-          class="text-[34.49px]/[37px] box-border w-[446.14px] h-[74.47px] shrink-0 text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.86px] text-left"
-        >
-          Соберите свою программу
+        <div class="mt-4 space-y-1 text-sm text-[#19181799]">
+          <div>Срок сборки — 2 недели</div>
+          <div>Оплата — 50% в начале, 50% при запуске</div>
+          <div>Поддержка — 4 000 ₽/мес, по желанию</div>
         </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[18px] shrink-0"></div>
-        <div
-          data-pencil-name="Отмечайте, что нужно. Смета собирается с"
-          class="text-[15px]/[23px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-        >
-          Отмечайте, что нужно. Смета собирается справа и считается сразу
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[34px] shrink-0"></div>
-        <div
-          data-pencil-name="div"
-          class="box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[32.57px] justify-start items-start bg-[#f2efe6] rounded-[28px]"
-        >
-          <div data-pencil-name="div" class="box-border w-full h-[2065.88px] shrink-0 relative">
-            <div
-              data-pencil-name="div"
-              class="box-border w-[816.25px] h-fit absolute left-0 top-0 flex flex-col gap-[34px] justify-start items-start [z-index:0]"
-            >
-              <div
-                data-pencil-name="div"
-                class="box-border w-full h-fit shrink-0 flex flex-row gap-[7.99px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="Цена сразу"
-                  class="box-border w-[98.83px] shrink-0 h-[36.14px] flex flex-col gap-0 p-[7px_13px] justify-center items-start [border:1px_solid_#19181724] rounded-[999px]"
-                >
-                  <div
-                    class="text-[13px]/[20px] box-border text-[#191817b3] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                  >
-                    Цена сразу
-                  </div>
-                </div>
-                <div
-                  data-pencil-name="Без регистрации"
-                  class="box-border w-[135.36px] shrink-0 h-[36.14px] flex flex-col gap-0 p-[7px_13px] justify-center items-start [border:1px_solid_#19181724] rounded-[999px]"
-                >
-                  <div
-                    class="text-[13px]/[20px] box-border text-[#191817b3] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                  >
-                    Без регистрации
-                  </div>
-                </div>
-                <div
-                  data-pencil-name="Ничего не навязываем"
-                  class="box-border w-[171.77px] shrink-0 h-[36.14px] flex flex-col gap-0 p-[7px_13px] justify-center items-start [border:1px_solid_#19181724] rounded-[999px]"
-                >
-                  <div
-                    class="text-[13px]/[20px] box-border text-[#191817b3] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                  >
-                    Ничего не навязываем
-                  </div>
-                </div>
-              </div>
-              <div
-                data-pencil-name="div"
-                class="box-border w-full h-[496.64px] shrink-0 flex flex-col gap-0 justify-start items-start"
-              >
-                <div
-                  data-pencil-name="ШАГ 1 — НА ЧТО ЭТО ПОХОЖЕ У ВАС"
-                  class="text-[13px]/[20px] box-border text-[#19181773] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.65px] text-left [white-space:nowrap]"
-                >
-                  ШАГ 1 — НА ЧТО ЭТО ПОХОЖЕ У ВАС
-                </div>
-                <div data-pencil-name="spacer" class="box-border w-full h-[14px] shrink-0"></div>
-                <div
-                  data-pencil-name="div"
-                  class="box-border w-full h-fit shrink-0 flex flex-col gap-[8px] justify-start items-start"
-                >
-                  <div
-                    data-pencil-name="label"
-                    class="box-border w-full h-[107.63px] shrink-0 [border:1px_solid_#19181724] rounded-[14px] relative"
-                  >
-                    <div
-                      data-pencil-name="input"
-                      class="box-border w-[17px] h-[17px] absolute left-[19px] top-[20px] [z-index:0]"
-                    ></div>
-                    <div
-                      data-pencil-name="span"
-                      class="box-border w-[747.25px] h-[73.63px] absolute left-[50px] top-[17px] flex flex-col gap-0 justify-start items-start [z-index:1]"
-                    >
-                      <div
-                        data-pencil-name="Принимаем заявки и ведём клиентов"
-                        class="text-[16px]/[25px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                      >
-                        Принимаем заявки и ведём клиентов
-                      </div>
-                      <div
-                        data-pencil-name="spacer"
-                        class="box-border w-full h-[3px] shrink-0"
-                      ></div>
-                      <div
-                        data-pencil-name="Обращения в одном месте, ничего не теряе"
-                        class="text-[14px]/[22px] box-border text-[#19181794] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                      >
-                        Обращения в одном месте, ничего не теряется
-                      </div>
-                      <div
-                        data-pencil-name="spacer"
-                        class="box-border w-full h-[4px] shrink-0"
-                      ></div>
-                      <div
-                        data-pencil-name="Мастерская, сервисный центр, ремонт техн"
-                        class="text-[13px]/[20px] box-border text-[#19181773] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                      >
-                        Мастерская, сервисный центр, ремонт техники
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    data-pencil-name="label"
-                    class="box-border w-full h-[107.63px] shrink-0 [border:1px_solid_#19181724] rounded-[14px] relative"
-                  >
-                    <div
-                      data-pencil-name="input"
-                      class="box-border w-[17px] h-[17px] absolute left-[19px] top-[20px] [z-index:0]"
-                    ></div>
-                    <div
-                      data-pencil-name="span"
-                      class="box-border w-[747.25px] h-[73.63px] absolute left-[50px] top-[17px] flex flex-col gap-0 p-[0px_0px_0.01px_0px] justify-start items-start [z-index:1]"
-                    >
-                      <div
-                        data-pencil-name="Ездим к клиенту бригадами"
-                        class="text-[16px]/[25px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                      >
-                        Ездим к клиенту бригадами
-                      </div>
-                      <div
-                        data-pencil-name="spacer"
-                        class="box-border w-full h-[2.99px] shrink-0"
-                      ></div>
-                      <div
-                        data-pencil-name="Плюс мобильный экран монтажника и фотоот"
-                        class="text-[14px]/[22px] box-border text-[#19181794] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                      >
-                        Плюс мобильный экран монтажника и фотоотчёты
-                      </div>
-                      <div
-                        data-pencil-name="spacer"
-                        class="box-border w-full h-[4px] shrink-0"
-                      ></div>
-                      <div
-                        data-pencil-name="Монтаж, клининг, обслуживание оборудован"
-                        class="text-[13px]/[20px] box-border text-[#19181773] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                      >
-                        Монтаж, клининг, обслуживание оборудования
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    data-pencil-name="label"
-                    class="box-border w-full h-[107.63px] shrink-0 [border:1px_solid_#19181724] rounded-[14px] relative"
-                  >
-                    <div
-                      data-pencil-name="input"
-                      class="box-border w-[17px] h-[17px] absolute left-[19px] top-[20px] [z-index:0]"
-                    ></div>
-                    <div
-                      data-pencil-name="span"
-                      class="box-border w-[747.25px] h-[73.63px] absolute left-[50px] top-[17px] flex flex-col gap-0 justify-start items-start [z-index:1]"
-                    >
-                      <div
-                        data-pencil-name="Обслуживаем объекты по графику"
-                        class="text-[16px]/[25px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                      >
-                        Обслуживаем объекты по графику
-                      </div>
-                      <div
-                        data-pencil-name="spacer"
-                        class="box-border w-full h-[3px] shrink-0"
-                      ></div>
-                      <div
-                        data-pencil-name="Программа сама напоминает, к кому пора е"
-                        class="text-[14px]/[22px] box-border text-[#19181794] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                      >
-                        Программа сама напоминает, к кому пора ехать
-                      </div>
-                      <div
-                        data-pencil-name="spacer"
-                        class="box-border w-full h-[4px] shrink-0"
-                      ></div>
-                      <div
-                        data-pencil-name="Бассейны, вентиляция, кондиционеры, лифт"
-                        class="text-[13px]/[20px] box-border text-[#19181773] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                      >
-                        Бассейны, вентиляция, кондиционеры, лифты
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    data-pencil-name="label"
-                    class="box-border w-full h-[83.48px] shrink-0 [border:1px_solid_#19181724] rounded-[14px] relative"
-                  >
-                    <div
-                      data-pencil-name="input"
-                      class="box-border w-[17px] h-[17px] absolute left-[19px] top-[20px] [z-index:0]"
-                    ></div>
-                    <div
-                      data-pencil-name="span"
-                      class="box-border w-[747.25px] h-[49.48px] absolute left-[50px] top-[17px] flex flex-col gap-[2.99px] justify-start items-start [z-index:1]"
-                    >
-                      <div
-                        data-pencil-name="Не знаю, нужно разобраться"
-                        class="text-[16px]/[25px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                      >
-                        Не знаю, нужно разобраться
-                      </div>
-                      <div
-                        data-pencil-name="Опишем задачу вместе и подберём состав"
-                        class="text-[14px]/[22px] box-border text-[#19181794] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                      >
-                        Опишем задачу вместе и подберём состав
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div data-pencil-name="spacer" class="box-border w-full h-[12px] shrink-0"></div>
-                <div
-                  data-pencil-name="Выберите ближайшее — состав уточним при "
-                  class="text-[13px]/[20px] box-border text-[#19181773] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                >
-                  Выберите ближайшее — состав уточним при разборе задачи
-                </div>
-              </div>
-              <div
-                data-pencil-name="div"
-                class="box-border w-full h-[160.55px] shrink-0 flex flex-col gap-[14px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="ШАГ 2 — ОСНОВА, ВХОДИТ ВСЕГДА"
-                  class="text-[13px]/[20px] box-border text-[#19181773] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.65px] text-left [white-space:nowrap]"
-                >
-                  ШАГ 2 — ОСНОВА, ВХОДИТ ВСЕГДА
-                </div>
-                <div
-                  data-pencil-name="div"
-                  class="box-border w-full h-[126.41px] shrink-0 flex flex-col gap-0 p-[19px] justify-start items-start bg-[#19181708] [border:1px_solid_#19181724] rounded-[14px]"
-                >
-                  <div
-                    data-pencil-name="div"
-                    class="box-border w-full h-[24.8px] shrink-0 flex flex-row gap-[12px] justify-between items-start"
-                  >
-                    <div
-                      data-pencil-name="Учёт заявок и клиентов"
-                      class="text-[16px]/[25px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap]"
-                    >
-                      Учёт заявок и клиентов
-                    </div>
-                    <div
-                      data-pencil-name="60 000 ₽"
-                      class="text-[16px]/[25px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap]"
-                    >
-                      45 000 ₽
-                    </div>
-                  </div>
-                  <div data-pencil-name="spacer" class="box-border w-full h-[8px] shrink-0"></div>
-                  <div
-                    data-pencil-name="Статусы заявок · рабочий экран диспетчер"
-                    class="text-[14px]/[22px] box-border text-[#19181794] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                  >
-                    Статусы заявок · рабочий экран диспетчера · выгрузка в Excel
-                  </div>
-                  <div data-pencil-name="spacer" class="box-border w-full h-[9px] shrink-0"></div>
-                  <div
-                    data-pencil-name="details"
-                    class="box-border w-full h-[24.92px] shrink-0 flex flex-col gap-[9px] p-[3.23px_0px_0px_0px] justify-start items-start"
-                  >
-                    <div
-                      data-pencil-name="summary"
-                      class="box-border w-[82.64px] h-[21.69px] shrink-0 flex flex-row gap-[5px] justify-start items-center"
-                    >
-                      <div
-                        data-pencil-name="что входит"
-                        class="text-[13px]/[20px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                      >
-                        что входит
-                      </div>
-                      <div
-                        data-pencil-name="Icon"
-                        class="text-[14px]/[22px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                      >
-                        +
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                data-pencil-name="div"
-                class="box-border w-full h-[766.58px] shrink-0 flex flex-col gap-[14px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="ШАГ 3 — ЧТО ДОБАВИТЬ"
-                  class="text-[13px]/[20px] box-border text-[#19181773] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.65px] text-left [white-space:nowrap]"
-                >
-                  ШАГ 3 — ЧТО ДОБАВИТЬ
-                </div>
-                <div
-                  data-pencil-name="div"
-                  class="box-border w-full h-fit shrink-0 flex flex-col gap-[8px] justify-start items-start"
-                >
-                  <div
-                    data-pencil-name="label"
-                    class="box-border w-full h-[115.41px] shrink-0 [border:1px_solid_#19181724] rounded-[14px] relative"
-                  >
-                    <div
-                      data-pencil-name="input"
-                      class="box-border w-[17px] h-[17px] absolute left-[19px] top-[19px] [z-index:0]"
-                    ></div>
-                    <div
-                      data-pencil-name="span"
-                      class="box-border w-[655.58px] h-[83.41px] absolute left-[50px] top-[16px] flex flex-col gap-0 p-[0px_0px_0.01px_0px] justify-start items-start [z-index:1]"
-                    >
-                      <div
-                        data-pencil-name="Мобильный экран исполнителя"
-                        class="text-[16px]/[25px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                      >
-                        Мобильный экран исполнителя
-                      </div>
-                      <div
-                        data-pencil-name="spacer"
-                        class="box-border w-full h-[3px] shrink-0"
-                      ></div>
-                      <div
-                        data-pencil-name="details"
-                        class="box-border w-full h-[24.92px] shrink-0 flex flex-col gap-[8.99px] p-[3.24px_0px_0px_0px] justify-start items-start"
-                      >
-                        <div
-                          data-pencil-name="summary"
-                          class="box-border w-[82.64px] h-[21.69px] shrink-0 flex flex-row gap-[5px] justify-start items-center"
-                        >
-                          <div
-                            data-pencil-name="что входит"
-                            class="text-[13px]/[20px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                          >
-                            что входит
-                          </div>
-                          <div
-                            data-pencil-name="Icon"
-                            class="text-[14px]/[22px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                          >
-                            +
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      data-pencil-name="+12 000 ₽"
-                      class="text-[16px]/[25px] box-border absolute left-[719.57px] top-[16px] text-[#191817bf] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap] [z-index:2]"
-                    >
-                      +9 000 ₽
-                    </div>
-                  </div>
-                  <div
-                    data-pencil-name="label"
-                    class="box-border w-full h-[115.41px] shrink-0 [border:1px_solid_#19181724] rounded-[14px] relative"
-                  >
-                    <div
-                      data-pencil-name="input"
-                      class="box-border w-[17px] h-[17px] absolute left-[19px] top-[19px] [z-index:0]"
-                    ></div>
-                    <div
-                      data-pencil-name="span"
-                      class="box-border w-[662.33px] h-[83.41px] absolute left-[50px] top-[16px] flex flex-col gap-0 justify-start items-start [z-index:1]"
-                    >
-                      <div
-                        data-pencil-name="Фотоотчёт до и после"
-                        class="text-[16px]/[25px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                      >
-                        Фотоотчёт до и после
-                      </div>
-                      <div
-                        data-pencil-name="spacer"
-                        class="box-border w-full h-[3px] shrink-0"
-                      ></div>
-                      <div
-                        data-pencil-name="details"
-                        class="box-border w-full h-[24.92px] shrink-0 flex flex-col gap-[9px] p-[3.23px_0px_0px_0px] justify-start items-start"
-                      >
-                        <div
-                          data-pencil-name="summary"
-                          class="box-border w-[82.64px] h-[21.69px] shrink-0 flex flex-row gap-[5px] justify-start items-center"
-                        >
-                          <div
-                            data-pencil-name="что входит"
-                            class="text-[13px]/[20px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                          >
-                            что входит
-                          </div>
-                          <div
-                            data-pencil-name="Icon"
-                            class="text-[14px]/[22px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                          >
-                            +
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      data-pencil-name="+8 000 ₽"
-                      class="text-[16px]/[25px] box-border absolute left-[726.32px] top-[16px] text-[#191817bf] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap] [z-index:2]"
-                    >
-                      +6 000 ₽
-                    </div>
-                  </div>
-                  <div
-                    data-pencil-name="label"
-                    class="box-border w-full h-[115.41px] shrink-0 [border:1px_solid_#19181724] rounded-[14px] relative"
-                  >
-                    <div
-                      data-pencil-name="input"
-                      class="box-border w-[17px] h-[17px] absolute left-[19px] top-[19px] [z-index:0]"
-                    ></div>
-                    <div
-                      data-pencil-name="span"
-                      class="box-border w-[654.17px] h-[83.41px] absolute left-[50px] top-[16px] flex flex-col gap-0 justify-start items-start [z-index:1]"
-                    >
-                      <div
-                        data-pencil-name="Роли и права доступа"
-                        class="text-[16px]/[25px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                      >
-                        Роли и права доступа
-                      </div>
-                      <div
-                        data-pencil-name="spacer"
-                        class="box-border w-full h-[3px] shrink-0"
-                      ></div>
-                      <div
-                        data-pencil-name="details"
-                        class="box-border w-full h-[24.92px] shrink-0 flex flex-col gap-[9px] p-[3.23px_0px_0px_0px] justify-start items-start"
-                      >
-                        <div
-                          data-pencil-name="summary"
-                          class="box-border w-[82.64px] h-[21.69px] shrink-0 flex flex-row gap-[5px] justify-start items-center"
-                        >
-                          <div
-                            data-pencil-name="что входит"
-                            class="text-[13px]/[20px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                          >
-                            что входит
-                          </div>
-                          <div
-                            data-pencil-name="Icon"
-                            class="text-[14px]/[22px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                          >
-                            +
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      data-pencil-name="+10 000 ₽"
-                      class="text-[16px]/[25px] box-border absolute left-[718.17px] top-[16px] text-[#191817bf] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap] [z-index:2]"
-                    >
-                      +7 500 ₽
-                    </div>
-                  </div>
-                  <div
-                    data-pencil-name="label"
-                    class="box-border w-full h-[115.41px] shrink-0 [border:1px_solid_#19181724] rounded-[14px] relative"
-                  >
-                    <div
-                      data-pencil-name="input"
-                      class="box-border w-[17px] h-[17px] absolute left-[19px] top-[19px] [z-index:0]"
-                    ></div>
-                    <div
-                      data-pencil-name="span"
-                      class="box-border w-[662.33px] h-[83.41px] absolute left-[50px] top-[16px] flex flex-col gap-0 p-[0px_0px_0.01px_0px] justify-start items-start [z-index:1]"
-                    >
-                      <div
-                        data-pencil-name="Уведомления в Telegram"
-                        class="text-[16px]/[25px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                      >
-                        Уведомления в Telegram
-                      </div>
-                      <div
-                        data-pencil-name="spacer"
-                        class="box-border w-full h-[2.99px] shrink-0"
-                      ></div>
-                      <div
-                        data-pencil-name="details"
-                        class="box-border w-full h-[24.92px] shrink-0 flex flex-col gap-[8.99px] p-[3.24px_0px_0px_0px] justify-start items-start"
-                      >
-                        <div
-                          data-pencil-name="summary"
-                          class="box-border w-[82.64px] h-[21.69px] shrink-0 flex flex-row gap-[5px] justify-start items-center"
-                        >
-                          <div
-                            data-pencil-name="что входит"
-                            class="text-[13px]/[20px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                          >
-                            что входит
-                          </div>
-                          <div
-                            data-pencil-name="Icon"
-                            class="text-[14px]/[22px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                          >
-                            +
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      data-pencil-name="+8 000 ₽"
-                      class="text-[16px]/[25px] box-border absolute left-[726.32px] top-[16px] text-[#191817bf] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap] [z-index:2]"
-                    >
-                      +6 000 ₽
-                    </div>
-                  </div>
-                  <div
-                    data-pencil-name="label"
-                    class="box-border w-full h-[115.41px] shrink-0 [border:1px_solid_#19181724] rounded-[14px] relative"
-                  >
-                    <div
-                      data-pencil-name="input"
-                      class="box-border w-[17px] h-[17px] absolute left-[19px] top-[19px] [z-index:0]"
-                    ></div>
-                    <div
-                      data-pencil-name="span"
-                      class="box-border w-[654.17px] h-[83.41px] absolute left-[50px] top-[16px] flex flex-col gap-0 justify-start items-start [z-index:1]"
-                    >
-                      <div
-                        data-pencil-name="Напоминания и сроки"
-                        class="text-[16px]/[25px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                      >
-                        Напоминания и сроки
-                      </div>
-                      <div
-                        data-pencil-name="spacer"
-                        class="box-border w-full h-[3px] shrink-0"
-                      ></div>
-                      <div
-                        data-pencil-name="details"
-                        class="box-border w-full h-[24.92px] shrink-0 flex flex-col gap-[9px] p-[3.23px_0px_0px_0px] justify-start items-start"
-                      >
-                        <div
-                          data-pencil-name="summary"
-                          class="box-border w-[82.64px] h-[21.69px] shrink-0 flex flex-row gap-[5px] justify-start items-center"
-                        >
-                          <div
-                            data-pencil-name="что входит"
-                            class="text-[13px]/[20px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                          >
-                            что входит
-                          </div>
-                          <div
-                            data-pencil-name="Icon"
-                            class="text-[14px]/[22px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                          >
-                            +
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      data-pencil-name="+10 000 ₽"
-                      class="text-[16px]/[25px] box-border absolute left-[718.17px] top-[16px] text-[#191817bf] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap] [z-index:2]"
-                    >
-                      +7 500 ₽
-                    </div>
-                  </div>
-                  <div
-                    data-pencil-name="label"
-                    class="box-border w-full h-[115.41px] shrink-0 [border:1px_solid_#19181724] rounded-[14px] relative"
-                  >
-                    <div
-                      data-pencil-name="input"
-                      class="box-border w-[17px] h-[17px] absolute left-[19px] top-[19px] [z-index:0]"
-                    ></div>
-                    <div
-                      data-pencil-name="span"
-                      class="box-border w-[655.58px] h-[83.41px] absolute left-[50px] top-[16px] flex flex-col gap-0 p-[0px_0px_0.01px_0px] justify-start items-start [z-index:1]"
-                    >
-                      <div
-                        data-pencil-name="Карточка объекта или машины"
-                        class="text-[16px]/[25px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                      >
-                        Карточка объекта или машины
-                      </div>
-                      <div
-                        data-pencil-name="spacer"
-                        class="box-border w-full h-[3px] shrink-0"
-                      ></div>
-                      <div
-                        data-pencil-name="details"
-                        class="box-border w-full h-[24.92px] shrink-0 flex flex-col gap-[9px] p-[3.24px_0px_0px_0px] justify-start items-start"
-                      >
-                        <div
-                          data-pencil-name="summary"
-                          class="box-border w-[82.64px] h-[21.69px] shrink-0 flex flex-row gap-[5px] justify-start items-center"
-                        >
-                          <div
-                            data-pencil-name="что входит"
-                            class="text-[13px]/[20px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                          >
-                            что входит
-                          </div>
-                          <div
-                            data-pencil-name="Icon"
-                            class="text-[14px]/[22px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                          >
-                            +
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      data-pencil-name="+12 000 ₽"
-                      class="text-[16px]/[25px] box-border absolute left-[719.57px] top-[16px] text-[#191817bf] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap] [z-index:2]"
-                    >
-                      +9 000 ₽
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              data-pencil-name="aside"
-              class="box-border w-[816.25px] h-[449.23px] absolute left-0 top-[1616.64px] flex flex-col gap-0 p-[23px_23px_22.99px_23px] justify-start items-start bg-[#ffffff80] [border:1px_solid_#19181724] rounded-[18px] [z-index:1]"
-            >
-              <div
-                data-pencil-name="ВАША СМЕТА"
-                class="box-border w-full h-[35.14px] shrink-0 flex flex-col gap-0 p-[0px_0px_14px_0px] justify-center items-start [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#19181714]"
-              >
-                <div
-                  class="text-[13px]/[20px] box-border text-[#19181773] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.65px] text-left [white-space:nowrap]"
-                >
-                  ВАША СМЕТА
-                </div>
-              </div>
-              <div
-                data-pencil-name="ul"
-                class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start"
-              >
-                <div
-                  data-pencil-name="li"
-                  class="box-border w-full h-[45.47px] shrink-0 flex flex-row gap-[14px] p-[11px_0px_12px_0px] justify-between items-start [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#19181714]"
-                >
-                  <div
-                    data-pencil-name="Основа: учёт заявок"
-                    class="text-[14.5px]/[22px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap]"
-                  >
-                    Основа: учёт заявок
-                  </div>
-                  <div
-                    data-pencil-name="60 000 ₽"
-                    class="text-[14.5px]/[22px] box-border text-[#191817b8] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                  >
-                    45 000 ₽
-                  </div>
-                </div>
-                <div
-                  data-pencil-name="Добавьте, что нужно — появится в смете"
-                  class="box-border w-full h-[44.69px] shrink-0 flex flex-col gap-0 p-[11px_0px] justify-center items-start [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#19181714]"
-                >
-                  <div
-                    class="text-[14px]/[22px] box-border text-[#19181773] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                  >
-                    Добавьте, что нужно — появится в смете
-                  </div>
-                </div>
-              </div>
-              <div data-pencil-name="div" class="box-border w-full h-[46.69px] shrink-0 relative">
-                <div
-                  data-pencil-name="Итого"
-                  class="text-[14px]/[22px] box-border absolute left-0 top-[25px] text-[#19181799] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap] [z-index:0]"
-                >
-                  Итого
-                </div>
-                <div
-                  data-pencil-name="60 000 ₽"
-                  class="text-[28.74px]/[29px] box-border absolute left-[651.81px] top-[16px] text-[#191817] font-[Geologica,system-ui,sans-serif] font-semibold tracking-[-0.86px] text-left [white-space:nowrap] [z-index:1]"
-                >
-                  45 000 ₽
-                </div>
-              </div>
-              <div data-pencil-name="spacer" class="box-border w-full h-[11.99px] shrink-0"></div>
-              <div
-                data-pencil-name="div"
-                class="box-border w-full h-[75.06px] shrink-0 flex flex-col gap-[5px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="Срок сборки — 2 недели"
-                  class="text-[14px]/[22px] box-border text-[#19181799] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                >
-                  Срок сборки — 2 недели
-                </div>
-                <div
-                  data-pencil-name="Оплата — 50% в начале, 50% при запуске"
-                  class="text-[14px]/[22px] box-border text-[#19181799] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                >
-                  Оплата — 50% в начале, 50% при запуске
-                </div>
-                <div
-                  data-pencil-name="Поддержка — 5 000 ₽/мес, по желанию"
-                  class="text-[14px]/[22px] box-border text-[#19181799] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                >
-                  Поддержка — 4 000 ₽/мес, по желанию
-                </div>
-              </div>
-              <div data-pencil-name="spacer" class="box-border w-full h-[14.01px] shrink-0"></div>
-              <div
-                data-pencil-name="Предварительная оценка, не счёт. Точную "
-                class="text-[13px]/[20px] box-border text-[#19181780] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Предварительная оценка, не счёт. Точную смету зафиксируем письменно после того, как
-                разберём вашу задачу
-              </div>
-              <div data-pencil-name="spacer" class="box-border w-full h-[18px] shrink-0"></div>
-              <div
-                data-pencil-name="div"
-                class="box-border w-full h-fit shrink-0 flex flex-col gap-[12.99px] justify-start items-center"
-              >
-                <div
-                  data-pencil-name="label"
-                  class="box-border w-[569.1px] h-[21.69px] shrink-0 relative"
-                >
-                  <div
-                    data-pencil-name="input"
-                    class="box-border w-[16px] h-[16px] absolute left-0 top-[3px] [z-index:0]"
-                  ></div>
-                  <div
-                    data-pencil-name="Согласен на обработку персональных данны"
-                    class="text-[14px]/[22px] box-border absolute left-[27px] top-0 text-[#1918179e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap] [z-index:1]"
-                  >
-                    Согласен на обработку персональных данных
-                  </div>
-                </div>
-                <div
-                  data-pencil-name="button"
-                  class="box-border w-full h-[58px] shrink-0 flex flex-row gap-[12px] p-[14px_20px_14px_26px] justify-between items-center bg-[#191817] rounded-[999px]"
-                >
-                  <div
-                    data-pencil-name="Отправить смету"
-                    class="text-[15px]/[normal] box-border text-[#f2efe6] font-[Geologica,system-ui,sans-serif] font-medium text-center [white-space:nowrap]"
-                  >
-                    Отправить смету
-                  </div>
-                  <div
-                    data-pencil-name="→"
-                    class="box-border w-[30px] shrink-0 h-[30px] flex flex-col gap-0 justify-center items-center bg-[#f2efe6] rounded-[999px]"
-                  >
-                    <div
-                      class="text-[14px]/[18px] box-border text-[#191817] font-[Geologica,system-ui,sans-serif] font-medium text-center [white-space:nowrap]"
-                    >
-                      →
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[44px] shrink-0"></div>
-        <div
-          data-pencil-name="div"
-          class="box-border w-full h-fit shrink-0 flex flex-row gap-[28.74px] justify-start items-start"
-        >
-          <div
-            data-pencil-name="div"
-            class="box-border [flex:1_1_0] h-[267.31px] flex flex-col gap-0 justify-start items-start"
-          >
-            <div
-              data-pencil-name="Из чего складывается цена"
-              class="text-[19.16px]/[30px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.38px] text-left [white-space:nowrap]"
-            >
-              Из чего складывается цена
-            </div>
-            <div data-pencil-name="spacer" class="box-border w-full h-[15.99px] shrink-0"></div>
-            <div
-              data-pencil-name="Мы считаем не «за программу», а за объём"
-              class="text-[15.5px]/[24px] box-border w-full h-[96.06px] shrink-0 text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-            >
-              Мы считаем не «за программу», а за объём работы. Основа — это экраны, без которых учёт
-              не работает: заявка, клиент, статусы. Каждая опция добавляет свои экраны, поля и
-              логику, поэтому у неё своя цена.
-            </div>
-            <div data-pencil-name="spacer" class="box-border w-full h-[14.01px] shrink-0"></div>
-            <div
-              data-pencil-name="ul"
-              class="box-border w-full h-[111.56px] shrink-0 flex flex-col gap-0 p-[0px_0px_0px_18px] justify-start items-start"
-            >
-              <div
-                data-pencil-name="Сколько экранов нужно собрать"
-                class="text-[15.5px]/[28px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Сколько экранов нужно собрать
-              </div>
-              <div
-                data-pencil-name="Сколько полей и правил у вашего процесса"
-                class="text-[15.5px]/[28px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Сколько полей и правил у вашего процесса
-              </div>
-              <div
-                data-pencil-name="Нужен ли отдельный вид для телефона"
-                class="text-[15.5px]/[28px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Нужен ли отдельный вид для телефона
-              </div>
-              <div
-                data-pencil-name="Переносим ли мы ваши текущие данные"
-                class="text-[15.5px]/[28px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Переносим ли мы ваши текущие данные
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border [flex:1_1_0] h-[267.31px] flex flex-col gap-0 justify-start items-start"
-          >
-            <div
-              data-pencil-name="Почему этой цифре можно верить"
-              class="text-[19.16px]/[30px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.38px] text-left [white-space:nowrap]"
-            >
-              Почему этой цифре можно верить
-            </div>
-            <div data-pencil-name="spacer" class="box-border w-full h-[15.99px] shrink-0"></div>
-            <div
-              data-pencil-name="Цены в конструкторе — те же, по которым "
-              class="text-[15.5px]/[24px] box-border w-full h-[96.06px] shrink-0 text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-            >
-              Цены в конструкторе — те же, по которым мы работаем с клиентами, а не приманка для
-              клика. Смета фиксируется письменно до начала работы и потом не растёт.
-            </div>
-            <div data-pencil-name="spacer" class="box-border w-full h-[14.01px] shrink-0"></div>
-            <div
-              data-pencil-name="ul"
-              class="box-border w-full h-[111.56px] shrink-0 flex flex-col gap-0 p-[0px_0px_0px_18px] justify-start items-start"
-            >
-              <div
-                data-pencil-name="Состав и цена фиксируются до старта"
-                class="text-[15.5px]/[28px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Состав и цена фиксируются до старта
-              </div>
-              <div
-                data-pencil-name="Показываем работу по ходу, а не в конце"
-                class="text-[15.5px]/[28px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Показываем работу по ходу, а не в конце
-              </div>
-              <div
-                data-pencil-name="Если задача окажется не наша — скажем пр"
-                class="text-[15.5px]/[28px] box-border w-full h-[55.78px] shrink-0 text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-              >
-                Если задача окажется не наша — скажем прямо и вернём предоплату
-              </div>
-            </div>
-          </div>
-        </div>
+        <p class="mt-4 text-xs text-[#19181780]">Предварительная оценка, не счёт. Точную смету зафиксируем письменно после того, как разберём вашу задачу.</p>
+        <label class="mt-5 flex items-start gap-2 text-xs text-[#19181799]">
+          <input type="checkbox" required class="mt-0.5" />
+          Согласен на обработку персональных данных
+        </label>
+        <button type="button" class="mt-4 w-full btn bg-[#191817] text-[#f2efe6] justify-center hover:bg-[#2b2926]">
+          Отправить смету <span>→</span>
+        </button>
+      </aside>
+    </div>
+
+    <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-10 text-sm">
+      <div>
+        <div class="font-medium">Из чего складывается цена</div>
+        <p class="text-[#19181799] mt-2">Мы считаем не «за программу», а за объём.</p>
+        <ul class="mt-3 space-y-1 text-[#19181799] list-disc pl-4">
+          <li>Сколько экранов нужно собрать</li>
+          <li>Сколько полей и правил у вашего процесса</li>
+          <li>Нужен ли отдельный вид для телефона</li>
+          <li>Переносим ли мы ваши текущие данные</li>
+        </ul>
       </div>
-      <div
-        data-pencil-name="03 Сравнение с подписками"
-        class="box-border w-full h-[709.36px] shrink-0 flex flex-col gap-0 p-[86.22px_38.32px] justify-start items-start relative [z-index:2]"
-      >
-        <div
-          data-pencil-name="СКОЛЬКО ЭТО СТОИТ НА САМОМ ДЕЛЕ"
-          class="text-[12px]/[19px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.72px] text-left [white-space:nowrap]"
-        >
-          СКОЛЬКО ЭТО СТОИТ НА САМОМ ДЕЛЕ
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[18px] shrink-0"></div>
-        <div
-          data-pencil-name="Подписка не заканчивается никогда"
-          class="text-[34.49px]/[37px] box-border w-[446.14px] h-[74.47px] shrink-0 text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.86px] text-left"
-        >
-          Подписка не заканчивается никогда
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[18px] shrink-0"></div>
-        <div
-          data-pencil-name="Готовые сервисы берут помесячно и за каж"
-          class="text-[15px]/[23px] box-border w-[609.75px] h-[46.5px] shrink-0 text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-        >
-          Готовые сервисы берут помесячно и за каждого сотрудника. Наняли ещё двоих — платёж вырос.
-          Перестали платить — доступ закрылся вместе с базой
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[34px] shrink-0"></div>
-        <div
-          data-pencil-name="div"
-          class="box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[1px_0px_0px_0px] justify-start items-start [border-width:1px_0px_0px_0px] [border-style:solid] [border-color:#e8e4d61f]"
-        >
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[57.14px] shrink-0 [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612] relative"
-          >
-            <div
-              data-pencil-name="РЕШЕНИЕ"
-              class="text-[13px]/[20px] box-border absolute left-0 top-[18px] text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.65px] text-left [white-space:nowrap] [z-index:0]"
-            >
-              РЕШЕНИЕ
-            </div>
-            <div
-              data-pencil-name="ПЕРВЫЙ ГОД"
-              class="text-[13px]/[20px] box-border absolute left-[702.36px] top-[18px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.65px] text-right [white-space:nowrap] [z-index:1]"
-            >
-              ПЕРВЫЙ ГОД
-            </div>
-            <div
-              data-pencil-name="ТРИ ГОДА"
-              class="text-[13px]/[20px] box-border absolute left-[811.89px] top-[18px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.65px] text-right [white-space:nowrap] [z-index:2]"
-            >
-              ТРИ ГОДА
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[61.8px] shrink-0 [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612] relative"
-          >
-            <div
-              data-pencil-name="Okdesk, 5–10 человек"
-              class="text-[16px]/[25px] box-border absolute left-0 top-[18px] text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap] [z-index:0]"
-            >
-              Okdesk, 5–10 человек
-            </div>
-            <div
-              data-pencil-name="96 000 ₽"
-              class="text-[16px]/[25px] box-border absolute left-[712.57px] top-[18px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-right [white-space:nowrap] [z-index:1]"
-            >
-              96 000 ₽
-            </div>
-            <div
-              data-pencil-name="288 000 ₽"
-              class="text-[16px]/[25px] box-border absolute left-[800.8px] top-[18px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-right [white-space:nowrap] [z-index:2]"
-            >
-              288 000 ₽
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[61.8px] shrink-0 [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612] relative"
-          >
-            <div
-              data-pencil-name="Планадо, бригада из 5"
-              class="text-[16px]/[25px] box-border absolute left-0 top-[18px] text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap] [z-index:0]"
-            >
-              Планадо, бригада из 5
-            </div>
-            <div
-              data-pencil-name="от 56 000 ₽"
-              class="text-[16px]/[25px] box-border absolute left-[670.1px] top-[18px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-right [white-space:nowrap] [z-index:1]"
-            >
-              от 56 000 ₽
-            </div>
-            <div
-              data-pencil-name="от 168 000 ₽"
-              class="text-[16px]/[25px] box-border absolute left-[779.55px] top-[18px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-right [white-space:nowrap] [z-index:2]"
-            >
-              от 168 000 ₽
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[61.8px] shrink-0 [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d61f] relative"
-          >
-            <div
-              data-pencil-name="Верстак, ваша сборка"
-              class="text-[16px]/[25px] box-border absolute left-0 top-[18px] text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap] [z-index:0]"
-            >
-              Верстак, ваша сборка
-            </div>
-            <div
-              data-pencil-name="80 000 ₽"
-              class="text-[16px]/[25px] box-border absolute left-[723.6px] top-[18px] text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium text-right [white-space:nowrap] [z-index:1]"
-            >
-              60 000 ₽
-            </div>
-            <div
-              data-pencil-name="80 000 ₽"
-              class="text-[16px]/[25px] box-border absolute left-[811.49px] top-[18px] text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium text-right [white-space:nowrap] [z-index:2]"
-            >
-              60 000 ₽
-            </div>
-          </div>
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[22px] shrink-0"></div>
-        <div
-          data-pencil-name="Окупается за 10 месяцев. Дальше вы не пл"
-          class="text-[19.16px]/[30px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-        >
-          Окупается за 10 месяцев. Дальше вы не платите ничего
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[12px] shrink-0"></div>
-        <div
-          data-pencil-name="Цены сервисов взяты с их сайтов, сверены"
-          class="text-[13px]/[20px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-        >
-          Цены сервисов взяты с их сайтов, сверены 3 сентября 2026
-        </div>
+      <div>
+        <div class="font-medium">Почему этой цифре можно верить</div>
+        <ul class="mt-3 space-y-1 text-[#19181799] list-disc pl-4">
+          <li>Состав и цена фиксируются до старта</li>
+          <li>Показываем работу по ходу, а не в конце</li>
+          <li>Если задача окажется не наша — скажем прямо</li>
+        </ul>
       </div>
-      <div
-        data-pencil-name="04 Ваши данные"
-        class="box-border w-full h-[555.69px] shrink-0 flex flex-col gap-0 p-[86.22px_38.32px] justify-start items-start relative [z-index:3]"
-      >
-        <div
-          data-pencil-name="ВАШИ ДАННЫЕ"
-          class="text-[12px]/[19px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.72px] text-left [white-space:nowrap]"
-        >
-          ВАШИ ДАННЫЕ
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[18px] shrink-0"></div>
-        <div
-          data-pencil-name="Ваши клиенты — не в общей базе"
-          class="text-[34.49px]/[37px] box-border w-[446.14px] h-[74.47px] shrink-0 text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.86px] text-left"
-        >
-          Ваши клиенты — не в общей базе
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[32px] shrink-0"></div>
-        <div
-          data-pencil-name="div"
-          class="box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[1px_0px_0px_0px] justify-start items-start [border-width:1px_0px_0px_0px] [border-style:solid] [border-color:#e8e4d61f]"
-        >
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[59.8px] shrink-0 flex flex-row gap-0 p-[17px_0px_18px_0px] justify-start items-start [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="Отдельная база под вас, доступ только у "
-              class="text-[16px]/[25px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-            >
-              Отдельная база под вас, доступ только у ваших людей
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[59.8px] shrink-0 flex flex-row gap-0 p-[17px_0px_18px_0px] justify-start items-start [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="Выгрузка всего в Excel в любой момент, б"
-              class="text-[16px]/[25px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-            >
-              Выгрузка всего в Excel в любой момент, без просьб к нам
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[59.8px] shrink-0 flex flex-row gap-0 p-[17px_0px_18px_0px] justify-start items-start [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="Решите уйти — отдадим базу целиком и пом"
-              class="text-[16px]/[25px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-            >
-              Решите уйти — отдадим базу целиком и поможем перенести
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[59.8px] shrink-0 flex flex-row gap-0 p-[17px_0px_18px_0px] justify-start items-start [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="Мы не смотрим в ваши данные и не передаё"
-              class="text-[16px]/[25px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-            >
-              Мы не смотрим в ваши данные и не передаём их никому
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        data-pencil-name="05 Работы"
-        class="box-border w-full h-[1963.84px] shrink-0 flex flex-col gap-0 p-[86.21px_38.32px_86.22px_38.32px] justify-start items-start relative [z-index:4]"
-      >
-        <div
-          data-pencil-name="РАБОТЫ"
-          class="text-[12px]/[19px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.72px] text-left [white-space:nowrap]"
-        >
-          РАБОТЫ
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[18.01px] shrink-0"></div>
-        <div
-          data-pencil-name="Что мы уже собирали"
-          class="text-[34.49px]/[37px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.86px] text-left [white-space:nowrap]"
-        >
-          Что мы уже собирали
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[56px] shrink-0"></div>
-        <div
-          data-pencil-name="div"
-          class="box-border w-full h-fit shrink-0 flex flex-col gap-[16.01px] p-[45px_0px_0px_0px] justify-start items-start [border-width:1px_0px_0px_0px] [border-style:solid] [border-color:#e8e4d61f]"
-        >
-          <div data-pencil-name="div" class="box-border w-full h-[34.59px] shrink-0 relative">
-            <div
-              data-pencil-name="iT-Center — приём и распределение заявок"
-              class="text-[22.03px]/[34px] box-border absolute left-0 top-0 text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.44px] text-left [white-space:nowrap] [z-index:0]"
-            >
-              iT-Center — приём и распределение заявок
-            </div>
-            <div
-              data-pencil-name="макет на демонстрационных данных"
-              class="box-border w-[240.97px] h-[28.59px] absolute left-[478.55px] top-[6px] flex flex-col gap-0 p-[4px_11px] justify-center items-start [border:1px_solid_#e8e4d61f] rounded-[999px] [z-index:1]"
-            >
-              <div
-                class="text-[12px]/[19px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                макет на демонстрационных данных
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[80.63px] shrink-0 flex flex-row gap-[14px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="div"
-              class="box-border [flex:1_1_0] h-[70.64px] flex flex-col gap-[6px] justify-start items-start"
-            >
-              <div
-                data-pencil-name="БЫЛО"
-                class="text-[13px]/[20px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-normal tracking-[0.65px] text-left [white-space:nowrap]"
-              >
-                БЫЛО
-              </div>
-              <div
-                data-pencil-name="Заявки в WhatsApp, адреса в блокноте, фо"
-                class="text-[15px]/[23px] box-border w-[418.31px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-              >
-                Заявки в WhatsApp, адреса в блокноте, фото у мастера в галерее
-              </div>
-            </div>
-            <div
-              data-pencil-name="div"
-              class="box-border [flex:1_1_0] h-[70.64px] flex flex-col gap-[6px] justify-start items-start"
-            >
-              <div
-                data-pencil-name="СТАЛО"
-                class="text-[13px]/[20px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-normal tracking-[0.65px] text-left [white-space:nowrap]"
-              >
-                СТАЛО
-              </div>
-              <div
-                data-pencil-name="Одна вкладка, из которой видно весь день"
-                class="text-[15px]/[23px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Одна вкладка, из которой видно весь день
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[350.59px] shrink-0 bg-[#1a1917] rounded-[20px] relative"
-          >
-            <div
-              data-pencil-name="div"
-              class="box-border w-fit h-fit absolute left-[19.16px] top-[19.15px] flex flex-col gap-0 p-[1px] justify-start items-start [border:1px_solid_#e8e4d612] rounded-[12px] overflow-hidden [z-index:0]"
-            >
-              <div
-                data-pencil-name="img"
-                class="box-border w-[496.44px] h-[310.28px] shrink-0 bg-[url('../../../Desktop/%F0%9F%94%A5%20%D0%90%D0%9A%D0%A2%D0%98%D0%92%D0%9D%D0%AB%D0%95_%D0%9F%D0%A0%D0%9E%D0%95%D0%9A%D0%A2%D0%AB/%F0%9F%94%A5%20%D0%A1%D0%90%D0%99%D0%A2_%D0%9A%D0%9E%D0%9C%D0%9F%D0%90%D0%9D%D0%98%D0%98_%D0%A1_%D0%A1%D0%90%D0%9D%D0%95%D0%99/06_%D0%A1%D0%90%D0%99%D0%A2/img/itcenter-1.png')] bg-no-repeat bg-[length:100%_100%]"
-              ></div>
-            </div>
-            <div
-              data-pencil-name="div"
-              class="box-border w-fit h-fit absolute left-[540.61px] top-[19.15px] flex flex-col gap-[14px] justify-start items-start [z-index:1]"
-            >
-              <div
-                data-pencil-name="div"
-                class="box-border w-fit h-fit shrink-0 flex flex-row gap-[13px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="1"
-                  class="box-border w-[23px] shrink-0 h-[23px] flex flex-col gap-0 justify-center items-start [border:1px_solid_#e8e4d61f] rounded-[999px]"
-                >
-                  <div
-                    class="text-[12px]/[19px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                  >
-                    1
-                  </div>
-                </div>
-                <div
-                  data-pencil-name="Новые заявки — сюда падает всё, что приш"
-                  class="text-[15px]/[23px] box-border w-[285.61px] shrink-0 h-[46.5px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-                >
-                  Новые заявки — сюда падает всё, что пришло
-                </div>
-              </div>
-              <div
-                data-pencil-name="div"
-                class="box-border w-fit h-fit shrink-0 flex flex-row gap-[13px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="2"
-                  class="box-border w-[23px] shrink-0 h-[23px] flex flex-col gap-0 justify-center items-start [border:1px_solid_#e8e4d61f] rounded-[999px]"
-                >
-                  <div
-                    class="text-[12px]/[19px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                  >
-                    2
-                  </div>
-                </div>
-                <div
-                  data-pencil-name="Кто из мастеров свободен прямо сейчас"
-                  class="text-[15px]/[23px] box-border w-[285.61px] shrink-0 h-[46.5px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-                >
-                  Кто из мастеров свободен прямо сейчас
-                </div>
-              </div>
-              <div
-                data-pencil-name="div"
-                class="box-border w-fit h-fit shrink-0 flex flex-row gap-[13px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="3"
-                  class="box-border w-[23px] shrink-0 h-[23px] flex flex-col gap-0 justify-center items-start [border:1px_solid_#e8e4d61f] rounded-[999px]"
-                >
-                  <div
-                    class="text-[12px]/[19px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                  >
-                    3
-                  </div>
-                </div>
-                <div
-                  data-pencil-name="Красным — просрочка, видно без открытия "
-                  class="text-[15px]/[23px] box-border w-[285.61px] shrink-0 h-[46.5px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-                >
-                  Красным — просрочка, видно без открытия карточки
-                </div>
-              </div>
-              <div
-                data-pencil-name="div"
-                class="box-border w-fit h-fit shrink-0 flex flex-row gap-[13px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="4"
-                  class="box-border w-[23px] shrink-0 h-[23px] flex flex-col gap-0 justify-center items-start [border:1px_solid_#e8e4d61f] rounded-[999px]"
-                >
-                  <div
-                    class="text-[12px]/[19px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                  >
-                    4
-                  </div>
-                </div>
-                <div
-                  data-pencil-name="Фотоотчёт прикреплён к заявке, а не в га"
-                  class="text-[15px]/[23px] box-border w-[285.61px] shrink-0 h-[46.5px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-                >
-                  Фотоотчёт прикреплён к заявке, а не в галерее телефона
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[56px] shrink-0"></div>
-        <div
-          data-pencil-name="div"
-          class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] p-[45px_0px_0px_0px] justify-start items-start [border-width:1px_0px_0px_0px] [border-style:solid] [border-color:#e8e4d61f]"
-        >
-          <div data-pencil-name="div" class="box-border w-full h-[34.59px] shrink-0 relative">
-            <div
-              data-pencil-name="GBC Detailing — запись и загрузка постов"
-              class="text-[22.03px]/[34px] box-border absolute left-0 top-0 text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.44px] text-left [white-space:nowrap] [z-index:0]"
-            >
-              GBC Detailing — запись и загрузка постов
-            </div>
-            <div
-              data-pencil-name="макет на демонстрационных данных"
-              class="box-border w-[240.97px] h-[28.59px] absolute left-[453.72px] top-[6px] flex flex-col gap-0 p-[4px_11px] justify-center items-start [border:1px_solid_#e8e4d61f] rounded-[999px] [z-index:1]"
-            >
-              <div
-                class="text-[12px]/[19px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                макет на демонстрационных данных
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[57.39px] shrink-0 flex flex-row gap-[14px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="div"
-              class="box-border [flex:1_1_0] h-[47.39px] flex flex-col gap-[6px] justify-start items-start"
-            >
-              <div
-                data-pencil-name="БЫЛО"
-                class="text-[13px]/[20px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-normal tracking-[0.65px] text-left [white-space:nowrap]"
-              >
-                БЫЛО
-              </div>
-              <div
-                data-pencil-name="Запись в тетради, звонки «когда вас ждат"
-                class="text-[15px]/[23px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Запись в тетради, звонки «когда вас ждать»
-              </div>
-            </div>
-            <div
-              data-pencil-name="div"
-              class="box-border [flex:1_1_0] h-[47.39px] flex flex-col gap-[6px] justify-start items-start"
-            >
-              <div
-                data-pencil-name="СТАЛО"
-                class="text-[13px]/[20px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-normal tracking-[0.65px] text-left [white-space:nowrap]"
-              >
-                СТАЛО
-              </div>
-              <div
-                data-pencil-name="Видно занятость постов на неделю вперёд"
-                class="text-[15px]/[23px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Видно занятость постов на неделю вперёд
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[318.19px] shrink-0 bg-[#1a1917] rounded-[20px] relative"
-          >
-            <div
-              data-pencil-name="div"
-              class="box-border w-fit h-fit absolute left-[19.16px] top-[19.16px] flex flex-col gap-0 p-[1px] justify-start items-start [border:1px_solid_#e8e4d612] rounded-[12px] overflow-hidden [z-index:0]"
-            >
-              <div
-                data-pencil-name="img"
-                class="box-border w-[496.44px] h-[277.88px] shrink-0 bg-[url('../../../Desktop/%F0%9F%94%A5%20%D0%90%D0%9A%D0%A2%D0%98%D0%92%D0%9D%D0%AB%D0%95_%D0%9F%D0%A0%D0%9E%D0%95%D0%9A%D0%A2%D0%AB/%F0%9F%94%A5%20%D0%A1%D0%90%D0%99%D0%A2_%D0%9A%D0%9E%D0%9C%D0%9F%D0%90%D0%9D%D0%98%D0%98_%D0%A1_%D0%A1%D0%90%D0%9D%D0%95%D0%99/06_%D0%A1%D0%90%D0%99%D0%A2/img/gbc-1.png')] bg-no-repeat bg-[length:100%_100%]"
-              ></div>
-            </div>
-            <div
-              data-pencil-name="div"
-              class="box-border w-fit h-fit absolute left-[540.61px] top-[19.16px] flex flex-col gap-[14px] justify-start items-start [z-index:1]"
-            >
-              <div
-                data-pencil-name="div"
-                class="box-border w-fit h-fit shrink-0 flex flex-row gap-[13px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="1"
-                  class="box-border w-[23px] shrink-0 h-[23px] flex flex-col gap-0 justify-center items-start [border:1px_solid_#e8e4d61f] rounded-[999px]"
-                >
-                  <div
-                    class="text-[12px]/[19px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                  >
-                    1
-                  </div>
-                </div>
-                <div
-                  data-pencil-name="Загрузка постов на неделю — свободные ок"
-                  class="text-[15px]/[23px] box-border w-[285.61px] shrink-0 h-[46.5px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-                >
-                  Загрузка постов на неделю — свободные окна видно сразу
-                </div>
-              </div>
-              <div
-                data-pencil-name="div"
-                class="box-border w-fit h-fit shrink-0 flex flex-row gap-[13px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="2"
-                  class="box-border w-[23px] shrink-0 h-[23px] flex flex-col gap-0 justify-center items-start [border:1px_solid_#e8e4d61f] rounded-[999px]"
-                >
-                  <div
-                    class="text-[12px]/[19px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                  >
-                    2
-                  </div>
-                </div>
-                <div
-                  data-pencil-name="Карточка машины: что делали в прошлый ра"
-                  class="text-[15px]/[23px] box-border w-[285.61px] shrink-0 h-[46.5px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-                >
-                  Карточка машины: что делали в прошлый раз
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[56px] shrink-0"></div>
-        <div
-          data-pencil-name="div"
-          class="box-border w-full h-fit shrink-0 flex flex-col gap-[16.01px] p-[45px_0px_0px_0px] justify-start items-start [border-width:1px_0px_0px_0px] [border-style:solid] [border-color:#e8e4d61f]"
-        >
-          <div data-pencil-name="div" class="box-border w-full h-[34.59px] shrink-0 relative">
-            <div
-              data-pencil-name="Аквацентр — обслуживание объектов по гра"
-              class="text-[22.03px]/[34px] box-border absolute left-0 top-0 text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.44px] text-left [white-space:nowrap] [z-index:0]"
-            >
-              Аквацентр — обслуживание объектов по графику
-            </div>
-            <div
-              data-pencil-name="макет на демонстрационных данных"
-              class="box-border w-[240.97px] h-[28.59px] absolute left-[548.85px] top-[6px] flex flex-col gap-0 p-[4px_11px] justify-center items-start [border:1px_solid_#e8e4d61f] rounded-[999px] [z-index:1]"
-            >
-              <div
-                class="text-[12px]/[19px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                макет на демонстрационных данных
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[57.38px] shrink-0 flex flex-row gap-[14px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="div"
-              class="box-border [flex:1_1_0] h-[47.39px] flex flex-col gap-[6px] justify-start items-start"
-            >
-              <div
-                data-pencil-name="БЫЛО"
-                class="text-[13px]/[20px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-normal tracking-[0.65px] text-left [white-space:nowrap]"
-              >
-                БЫЛО
-              </div>
-              <div
-                data-pencil-name="График обслуживания в голове у владельца"
-                class="text-[15px]/[23px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                График обслуживания в голове у владельца
-              </div>
-            </div>
-            <div
-              data-pencil-name="div"
-              class="box-border [flex:1_1_0] h-[47.39px] flex flex-col gap-[6px] justify-start items-start"
-            >
-              <div
-                data-pencil-name="СТАЛО"
-                class="text-[13px]/[20px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-normal tracking-[0.65px] text-left [white-space:nowrap]"
-              >
-                СТАЛО
-              </div>
-              <div
-                data-pencil-name="Программа сама напоминает, к кому пора е"
-                class="text-[15px]/[23px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Программа сама напоминает, к кому пора ехать
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[350.59px] shrink-0 bg-[#1a1917] rounded-[20px] relative"
-          >
-            <div
-              data-pencil-name="div"
-              class="box-border w-fit h-fit absolute left-[19.16px] top-[19.15px] flex flex-col gap-0 p-[1px] justify-start items-start [border:1px_solid_#e8e4d612] rounded-[12px] overflow-hidden [z-index:0]"
-            >
-              <div
-                data-pencil-name="img"
-                class="box-border w-[496.44px] h-[310.28px] shrink-0 bg-[url('../../../Desktop/%F0%9F%94%A5%20%D0%90%D0%9A%D0%A2%D0%98%D0%92%D0%9D%D0%AB%D0%95_%D0%9F%D0%A0%D0%9E%D0%95%D0%9A%D0%A2%D0%AB/%F0%9F%94%A5%20%D0%A1%D0%90%D0%99%D0%A2_%D0%9A%D0%9E%D0%9C%D0%9F%D0%90%D0%9D%D0%98%D0%98_%D0%A1_%D0%A1%D0%90%D0%9D%D0%95%D0%99/06_%D0%A1%D0%90%D0%99%D0%A2/img/aqua-1.png')] bg-no-repeat bg-[length:100%_100%]"
-              ></div>
-            </div>
-            <div
-              data-pencil-name="div"
-              class="box-border w-[321.61px] h-fit absolute left-[540.61px] top-[19.15px] flex flex-col gap-[14px] justify-start items-start [z-index:1]"
-            >
-              <div
-                data-pencil-name="div"
-                class="box-border w-fit h-fit shrink-0 flex flex-row gap-[13px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="1"
-                  class="box-border w-[23px] shrink-0 h-[23px] flex flex-col gap-0 justify-center items-start [border:1px_solid_#e8e4d61f] rounded-[999px]"
-                >
-                  <div
-                    class="text-[12px]/[19px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                  >
-                    1
-                  </div>
-                </div>
-                <div
-                  data-pencil-name="Список объектов и дата следующего визита"
-                  class="text-[15px]/[23px] box-border w-[285.61px] shrink-0 h-[46.5px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-                >
-                  Список объектов и дата следующего визита
-                </div>
-              </div>
-              <div
-                data-pencil-name="div"
-                class="box-border w-full h-fit shrink-0 flex flex-row gap-[13px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="2"
-                  class="box-border w-[23px] shrink-0 h-[23px] flex flex-col gap-0 justify-center items-start [border:1px_solid_#e8e4d61f] rounded-[999px]"
-                >
-                  <div
-                    class="text-[12px]/[19px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                  >
-                    2
-                  </div>
-                </div>
-                <div
-                  data-pencil-name="Кто закреплён за объектом"
-                  class="text-[15px]/[23px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-                >
-                  Кто закреплён за объектом
-                </div>
-              </div>
-              <div
-                data-pencil-name="div"
-                class="box-border w-fit h-fit shrink-0 flex flex-row gap-[13px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="3"
-                  class="box-border w-[23px] shrink-0 h-[23px] flex flex-col gap-0 justify-center items-start [border:1px_solid_#e8e4d61f] rounded-[999px]"
-                >
-                  <div
-                    class="text-[12px]/[19px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                  >
-                    3
-                  </div>
-                </div>
-                <div
-                  data-pencil-name="История: что делали в прошлый приезд"
-                  class="text-[15px]/[23px] box-border w-[285.61px] shrink-0 h-[46.5px] text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-                >
-                  История: что делали в прошлый приезд
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        data-pencil-name="06 Чего не берём"
-        class="box-border w-full h-[651.84px] shrink-0 flex flex-col gap-0 p-[86.22px_38.32px] justify-start items-start relative [z-index:5]"
-      >
-        <div
-          data-pencil-name="ГРАНИЦЫ"
-          class="text-[12px]/[19px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.72px] text-left [white-space:nowrap]"
-        >
-          ГРАНИЦЫ
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[18px] shrink-0"></div>
-        <div
-          data-pencil-name="Чего мы не берём"
-          class="text-[34.49px]/[37px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.86px] text-left [white-space:nowrap]"
-        >
-          Чего мы не берём
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[32.01px] shrink-0"></div>
-        <div
-          data-pencil-name="div"
-          class="box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[1px_0px_0px_0px] justify-start items-start [border-width:1px_0px_0px_0px] [border-style:solid] [border-color:#e8e4d61f]"
-        >
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[59.8px] shrink-0 flex flex-row gap-0 p-[17px_0px_18px_0px] justify-start items-start [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="Интеграцию с 1С"
-              class="text-[16px]/[25px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-            >
-              Интеграцию с 1С
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[59.8px] shrink-0 flex flex-row gap-0 p-[17px_0px_18px_0px] justify-start items-start [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="Телефонию и запись звонков"
-              class="text-[16px]/[25px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-            >
-              Телефонию и запись звонков
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[59.8px] shrink-0 flex flex-row gap-0 p-[17px_0px_18px_0px] justify-start items-start [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="Онлайн-кассу и приём платежей внутри сис"
-              class="text-[16px]/[25px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-            >
-              Онлайн-кассу и приём платежей внутри системы
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[59.8px] shrink-0 flex flex-row gap-0 p-[17px_0px_18px_0px] justify-start items-start [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="Замену работающего Битрикс24 целиком"
-              class="text-[16px]/[25px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-            >
-              Замену работающего Битрикс24 целиком
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-[59.8px] shrink-0 flex flex-row gap-0 p-[17px_0px_18px_0px] justify-start items-start [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="Гарантии роста выручки"
-              class="text-[16px]/[25px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-            >
-              Гарантии роста выручки
-            </div>
-          </div>
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[24px] shrink-0"></div>
-        <div
-          data-pencil-name="Отказываемся, чтобы не подвести: это отд"
-          class="text-[16px]/[25px] box-border w-[693.76px] h-[49.59px] shrink-0 text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-        >
-          Отказываемся, чтобы не подвести: это отдельная работа для профильного специалиста. Сделаем
-          так, чтобы наша часть работала рядом и не мешала
-        </div>
-      </div>
-      <div
-        data-pencil-name="07 Как мы работаем"
-        class="box-border w-full h-[495.75px] shrink-0 flex flex-col gap-0 p-[86.22px_38.32px] justify-start items-start relative [z-index:6]"
-      >
-        <div
-          data-pencil-name="ПРОЦЕСС"
-          class="text-[12px]/[19px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.72px] text-left [white-space:nowrap]"
-        >
-          ПРОЦЕСС
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[18.01px] shrink-0"></div>
-        <div
-          data-pencil-name="Как мы работаем"
-          class="text-[34.49px]/[37px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.86px] text-left [white-space:nowrap]"
-        >
-          Как мы работаем
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[34px] shrink-0"></div>
-        <div
-          data-pencil-name="div"
-          class="box-border w-full h-fit shrink-0 flex flex-row gap-[1px] justify-start items-start bg-[#e8e4d612]"
-        >
-          <div
-            data-pencil-name="div"
-            class="box-border [flex:1_1_0] h-[215.48px] flex flex-col gap-0 p-[26px_22px_54.79px_22px] justify-start items-start bg-[#080807]"
-          >
-            <div
-              data-pencil-name="01"
-              class="text-[13px]/[20px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-            >
-              01
-            </div>
-            <div data-pencil-name="spacer" class="box-border w-full h-[12px] shrink-0"></div>
-            <div
-              data-pencil-name="Разбираем задачу"
-              class="text-[16px]/[25px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap]"
-            >
-              Разбираем задачу
-            </div>
-            <div data-pencil-name="spacer" class="box-border w-full h-[8px] shrink-0"></div>
-            <div
-              data-pencil-name="Расскажете, как устроен ваш день. 30–40 "
-              class="text-[15px]/[23px] box-border w-full h-[69.75px] shrink-0 text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-            >
-              Расскажете, как устроен ваш день. 30–40 минут
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border [flex:1_1_0] h-[215.48px] flex flex-col gap-0 p-[26px_22px_30px_22px] justify-start items-start bg-[#080807]"
-          >
-            <div
-              data-pencil-name="02"
-              class="text-[13px]/[20px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-            >
-              02
-            </div>
-            <div data-pencil-name="spacer" class="box-border w-full h-[12px] shrink-0"></div>
-            <div
-              data-pencil-name="Фиксируем состав и цену"
-              class="text-[16px]/[25px] box-border w-full h-[49.59px] shrink-0 text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium text-left"
-            >
-              Фиксируем состав и цену
-            </div>
-            <div data-pencil-name="spacer" class="box-border w-full h-[8px] shrink-0"></div>
-            <div
-              data-pencil-name="Письменно, до начала работы. Смета потом"
-              class="text-[15px]/[23px] box-border w-full h-[69.75px] shrink-0 text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-            >
-              Письменно, до начала работы. Смета потом не растёт
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border [flex:1_1_0] h-[215.48px] flex flex-col gap-0 p-[26px_22px_30px_22px] justify-start items-start bg-[#080807]"
-          >
-            <div
-              data-pencil-name="03"
-              class="text-[13px]/[20px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-            >
-              03
-            </div>
-            <div data-pencil-name="spacer" class="box-border w-full h-[12px] shrink-0"></div>
-            <div
-              data-pencil-name="Собираем и показываем"
-              class="text-[16px]/[25px] box-border w-full h-[49.59px] shrink-0 text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium text-left"
-            >
-              Собираем и показываем
-            </div>
-            <div data-pencil-name="spacer" class="box-border w-full h-[8px] shrink-0"></div>
-            <div
-              data-pencil-name="2–3 недели. Показываем по ходу, а не в к"
-              class="text-[15px]/[23px] box-border w-full h-[69.75px] shrink-0 text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-            >
-              2–3 недели. Показываем по ходу, а не в конце
-            </div>
-          </div>
-          <div
-            data-pencil-name="div"
-            class="box-border [flex:1_1_0] h-[215.48px] flex flex-col gap-0 p-[26px_22px_30px_22px] justify-start items-start bg-[#080807]"
-          >
-            <div
-              data-pencil-name="04"
-              class="text-[13px]/[20px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-            >
-              04
-            </div>
-            <div data-pencil-name="spacer" class="box-border w-full h-[12px] shrink-0"></div>
-            <div
-              data-pencil-name="Запускаем и учим людей"
-              class="text-[16px]/[25px] box-border w-full h-[49.59px] shrink-0 text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium text-left"
-            >
-              Запускаем и учим людей
-            </div>
-            <div data-pencil-name="spacer" class="box-border w-full h-[8px] shrink-0"></div>
-            <div
-              data-pencil-name="Переносим текущие данные, показываем сот"
-              class="text-[15px]/[23px] box-border w-full h-[69.75px] shrink-0 text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-            >
-              Переносим текущие данные, показываем сотрудникам
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        data-pencil-name="08 О нас"
-        class="box-border w-full h-[334.02px] shrink-0 flex flex-col gap-[18px] p-[86.22px_38.32px] justify-start items-start relative [z-index:7]"
-      >
-        <div
-          data-pencil-name="О НАС"
-          class="text-[12px]/[19px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.72px] text-left [white-space:nowrap]"
-        >
-          О НАС
-        </div>
-        <div
-          data-pencil-name="Нас двое"
-          class="text-[34.49px]/[37px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.86px] text-left [white-space:nowrap]"
-        >
-          Нас двое
-        </div>
-        <div
-          data-pencil-name="Дмитрий и Александр. Собираем программы "
-          class="text-[15px]/[23px] box-border w-[609.75px] h-[69.75px] shrink-0 text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left"
-        >
-          Дмитрий и Александр. Собираем программы учёта для бизнеса, который ездит к клиенту.
-          Работаем вдвоём и берём столько проектов, сколько успеваем вести сами
-        </div>
-      </div>
-      <div
-        data-pencil-name="09 Вопросы"
-        class="box-border w-full h-[711.27px] shrink-0 flex flex-col gap-0 p-[86.22px_38.32px] justify-start items-start relative [z-index:8]"
-      >
-        <div
-          data-pencil-name="ВОПРОСЫ"
-          class="text-[12px]/[19px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light tracking-[0.72px] text-left [white-space:nowrap]"
-        >
-          ВОПРОСЫ
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[18px] shrink-0"></div>
-        <div
-          data-pencil-name="Что обычно спрашивают"
-          class="text-[34.49px]/[37px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.86px] text-left [white-space:nowrap]"
-        >
-          Что обычно спрашивают
-        </div>
-        <div data-pencil-name="spacer" class="box-border w-full h-[32.01px] shrink-0"></div>
-        <div
-          data-pencil-name="div"
-          class="box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[1px_0px_0px_0px] justify-start items-start [border-width:1px_0px_0px_0px] [border-style:solid] [border-color:#e8e4d61f]"
-        >
-          <div
-            data-pencil-name="details"
-            class="box-border w-full h-[72px] shrink-0 flex flex-col gap-0 p-[0px_0px_1px_0px] justify-start items-center [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="summary"
-              class="box-border w-full h-[71px] shrink-0 flex flex-row gap-[20px] p-[20px_0px] justify-between items-center"
-            >
-              <div
-                data-pencil-name="Где хранятся данные наших клиентов"
-                class="text-[16.29px]/[25px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Где хранятся данные наших клиентов
-              </div>
-              <div
-                data-pencil-name="Icon"
-                class="text-[20px]/[31px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                +
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="details"
-            class="box-border w-full h-[72px] shrink-0 flex flex-col gap-0 p-[0px_0px_1px_0px] justify-start items-center [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="summary"
-              class="box-border w-full h-[71px] shrink-0 flex flex-row gap-[20px] p-[20px_0px] justify-between items-center"
-            >
-              <div
-                data-pencil-name="Сколько ждать"
-                class="text-[16.29px]/[25px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Сколько ждать
-              </div>
-              <div
-                data-pencil-name="Icon"
-                class="text-[20px]/[31px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                +
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="details"
-            class="box-border w-full h-[72px] shrink-0 flex flex-col gap-0 p-[0px_0px_1px_0px] justify-start items-center [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="summary"
-              class="box-border w-full h-[71px] shrink-0 flex flex-row gap-[20px] p-[20px_0px] justify-between items-center"
-            >
-              <div
-                data-pencil-name="А если сотрудники не разберутся"
-                class="text-[16.29px]/[25px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                А если сотрудники не разберутся
-              </div>
-              <div
-                data-pencil-name="Icon"
-                class="text-[20px]/[31px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                +
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="details"
-            class="box-border w-full h-[72px] shrink-0 flex flex-col gap-0 p-[0px_0px_1px_0px] justify-start items-center [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="summary"
-              class="box-border w-full h-[71px] shrink-0 flex flex-row gap-[20px] p-[20px_0px] justify-between items-center"
-            >
-              <div
-                data-pencil-name="Нужно платить каждый месяц"
-                class="text-[16.29px]/[25px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Нужно платить каждый месяц
-              </div>
-              <div
-                data-pencil-name="Icon"
-                class="text-[20px]/[31px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                +
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="details"
-            class="box-border w-full h-[72px] shrink-0 flex flex-col gap-0 p-[0px_0px_1px_0px] justify-start items-center [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="summary"
-              class="box-border w-full h-[71px] shrink-0 flex flex-row gap-[20px] p-[20px_0px] justify-between items-center"
-            >
-              <div
-                data-pencil-name="Что, если потом понадобится доработка"
-                class="text-[16.29px]/[25px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Что, если потом понадобится доработка
-              </div>
-              <div
-                data-pencil-name="Icon"
-                class="text-[20px]/[31px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                +
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="details"
-            class="box-border w-full h-[72px] shrink-0 flex flex-col gap-0 p-[0px_0px_1px_0px] justify-start items-center [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612]"
-          >
-            <div
-              data-pencil-name="summary"
-              class="box-border w-full h-[71px] shrink-0 flex flex-row gap-[20px] p-[20px_0px] justify-between items-center"
-            >
-              <div
-                data-pencil-name="Вы далеко, а мы в другом городе"
-                class="text-[16.29px]/[25px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                Вы далеко, а мы в другом городе
-              </div>
-              <div
-                data-pencil-name="Icon"
-                class="text-[20px]/[31px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-              >
-                +
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        data-pencil-name="10 Финальный призыв"
-        class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-center relative [z-index:9]"
-      >
-        <div
-          data-pencil-name="section"
-          class="box-border w-[881.38px] h-fit shrink-0 flex flex-col gap-0 p-[47.89px_47.9px] justify-start items-center bg-[#111110] rounded-[28px]"
-        >
-          <div
-            data-pencil-name="Соберите смету и напишите нам"
-            class="text-[34.49px]/[37px] box-border w-[375.69px] h-[74.47px] shrink-0 text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium tracking-[-0.86px] text-left"
-          >
-            Соберите смету и напишите нам
-          </div>
-          <div data-pencil-name="spacer" class="box-border w-full h-[18px] shrink-0"></div>
-          <div
-            data-pencil-name="Ответим в течение дня. Если задача окаже"
-            class="text-[15px]/[23px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-          >
-            Ответим в течение дня. Если задача окажется не наша — скажем прямо
-          </div>
-          <div data-pencil-name="spacer" class="box-border w-full h-[32px] shrink-0"></div>
-          <div
-            data-pencil-name="div"
-            class="box-border w-full h-fit shrink-0 flex flex-row gap-[12px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="a"
-              class="box-border w-[237.86px] shrink-0 h-[58px] flex flex-row gap-[12px] p-[14px_20px_14px_26px] justify-start items-center bg-[#e8e4d6] rounded-[999px]"
-            >
-              <div
-                data-pencil-name="Собрать программу"
-                class="text-[15px]/[23px] box-border text-[#111110] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap]"
-              >
-                Собрать программу
-              </div>
-              <div
-                data-pencil-name="→"
-                class="box-border w-[30px] shrink-0 h-[30px] flex flex-col gap-0 justify-center items-start bg-[#111110] rounded-[999px]"
-              >
-                <div
-                  class="text-[14px]/[22px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap]"
-                >
-                  →
-                </div>
-              </div>
-            </div>
-            <div
-              data-pencil-name="Написать в Telegram"
-              class="box-border w-[207.64px] shrink-0 h-[58px] flex flex-col gap-0 p-[14px_26px] justify-center items-start [border:1px_solid_#e8e4d62e] rounded-[999px]"
-            >
-              <div
-                class="text-[15px]/[23px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap]"
-              >
-                Написать в Telegram
-              </div>
-            </div>
-            <div
-              data-pencil-name="Написать в WhatsApp"
-              class="box-border w-[207.64px] shrink-0 h-[58px] flex flex-col gap-0 p-[14px_26px] justify-center items-start [border:1px_solid_#e8e4d62e] rounded-[999px]"
-            >
-              <div
-                class="text-[15px]/[23px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-medium text-left [white-space:nowrap]"
-              >
-                Написать в WhatsApp
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="один раз, программа ваша"
-            class="text-[13px]/[20px] box-border text-[#8f8b80] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-          >
-            Отвечаю лично, без менеджеров и ботов — Александр
-          </div>
-        </div>
-      </div>
-      <div
-        data-pencil-name="Отступ"
-        class="box-border w-full h-[57.47px] shrink-0 relative [z-index:10]"
-      ></div>
-      <div
-        data-pencil-name="Футер"
-        class="box-border w-full h-[96.69px] shrink-0 flex flex-row gap-[18px] p-[31px_38.32px_44px_38.32px] justify-between items-start [border-width:1px_0px_0px_0px] [border-style:solid] [border-color:#e8e4d612] relative [z-index:11]"
-      >
-        <div
-          data-pencil-name="Верстак — программы учёта заявок и выезд"
-          class="text-[14px]/[22px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-        >
-          Верстак — программы учёта заявок и выездов
-        </div>
-        <div
-          data-pencil-name="Дмитрий и Александр"
-          class="text-[14px]/[22px] box-border text-[#e8e4d661] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-        >
-          Дмитрий и Александр
-        </div>
-      </div>
-      <div
-        data-pencil-name="Шапка"
-        class="box-border w-[958px] h-[55.34px] [backdrop-filter:blur(7px)] absolute left-0 top-0 flex flex-row gap-0 p-[14px_38.32px_15px_38.32px] justify-between items-center bg-[#080807b8] [border-width:0px_0px_1px_0px] [border-style:solid] [border-color:#e8e4d612] [z-index:12]"
-      >
-        <div
-          data-pencil-name="Верстак"
-          class="text-[17px]/[26px] box-border text-[#e8e4d6] font-[Geologica,system-ui,sans-serif] font-semibold tracking-[-0.17px] text-left [white-space:nowrap]"
-        >
-          Верстак
-        </div>
-        <div
-          data-pencil-name="nav"
-          class="box-border w-fit shrink-0 h-[21.69px] flex flex-row gap-[26px] justify-start items-start"
-        >
-          <div
-            data-pencil-name="Собрать программу"
-            class="text-[14px]/[22px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-          >
-            Собрать программу
-          </div>
-          <div
-            data-pencil-name="Сравнение"
-            class="text-[14px]/[22px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-          >
-            Сравнение
-          </div>
-          <div
-            data-pencil-name="Работы"
-            class="text-[14px]/[22px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-          >
-            Работы
-          </div>
-          <div
-            data-pencil-name="Как работаем"
-            class="text-[14px]/[22px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-          >
-            Как работаем
-          </div>
-          <div
-            data-pencil-name="Связаться"
-            class="text-[14px]/[22px] box-border text-[#e8e4d69e] font-[Geologica,system-ui,sans-serif] font-light text-left [white-space:nowrap]"
-          >
-            Связаться
-          </div>
-        </div>
-      </div>
-    </div></div>
-    <script>
-      (function () {
-        var wrap = document.getElementById("scale-wrap");
-        var DESIGN_WIDTH = 958;
-        var DESIGN_HEIGHT = 9368;
-        var MAX_SCALE = 1.5;
-        function fit() {
-          var scale = Math.min(window.innerWidth / DESIGN_WIDTH, MAX_SCALE);
-          var offsetX = (window.innerWidth - DESIGN_WIDTH * scale) / 2;
-          wrap.style.transform = "translateX(" + offsetX + "px) scale(" + scale + ")";
-          document.body.style.height = DESIGN_HEIGHT * scale + "px";
-        }
-        fit();
-        window.addEventListener("resize", fit);
-        window.addEventListener("orientationchange", fit);
-        window.addEventListener("pageshow", fit);
-        window.addEventListener("load", fit);
-        // Safari sometimes reports a stale innerWidth on first paint (tab
-        // restore, window already large before the script runs) — a couple
-        // of delayed re-checks catch that without a visible flash.
-        setTimeout(fit, 50);
-        setTimeout(fit, 300);
-        setTimeout(fit, 1000);
-      })();
-    </script>
-  </body>
+    </div>
+  </div>
+</section>
+
+<!-- 03 COMPARE -->
+<section id="compare" class="wrap py-16 md:py-24">
+  <div class="eyebrow">Сколько это стоит на самом деле</div>
+  <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[600px]">Подписка не заканчивается никогда</h2>
+  <p class="mt-4 max-w-[560px] text-[#e8e4d69e] font-light">Готовые сервисы берут помесячно и за каждого сотрудника — со временем это дороже, чем один платёж.</p>
+
+  <div class="mt-10 overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
+    <table class="w-full min-w-[560px] text-sm border-collapse">
+      <thead>
+        <tr class="text-left text-[#e8e4d680] border-b border-[#e8e4d61f]">
+          <th class="py-3 font-normal">Решение</th>
+          <th class="py-3 font-normal">Первый год</th>
+          <th class="py-3 font-normal">Три года</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-[#e8e4d614]">
+        <tr>
+          <td class="py-4">Okdesk, 5–10 человек</td>
+          <td class="py-4">96 000 ₽</td>
+          <td class="py-4">288 000 ₽</td>
+        </tr>
+        <tr>
+          <td class="py-4">Планадо, бригада из 5</td>
+          <td class="py-4">от 56 000 ₽</td>
+          <td class="py-4">от 168 000 ₽</td>
+        </tr>
+        <tr class="text-[#e8e4d6] font-medium bg-[#e8e4d60a]">
+          <td class="py-4 pl-3">Верстак, ваша сборка</td>
+          <td class="py-4">60 000 ₽</td>
+          <td class="py-4">60 000 ₽</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-4 text-sm text-[#e8e4d69e]">Окупается за 10 месяцев. Дальше вы не платите.</p>
+  <p class="mt-1 text-xs text-[#e8e4d661]">Цены сервисов взяты с их сайтов, сверены перед публикацией.</p>
+</section>
+
+<!-- 04 DATA -->
+<section class="wrap py-16 md:py-24 border-t border-[#e8e4d614]">
+  <div class="eyebrow">Ваши данные</div>
+  <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[600px]">Ваши клиенты — не в общей базе</h2>
+  <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-8 text-sm text-[#e8e4d69e]">
+    <div>Отдельная база под вас, доступ только у ваших сотрудников</div>
+    <div>Выгрузка всего в Excel в любой момент, без ограничений</div>
+    <div>Решите уйти — отдадим базу целиком и поможем перенести</div>
+    <div>Мы не смотрим в ваши данные и не передаём их третьим лицам</div>
+  </div>
+</section>
+
+<!-- 05 WORK -->
+<section id="work" class="wrap py-16 md:py-24 border-t border-[#e8e4d614]">
+  <div class="eyebrow">Работы</div>
+  <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[640px]">Семь программ, ни одна не похожа на другую</h2>
+  <p class="mt-4 max-w-[600px] text-[#e8e4d69e] font-light">Каждый бизнес считает своё: один — заявки, другой — гарантии по объектам, третий — сроки плёнки на машинах.</p>
+
+  <div class="mt-10 flex flex-wrap gap-x-8 gap-y-4 text-sm text-[#e8e4d680]">
+    <span>iT-Center</span><span>Аквацентр</span><span>GBC Detailing</span><span>FellowLink</span><span>23ELEKTRO</span><span>Vinyl Jam</span><span>РНД Электрик</span>
+  </div>
+
+  <div class="mt-10 rounded-2xl border border-[#e8e4d61f] p-6 md:p-10">
+    <div class="text-xs tracking-wide text-[#e8e4d661]">МОНТАЖ СИСТЕМ ВИДЕОНАБЛЮДЕНИЯ · КРАСНОДАР</div>
+    <h3 class="mt-2 text-xl font-medium">Объекты и гарантии — FellowLink</h3>
+    <p class="mt-1 text-sm text-[#e8e4d680]">Объекты по городам и сроки гарантий · макет на демонстрационных данных</p>
+    <p class="mt-4 max-w-[560px] text-[#e8e4d69e] text-sm">Объекты стояли в трёх городах, а гарантии и доступы к регистраторам жили в переписке и в голове. Собрали один экран, где видно каждый объект, его оборудование и до какого числа действует гарантия.</p>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-[#e8e4d69e]">
+      <div class="flex gap-3"><span class="text-[#e8e4d661]">01</span>Объекты сгруппированы по городам — видно, куда ехать одним выездом</div>
+      <div class="flex gap-3"><span class="text-[#e8e4d661]">02</span>Гарантия считается сама, подсвечивает истекающие за 30 дней</div>
+      <div class="flex gap-3"><span class="text-[#e8e4d661]">03</span>Пароли к регистраторам зашифрованы, открываются по нажатию</div>
+      <div class="flex gap-3"><span class="text-[#e8e4d661]">04</span>Фотоотчёт с выезда привязан к объекту, а не к галерее телефона</div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 BOUNDARIES -->
+<section class="wrap py-16 md:py-24 border-t border-[#e8e4d614]">
+  <div class="eyebrow">Границы</div>
+  <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[600px]">Чего мы не берём</h2>
+  <p class="mt-4 max-w-[560px] text-[#e8e4d69e] font-light">Честно говорим, что берём, а что нет. Отказ на входе дешевле сорванного проекта.</p>
+  <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-sm text-[#e8e4d69e]">
+    <div>Интеграцию с 1С</div>
+    <div>Телефонию и запись звонков</div>
+    <div>Онлайн-кассу и приём платежей внутри системы</div>
+    <div>Замену работающего Битрикс24 целиком</div>
+    <div>Гарантии роста выручки</div>
+  </div>
+  <p class="mt-6 text-sm text-[#e8e4d661]">Отказываемся, чтобы не подвести: это отдельная специализация, а не наша.</p>
+</section>
+
+<!-- 07 PROCESS -->
+<section id="process" class="wrap py-16 md:py-24 border-t border-[#e8e4d614]">
+  <div class="eyebrow">Процесс</div>
+  <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[600px]">Как мы работаем</h2>
+  <p class="mt-4 max-w-[560px] text-[#e8e4d69e] font-light">До разработки договоримся о составе, цене и сроках. На каждом этапе видно, что происходит.</p>
+  <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div><div class="text-[#e8e4d661] text-sm">01</div><div class="mt-2 font-medium">Разбираем задачу</div><p class="mt-1 text-sm text-[#e8e4d69e]">Расскажете, как устроен ваш день. 30–40 минут.</p></div>
+    <div><div class="text-[#e8e4d661] text-sm">02</div><div class="mt-2 font-medium">Фиксируем состав и цену</div><p class="mt-1 text-sm text-[#e8e4d69e]">Письменно, до начала работы. Смета потом не меняется.</p></div>
+    <div><div class="text-[#e8e4d661] text-sm">03</div><div class="mt-2 font-medium">Собираем и показываем</div><p class="mt-1 text-sm text-[#e8e4d69e]">2–3 недели. Показываем по ходу, а не в конце.</p></div>
+    <div><div class="text-[#e8e4d661] text-sm">04</div><div class="mt-2 font-medium">Запускаем и учим людей</div><p class="mt-1 text-sm text-[#e8e4d69e]">Переносим текущие данные, показываем сотрудникам.</p></div>
+  </div>
+</section>
+
+<!-- 08 ABOUT -->
+<section class="wrap py-16 md:py-24 border-t border-[#e8e4d614]">
+  <div class="eyebrow">О нас</div>
+  <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight">Нас двое</h2>
+  <p class="mt-4 max-w-[560px] text-[#e8e4d69e] font-light">Делаем программы для небольших сервисных компаний. Начинаем с того, как устроен ваш день, а не с готового шаблона.</p>
+  <div class="mt-8 flex flex-wrap gap-10 text-sm">
+    <div><div class="font-medium">Дмитрий</div><div class="text-[#e8e4d680]">Сооснователь</div></div>
+    <div><div class="font-medium">Александр</div><div class="text-[#e8e4d680]">Сооснователь</div></div>
+  </div>
+</section>
+
+<!-- 09 FAQ -->
+<section id="faq" class="wrap py-16 md:py-24 border-t border-[#e8e4d614]">
+  <div class="eyebrow">Вопросы</div>
+  <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[600px]">Что обычно спрашивают</h2>
+  <div class="mt-10 max-w-[720px] divide-y divide-[#e8e4d61f]">
+    <details class="group py-5">
+      <summary class="flex justify-between items-center font-medium">Где хранятся данные наших клиентов <span class="plus text-[#e8e4d680]">+</span></summary>
+      <p class="mt-3 text-sm text-[#e8e4d69e]">В отдельной базе, доступ только у ваших сотрудников.</p>
+    </details>
+    <details class="group py-5">
+      <summary class="flex justify-between items-center font-medium">Сколько ждать <span class="plus text-[#e8e4d680]">+</span></summary>
+      <p class="mt-3 text-sm text-[#e8e4d69e]">2–3 недели на сборку. Показываем работу по ходу, не только в конце.</p>
+    </details>
+    <details class="group py-5">
+      <summary class="flex justify-between items-center font-medium">А если сотрудники не разберутся <span class="plus text-[#e8e4d680]">+</span></summary>
+      <p class="mt-3 text-sm text-[#e8e4d69e]">Экран исполнителя — это одна кнопка и понятный список задач.</p>
+    </details>
+    <details class="group py-5">
+      <summary class="flex justify-between items-center font-medium">Нужно платить каждый месяц <span class="plus text-[#e8e4d680]">+</span></summary>
+      <p class="mt-3 text-sm text-[#e8e4d69e]">Нет. Поддержка стоит 4 000 ₽ в месяц и берётся по желанию.</p>
+    </details>
+    <details class="group py-5">
+      <summary class="flex justify-between items-center font-medium">Что, если потом понадобится доработка <span class="plus text-[#e8e4d680]">+</span></summary>
+      <p class="mt-3 text-sm text-[#e8e4d69e]">Посчитаем отдельно и заранее. Программа работает без неё в любом случае.</p>
+    </details>
+    <details class="group py-5">
+      <summary class="flex justify-between items-center font-medium">Вы далеко, а мы в другом городе <span class="plus text-[#e8e4d680]">+</span></summary>
+      <p class="mt-3 text-sm text-[#e8e4d69e]">Работаем удалённо. Запуск и обучение проходят онлайн.</p>
+    </details>
+  </div>
+</section>
+
+<!-- 10 FINAL CTA -->
+<section class="wrap pb-16 md:pb-24">
+  <div class="rounded-3xl bg-[#111110] px-6 py-14 md:p-16 text-center flex flex-col items-center">
+    <h2 class="text-2xl md:text-4xl font-medium tracking-tight max-w-[520px]">Соберите смету и напишите нам</h2>
+    <p class="mt-4 max-w-[440px] text-[#e8e4d69e] text-sm">Ответим в течение дня. Если задача окажется не наша — скажем прямо.</p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="#constructor" class="btn btn-primary">Собрать программу
+        <span class="w-[30px] h-[30px] rounded-full bg-[#111110] text-[#e8e4d6] flex items-center justify-center text-sm">→</span>
+      </a>
+      <a href="https://t.me/" class="btn btn-ghost">Написать в Telegram</a>
+      <a href="https://wa.me/" class="btn btn-ghost">Написать в WhatsApp</a>
+    </div>
+    <p class="mt-3 text-sm text-[#e8e4d680]">Отвечаю лично, без менеджеров и ботов — Александр</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="border-t border-[#e8e4d614] py-10">
+  <div class="wrap flex flex-col sm:flex-row justify-between gap-4 text-sm text-[#e8e4d680]">
+    <div>Верстак — программы учёта заявок и выездов</div>
+    <div>Дмитрий и Александр</div>
+  </div>
+</footer>
+
+<script>
+  // ШАГ 3 addon cards — rendered from data so price math stays in one place.
+  var ADDONS = [
+    {title:"Мобильный экран исполнителя", sub:"Монтажник видит задачу в телефоне и не забудет про фото", price:9000, items:["Список задач на день у каждого исполнителя","Кнопка «выехал» и «завершил» с отметкой времени","Работает в браузере телефона, ставить ничего не нужно"]},
+    {title:"Фотоотчёт до и после", sub:"Спор с клиентом закрывается фотографией, а не словами", price:6000, items:["Фото прикрепляются к заявке, а не теряются","Обязательные снимки: без них заявку нельзя закрыть","Дата и время съёмки сохраняются"]},
+    {title:"Роли и права доступа", sub:"Монтажник не видит деньги, диспетчер не видит лишнего", price:7500, items:["Три роли: владелец, диспетчер, исполнитель","Каждый видит только своё","Отдельные входы для сотрудников"]},
+    {title:"Уведомления в Telegram", sub:"Новая заявка падает в телефон сразу", price:6000, items:["Сообщение при новой заявке и при её закрытии","Отдельные уведомления исполнителю о его задачах","Ставить приложение не нужно, работает в Telegram"]},
+    {title:"Напоминания и сроки", sub:"Программа сама напомнит о выезде и просрочке", price:7500, items:["Плановая дата у заявки и подсветка просрочки","Повторные визиты по графику: раз в месяц и чаще","Напоминание за день до выезда"]},
+    {title:"Карточка объекта или машины", sub:"Вся история по объекту: кто был, что делал", price:9000, items:["Свой справочник: объекты, адреса, машины","История всех визитов по объекту","Поля под вашу нишу, а не универсальные"]}
+  ];
+  var BASE_PRICE = 45000;
+  var addonsRoot = document.getElementById("addons");
+  ADDONS.forEach(function(a, i){
+    var wrap = document.createElement("label");
+    wrap.className = "flex gap-3 items-start p-4 rounded-2xl border border-[#19181724] cursor-pointer hover:border-[#19181766] transition-colors";
+    wrap.innerHTML =
+      '<input type="checkbox" data-price="'+a.price+'" data-title="'+a.title+'" class="mt-1 shrink-0 addon-check" />' +
+      '<span class="flex-1 min-w-0">' +
+        '<span class="flex justify-between gap-3"><span class="font-medium">'+a.title+'</span><span class="font-medium shrink-0">+'+a.price.toLocaleString("ru-RU")+' ₽</span></span>' +
+        '<span class="block text-sm text-[#19181799] mt-0.5">'+a.sub+'</span>' +
+        '<details class="mt-2" onclick="event.stopPropagation()"><summary class="text-sm inline-flex items-center gap-1 text-[#19181799]">что входит <span class="plus">+</span></summary>' +
+          '<ul class="mt-2 space-y-1 text-sm text-[#19181799] list-none pl-0">' + a.items.map(function(t){return "<li>"+t+"</li>";}).join("") + '</ul>' +
+        '</details>' +
+      '</span>';
+    addonsRoot.appendChild(wrap);
+  });
+
+  function updateSmeta(){
+    var checks = Array.prototype.filter.call(document.querySelectorAll(".addon-check"), function(c){return c.checked;});
+    var total = BASE_PRICE + checks.reduce(function(s,c){return s + Number(c.dataset.price);}, 0);
+    var lines = document.getElementById("smeta-lines");
+    lines.innerHTML = '<li class="flex justify-between"><span>Основа: учёт заявок</span><span>'+BASE_PRICE.toLocaleString("ru-RU")+' ₽</span></li>' +
+      checks.map(function(c){return '<li class="flex justify-between"><span>'+c.dataset.title+'</span><span>+'+Number(c.dataset.price).toLocaleString("ru-RU")+' ₽</span></li>';}).join("");
+    document.getElementById("smeta-empty").style.display = checks.length ? "none" : "block";
+    document.getElementById("smeta-total").textContent = total.toLocaleString("ru-RU") + " ₽";
+  }
+  document.addEventListener("change", function(e){ if(e.target.classList.contains("addon-check")) updateSmeta(); });
+</script>
+
+</body>
 </html>
