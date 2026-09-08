@@ -2261,6 +2261,15 @@
         }
         fit();
         window.addEventListener("resize", fit);
+        window.addEventListener("orientationchange", fit);
+        window.addEventListener("pageshow", fit);
+        window.addEventListener("load", fit);
+        // Safari sometimes reports a stale innerWidth on first paint (tab
+        // restore, window already large before the script runs) — a couple
+        // of delayed re-checks catch that without a visible flash.
+        setTimeout(fit, 50);
+        setTimeout(fit, 300);
+        setTimeout(fit, 1000);
       })();
     </script>
   </body>
