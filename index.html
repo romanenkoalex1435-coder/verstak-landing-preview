@@ -18,13 +18,21 @@
         box-sizing: border-box;
       }
 
-      body {
+      html, body {
         margin: 0;
+        overflow-x: hidden;
+        background-color: #080807;
+      }
+
+      #scale-wrap {
+        width: 958px;
+        transform-origin: top center;
+        margin: 0 auto;
       }
     </style>
   </head>
   <body style="background-color: #080807">
-    <div
+    <div id="scale-wrap"><div
       data-pencil-name="01 · Главная — ВАРИАНТ САНИ (цены -25%, короче список)"
       class="box-border w-[958px] h-[9368px] flex flex-col gap-0 justify-start items-start bg-[#080807] overflow-hidden relative"
     >
@@ -2223,6 +2231,20 @@
           </div>
         </div>
       </div>
-    </div>
+    </div></div>
+    <script>
+      (function () {
+        var wrap = document.getElementById("scale-wrap");
+        var DESIGN_WIDTH = 958;
+        var DESIGN_HEIGHT = 9368;
+        function fit() {
+          var scale = Math.min(1, window.innerWidth / DESIGN_WIDTH);
+          wrap.style.transform = "scale(" + scale + ")";
+          document.body.style.height = DESIGN_HEIGHT * scale + "px";
+        }
+        fit();
+        window.addEventListener("resize", fit);
+      })();
+    </script>
   </body>
 </html>
