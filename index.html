@@ -700,6 +700,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
   .nav-scroll{display:none}
   .header-row{gap:12px;justify-content:space-between}
   .brand{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hero-route::after{transition-delay:70ms}
   .is-motion-ready [data-motion-scene] [data-motion-decor]{transition-delay:calc(min(var(--motion-index,0),1) * 70ms);transform:translateY(10px)}
   .is-motion-ready [data-motion-scene].is-in-view [data-motion-decor]{transition-delay:calc(min(var(--motion-index,0),1) * 70ms)}
   .is-motion-ready [data-motion-scene].is-in-view [data-motion-decor]{transform:none}
@@ -821,7 +822,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
   <!-- ============== CONSTRUCTOR ============== -->
   <section id="builder" data-sx="constructor" data-motion-scene="constructor">
     <div class="container">
-      <div class="section-head" data-motion-decor style="--motion-index:0">
+      <div class="section-head">
         <p class="eyebrow">Конструктор</p>
         <h2>Соберите свою программу из блоков</h2>
         <p>Отмечайте нужные блоки — состав и цена пересчитываются сразу</p>
@@ -948,7 +949,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
   <section id="works" class="sect tone-scene tone-works" data-sx="gallery" data-motion-scene="works">
     <div class="container">
       <div class="panel-band">
-        <div class="section-head on-panel" data-motion-decor style="--motion-index:0">
+        <div class="section-head on-panel">
           <p class="eyebrow on-panel">Демо-интерфейсы</p>
           <h2>Семь демо-интерфейсов, ни один не похож на другой</h2>
           <p>Каждый бизнес считает своё: один — заявки, другой — гарантии по объектам, третий — сроки плёнки на машинах. Интерфейс собираем под то, что считает ваш бизнес</p>

@@ -18,13 +18,13 @@ function section(id) {
 
 var builder = section('builder');
 assert(/<section id="builder"[^>]*data-sx="constructor"[^>]*data-motion-scene="constructor"/.test(builder), 'builder must be a constructor motion scene');
-assert(/<div class="section-head" data-motion-decor style="--motion-index:0">/.test(builder), 'builder heading must be decorative layer 0');
+assert(/<div class="section-head">/.test(builder), 'builder heading must stay visible before scene entry');
 assert(/<div class="brick-grid">/.test(builder), 'builder grid must remain visible and interactive');
 assert(/<aside class="summary-panel">/.test(builder), 'builder summary must remain visible and interactive');
 
 var works = section('works');
 assert(/<section id="works" class="sect tone-scene tone-works" data-sx="gallery" data-motion-scene="works">/.test(works), 'works must be a toned gallery motion scene');
-assert(/<div class="section-head on-panel" data-motion-decor style="--motion-index:0">/.test(works), 'works heading must be decorative layer 0');
+assert(/<div class="section-head on-panel">/.test(works), 'works heading must stay visible before scene entry');
 assert(/<div class="tabs-col">/.test(works), 'works tabs must remain visible and interactive');
 assert(/<div class="stage-switch-surface" data-sx="stage">/.test(works), 'works media must use an independent switch surface');
 assert(/<div class="stage-copy">/.test(works), 'works copy and navigation must remain visible');

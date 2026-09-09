@@ -21,7 +21,11 @@ var works = section('works');
 
 assert(html.indexOf('data-motion-layer') === -1, 'the retired motion-layer contract must not wrap interactive content');
 assert(!/class="brick-grid"[^>]*data-motion-decor/.test(builder), 'motion decor must not wrap builder bricks');
+assert(/<div class="section-head">/.test(builder), 'unique builder heading must stay fully visible before scene entry');
+assert(!/class="section-head"[^>]*data-motion-decor/.test(builder), 'builder heading must not use the hidden decorative entrance target');
 assert(!/class="tabs-col"[^>]*data-motion-decor/.test(works), 'motion decor must not wrap gallery tabs');
+assert(/<div class="section-head on-panel">/.test(works), 'unique gallery heading must stay fully visible before scene entry');
+assert(!/class="section-head on-panel"[^>]*data-motion-decor/.test(works), 'gallery heading must not use the hidden decorative entrance target');
 assert(!/class="stage-copy"[^>]*data-motion-decor/.test(works), 'motion decor must not wrap gallery navigation');
 assert(!/class="gallery-foot"[^>]*data-motion-decor/.test(works), 'motion decor must not wrap gallery CTA');
 
@@ -40,5 +44,6 @@ assert(core.indexOf('onMotionChange(sync);') !== -1, 'prototype motion subscript
 assert(html.indexOf('.is-motion-ready [data-motion-decor]{opacity:0;transform:translateY(18px)}') !== -1, 'desktop entrance must use decorative layers');
 assert(html.indexOf('.is-motion-ready [data-motion-scene] [data-motion-decor]{transition-delay:calc(min(var(--motion-index,0),1) * 70ms);transform:translateY(10px)}') !== -1, 'mobile entrance must use 10px distance and at most 70ms delays for every scene');
 assert(html.indexOf('.is-motion-ready .hero.is-in-view .hero-route::after{height:128px}') !== -1, 'hero progress line must stop at the active third point');
+assert(html.indexOf('.hero-route::after{transition-delay:70ms}') !== -1, 'mobile hero progress line delay must be capped at 70ms');
 
 console.log('PASS motion accessibility and gallery transition regression contract');
