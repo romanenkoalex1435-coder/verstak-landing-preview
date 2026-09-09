@@ -18,7 +18,10 @@
   .btn-primary:hover{background:#ffffff;transform:translateY(-1px)}
   .btn-ghost{border:1px solid #e8e4d62e;color:#e8e4d6}
   .btn-ghost:hover{background:#ffffff0d;transform:translateY(-1px)}
-  .eyebrow{font-size:12px;letter-spacing:.06em;font-weight:300;color:#e8e4d661;text-transform:uppercase}
+  .eyebrow{font-size:12px;letter-spacing:.08em;font-weight:500;color:#e8e4d68a;text-transform:uppercase}
+  .navlink{color:#e8e4d6b3;transition:color .15s ease}
+  .navlink:hover{color:#e8e4d6}
+  .navlink.active{color:#e8e4d6}
   summary{cursor:pointer}
   summary::-webkit-details-marker{display:none}
   summary::marker{content:""}
@@ -80,12 +83,15 @@
 <header class="sticky top-0 z-40 backdrop-blur bg-[#080807]/90 border-b border-[#e8e4d614]">
   <div class="wrap flex items-center justify-between h-20">
     <div class="font-medium tracking-tight">Верстак</div>
-    <nav class="hidden md:flex items-center gap-8 text-sm text-[#e8e4d6b3]">
-      <a href="constructor.html" class="hover:text-[#e8e4d6] transition-colors">Собрать программу</a>
-      <a href="#compare" class="hover:text-[#e8e4d6] transition-colors">Сравнение</a>
-      <a href="#work" class="hover:text-[#e8e4d6] transition-colors">Работы</a>
-      <a href="#process" class="hover:text-[#e8e4d6] transition-colors">Как работаем</a>
-      <a href="#faq" class="hover:text-[#e8e4d6] transition-colors">Связаться</a>
+    <nav class="hidden lg:flex items-center gap-5 text-sm">
+      <a href="constructor.html" class="navlink">Собрать программу</a>
+      <a href="#compare" class="navlink" data-nav="compare">Сравнение</a>
+      <a href="#data" class="navlink" data-nav="data">Данные</a>
+      <a href="#work" class="navlink" data-nav="work">Работы</a>
+      <a href="#boundaries" class="navlink" data-nav="boundaries">Границы</a>
+      <a href="#process" class="navlink" data-nav="process">Процесс</a>
+      <a href="#about" class="navlink" data-nav="about">О нас</a>
+      <a href="#faq" class="navlink" data-nav="faq">Вопросы</a>
     </nav>
     <a href="constructor.html" class="btn btn-primary !py-2.5 !px-5 !text-sm">Собрать программу</a>
   </div>
@@ -167,7 +173,7 @@
 </section>
 
 <!-- 03 COMPARE -->
-<section id="compare" class="wrap py-16 md:py-24">
+<section id="compare" class="wrap py-16 md:py-24 bg-[#0c0c0b] border-t border-[#e8e4d62e]">
   <div class="eyebrow">Сколько это стоит на самом деле</div>
   <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[600px]">Подписка не заканчивается никогда</h2>
   <p class="mt-4 max-w-[560px] text-[#e8e4d69e] font-light">Готовые сервисы берут помесячно и за каждого сотрудника — со временем это дороже, чем один платёж.</p>
@@ -205,7 +211,7 @@
 </section>
 
 <!-- 04 DATA -->
-<section class="wrap py-16 md:py-24 border-t border-[#e8e4d614]">
+<section id="data" class="wrap py-16 md:py-24 border-t border-[#e8e4d62e]">
   <div class="eyebrow">Ваши данные</div>
   <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[600px]">Ваши клиенты — не в общей базе</h2>
   <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-8 text-sm text-[#e8e4d69e]">
@@ -217,7 +223,7 @@
 </section>
 
 <!-- 05 WORK -->
-<section id="work" class="wrap py-16 md:py-24 border-t border-[#e8e4d614]">
+<section id="work" class="wrap py-16 md:py-24 bg-[#0c0c0b] border-t border-[#e8e4d62e]">
   <div class="eyebrow">Работы</div>
   <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[640px]">Семь программ, ни одна не похожа на другую</h2>
   <p class="mt-4 max-w-[600px] text-[#e8e4d69e] font-light">Каждый бизнес считает своё: один — заявки, другой — гарантии по объектам, третий — сроки плёнки на машинах.</p>
@@ -241,7 +247,7 @@
 </section>
 
 <!-- 06 BOUNDARIES -->
-<section class="wrap py-16 md:py-24 border-t border-[#e8e4d614]">
+<section id="boundaries" class="wrap py-16 md:py-24 border-t border-[#e8e4d62e]">
   <div class="eyebrow">Границы</div>
   <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[600px]">Чего мы не берём</h2>
   <p class="mt-4 max-w-[560px] text-[#e8e4d69e] font-light">Честно говорим, что берём, а что нет. Отказ на входе дешевле сорванного проекта.</p>
@@ -256,7 +262,7 @@
 </section>
 
 <!-- 07 PROCESS -->
-<section id="process" class="wrap py-16 md:py-24 border-t border-[#e8e4d614]">
+<section id="process" class="wrap py-16 md:py-24 bg-[#0c0c0b] border-t border-[#e8e4d62e]">
   <div class="eyebrow">Процесс</div>
   <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[600px]">Как мы работаем</h2>
   <p class="mt-4 max-w-[560px] text-[#e8e4d69e] font-light">До разработки договоримся о составе, цене и сроках. На каждом этапе видно, что происходит.</p>
@@ -269,7 +275,7 @@
 </section>
 
 <!-- 08 ABOUT -->
-<section class="wrap py-16 md:py-24 border-t border-[#e8e4d614]">
+<section id="about" class="wrap py-16 md:py-24 border-t border-[#e8e4d62e]">
   <div class="eyebrow">О нас</div>
   <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight">Нас двое</h2>
   <p class="mt-4 max-w-[560px] text-[#e8e4d69e] font-light">Делаем программы для небольших сервисных компаний. Начинаем с того, как устроен ваш день, а не с готового шаблона.</p>
@@ -280,7 +286,7 @@
 </section>
 
 <!-- 09 FAQ -->
-<section id="faq" class="wrap py-16 md:py-24 border-t border-[#e8e4d614]">
+<section id="faq" class="wrap py-16 md:py-24 bg-[#0c0c0b] border-t border-[#e8e4d62e]">
   <div class="eyebrow">Вопросы</div>
   <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[600px]">Что обычно спрашивают</h2>
   <div class="mt-10 max-w-[720px] divide-y divide-[#e8e4d61f]">
@@ -346,6 +352,28 @@
       hero.classList.add("reveal");
       overlay.style.display = "none";
     }, 2900);
+  })();
+
+  // Scroll-spy: highlight the nav link for whichever section is in view.
+  (function () {
+    var links = document.querySelectorAll(".navlink[data-nav]");
+    if (!links.length) return;
+    var byId = {};
+    links.forEach(function (a) { byId[a.dataset.nav] = a; });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var link = byId[e.target.id];
+        if (!link) return;
+        if (e.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("active"); });
+          link.classList.add("active");
+        }
+      });
+    }, { rootMargin: "-15% 0px -75% 0px" });
+    Object.keys(byId).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
   })();
 </script>
 
