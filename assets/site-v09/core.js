@@ -407,7 +407,7 @@
       if (immediate || reduced() || !stage) { render(); return; }
       stage.classList.add('is-changing');
       stage.setAttribute('aria-busy', 'true');
-      timer = setTimeout(render, 250);
+      timer = setTimeout(render, 180);
     }
 
     tabs.forEach(function (t, k) {

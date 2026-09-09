@@ -274,6 +274,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 @media (prefers-reduced-motion:reduce){.is-motion-ready [data-motion-layer]{opacity:1;transform:none;transition:none}.hero-route::after{height:calc(66.666% - 24px);transition:none}}
 .tone-scene{transition:background-color 900ms var(--motion-ease)}
 .tone-cool{background:#d8dce0}
+.tone-works{background:#d4d9de}
 .story-route{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:24px}
 .story-route-step{position:relative;padding:12px 10px;border-top:1px solid var(--hairline-strong);font-size:13px;color:var(--ink-secondary-on-bg)}
 .story-route-step::before{content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;border-radius:50%;background:var(--hairline-strong)}
@@ -576,10 +577,10 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 .stage-media{
   border-radius:var(--radius-nested);overflow:hidden;background:var(--panel-nested);
   border:1px solid var(--hairline);margin-bottom:18px;
-  transition:opacity .25s var(--ease);
+  transition:opacity 180ms var(--ease),transform 180ms var(--ease);
   aspect-ratio:16/10;
 }
-.stage-media.is-changing{opacity:.4}
+.stage-media.is-changing{opacity:.25;transform:translateY(8px)}
 @media (prefers-reduced-motion:reduce){.stage-media{transition:none}}
 .stage-media img{width:100%;height:100%;object-fit:cover;display:block}
 .stage-caption{font-size:14px;font-weight:600;color:var(--ink);margin:0 0 4px}
@@ -693,6 +694,11 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
   .nav-scroll{display:none}
   .header-row{gap:12px;justify-content:space-between}
   .brand{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .is-motion-ready [data-motion-scene="constructor"] [data-motion-layer],
+  .is-motion-ready [data-motion-scene="works"] [data-motion-layer]{transition-delay:calc(min(var(--motion-index,0),1) * 70ms);transform:translateY(10px)}
+  .is-motion-ready [data-motion-scene="constructor"].is-in-view [data-motion-layer],
+  .is-motion-ready [data-motion-scene="works"].is-in-view [data-motion-layer]{transition-delay:calc(min(var(--motion-index,0),1) * 70ms)}
+  .is-motion-ready [data-motion-scene].is-in-view [data-motion-layer]{transform:none}
 }
 </style>
 </head>
@@ -809,9 +815,9 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
   </section>
 
   <!-- ============== CONSTRUCTOR ============== -->
-  <section id="builder" data-sx="constructor">
+  <section id="builder" data-sx="constructor" data-motion-scene="constructor">
     <div class="container">
-      <div class="section-head">
+      <div class="section-head" data-motion-layer style="--motion-index:0">
         <p class="eyebrow">Конструктор</p>
         <h2>Соберите свою программу из блоков</h2>
         <p>Отмечайте нужные блоки — состав и цена пересчитываются сразу</p>
@@ -834,7 +840,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
             <button class="reset-btn" type="button" data-sx="base-only">Начать с базы</button>
           </div>
 
-          <div class="brick-grid">
+          <div class="brick-grid" data-motion-layer style="--motion-index:1">
             <button type="button" class="brick" data-sx-brick="card">
               <div class="brick-top"><span class="brick-name">Карточка объекта</span><span class="brick-check" aria-hidden="true"></span></div>
               <p class="brick-desc">Адрес, оборудование, история работ</p>
@@ -883,7 +889,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
           </div>
         </div>
 
-        <aside class="summary-panel">
+        <aside class="summary-panel" data-motion-layer style="--motion-index:2">
           <h3>Ваша сборка</h3>
           <div data-sx="stack">
             <p class="stack-ghost" data-sx="stack-ghost">следующий блок встанет сюда</p>
@@ -990,10 +996,10 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
   </section>
 
   <!-- ============== GALLERY ============== -->
-  <section id="works" class="sect" data-sx="gallery">
+  <section id="works" class="sect tone-scene tone-works" data-sx="gallery" data-motion-scene="works">
     <div class="container">
       <div class="panel-band">
-        <div class="section-head on-panel">
+        <div class="section-head on-panel" data-motion-layer style="--motion-index:0">
           <p class="eyebrow on-panel">Демо-интерфейсы</p>
           <h2>Семь демо-интерфейсов, ни один не похож на другой</h2>
           <p>Каждый бизнес считает своё: один — заявки, другой — гарантии по объектам, третий — сроки плёнки на машинах. Интерфейс собираем под то, что считает ваш бизнес</p>
@@ -1001,7 +1007,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
         </div>
 
         <div class="gallery-shell">
-          <div class="tabs-col">
+          <div class="tabs-col" data-motion-layer style="--motion-index:1">
             <div class="tabs-list" data-sx="tabs">
               <button type="button" class="tab-btn" data-sx-tab>iT-Center</button>
               <button type="button" class="tab-btn" data-sx-tab>Аквацентр</button>
@@ -1014,23 +1020,25 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
           </div>
 
           <div class="stage-col">
-            <div class="stage-media" data-sx="stage">
+            <div class="stage-media" data-sx="stage" data-motion-layer style="--motion-index:2">
               <img data-sx="shot" src="" alt="" width="800" height="500">
             </div>
-            <p class="stage-caption" data-sx="caption"></p>
-            <p class="stage-static-caption">макет на демонстрационных данных</p>
-            <p class="stage-niche" data-sx="niche"></p>
-            <h3 class="stage-title" data-sx="case-title"></h3>
-            <p class="stage-lead" data-sx="case-lead"></p>
-            <div class="stage-features" data-sx="features"></div>
-            <div class="stage-foot">
-              <span class="stage-count" data-sx="count"></span>
-              <div class="stage-nav">
-                <button type="button" data-sx="prev" aria-label="Предыдущий кейс">‹</button>
-                <button type="button" data-sx="next" aria-label="Следующий кейс">›</button>
+            <div class="stage-copy" data-motion-layer style="--motion-index:3">
+              <p class="stage-caption" data-sx="caption"></p>
+              <p class="stage-static-caption">макет на демонстрационных данных</p>
+              <p class="stage-niche" data-sx="niche"></p>
+              <h3 class="stage-title" data-sx="case-title"></h3>
+              <p class="stage-lead" data-sx="case-lead"></p>
+              <div class="stage-features" data-sx="features"></div>
+              <div class="stage-foot">
+                <span class="stage-count" data-sx="count"></span>
+                <div class="stage-nav">
+                  <button type="button" data-sx="prev" aria-label="Предыдущий кейс">‹</button>
+                  <button type="button" data-sx="next" aria-label="Следующий кейс">›</button>
+                </div>
               </div>
+              <div class="progress-track"><div class="progress-fill" data-sx="progress"></div></div>
             </div>
-            <div class="progress-track"><div class="progress-fill" data-sx="progress"></div></div>
           </div>
         </div>
 
