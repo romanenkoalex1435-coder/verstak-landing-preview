@@ -30,7 +30,7 @@
      real hero content underneath is revealed. Plays on every load. ---- */
   #hero{position:relative}
   .real-hero{opacity:0;transition:opacity .5s ease}
-  .intro-overlay{position:absolute;inset:0;overflow:hidden;background:#080807}
+  .intro-overlay{position:fixed;inset:0;z-index:50;overflow:hidden;background:#080807}
 
   .hi{position:absolute;stroke:#e8e4d6;stroke-width:1.4;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0;
     animation:hiScatter .5s ease forwards, hiConverge 1.05s cubic-bezier(.5,0,.75,0) forwards;}
