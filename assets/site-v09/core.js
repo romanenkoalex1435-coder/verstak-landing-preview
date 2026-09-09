@@ -509,6 +509,13 @@
         root.dataset.running = 'false';
         return;
       }
+      if (!('IntersectionObserver' in window)) {
+        content(steps.length - 1);
+        if (row) { row.classList.add('is-visible'); row.classList.remove('is-pulse'); row.setAttribute('aria-hidden', 'false'); }
+        if (detail) detail.classList.remove('is-changing');
+        root.dataset.running = 'false';
+        return;
+      }
       if (visible) { root.dataset.running = 'true'; raf = requestAnimationFrame(tick); }
       else { root.dataset.running = 'false'; }
     }
