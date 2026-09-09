@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Собрать программу — Верстак</title>
+<script>tailwind = { config: { corePlugins: { preflight: false } } };</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&display=swap" rel="stylesheet" />
+<style>
+  *,::before,::after{box-sizing:border-box}
+  html,body{margin:0;background:#e8e4d6;color:#191817;font-family:Geologica,system-ui,sans-serif;overflow-x:hidden}
+  .wrap{width:100%;padding-left:clamp(24px,4vw,72px);padding-right:clamp(24px,4vw,72px)}
+  .btn{border-radius:999px;padding:14px 26px;font-weight:500;font-size:15px;display:inline-flex;align-items:center;gap:12px;transition:background-color .15s ease,color .15s ease,transform .15s ease;cursor:pointer;white-space:nowrap}
+  .btn-primary{background:#191817;color:#f2efe6}
+  .btn-primary:hover{background:#2b2926;transform:translateY(-1px)}
+  .btn-ghost{border:1px solid #19181724;color:#191817}
+  .btn-ghost:hover{background:#1918170d;transform:translateY(-1px)}
+  .eyebrow{font-size:12px;letter-spacing:.06em;font-weight:300;color:#19181773;text-transform:uppercase}
+  summary{cursor:pointer}
+  summary::-webkit-details-marker{display:none}
+  summary::marker{content:""}
+  .plus{transition:transform .15s ease}
+  details[open] .plus{transform:rotate(45deg)}
+  a{color:inherit;text-decoration:none}
+</style>
+</head>
+<body>
+
+<header class="sticky top-0 z-40 backdrop-blur bg-[#e8e4d6]/90 border-b border-[#19181714]">
+  <div class="wrap flex items-center justify-between h-20">
+    <a href="index.html" class="font-medium tracking-tight">Верстак</a>
+    <nav class="hidden md:flex items-center gap-8 text-sm text-[#191817b3]">
+      <span class="text-[#191817]">Собрать программу</span>
+      <a href="index.html#compare" class="hover:text-[#191817] transition-colors">Сравнение</a>
+      <a href="index.html#work" class="hover:text-[#191817] transition-colors">Работы</a>
+      <a href="index.html#process" class="hover:text-[#191817] transition-colors">Как работаем</a>
+      <a href="index.html#faq" class="hover:text-[#191817] transition-colors">Связаться</a>
+    </nav>
+    <a href="index.html" class="btn btn-ghost !py-2.5 !px-5 !text-sm">← На главную</a>
+  </div>
+</header>
+
+<main>
+<section class="py-16 md:py-24">
+  <div class="wrap">
+    <div class="eyebrow">КОНСТРУКТОР</div>
+    <h1 class="mt-3 text-[32px] md:text-[44px] font-medium tracking-tight max-w-[640px] leading-[1.08]">Соберите свою программу</h1>
+    <p class="mt-4 max-w-[520px] text-[#19181799] font-light">Отмечайте, что нужно. Смета собирается справа и считается сразу.</p>
+
+    <div class="mt-6 flex flex-wrap gap-2 text-sm">
+      <span class="px-4 py-2 rounded-full border border-[#19181724]">Цена сразу</span>
+      <span class="px-4 py-2 rounded-full border border-[#19181724]">Без регистрации</span>
+      <span class="px-4 py-2 rounded-full border border-[#19181724]">Ничего не навязываем</span>
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 items-start">
+      <div class="min-w-0">
+
+        <div class="text-xs tracking-wide text-[#19181773] font-medium">ШАГ 1 — НА ЧТО ЭТО ПОХОЖЕ У ВАС</div>
+        <div class="mt-4 space-y-3" id="step1">
+          <label class="flex gap-3 items-start p-4 rounded-2xl border border-[#19181724] cursor-pointer hover:border-[#19181766] transition-colors">
+            <input type="radio" name="step1" class="mt-1 shrink-0" />
+            <span>
+              <span class="block font-medium">Принимаем заявки и ведём клиентов</span>
+              <span class="block text-sm text-[#19181799] mt-0.5">Обращения в одном месте, ничего не теряется</span>
+              <span class="block text-xs text-[#191817bf] mt-1">Мастерская, сервисный центр, ремонт техники</span>
+            </span>
+          </label>
+          <label class="flex gap-3 items-start p-4 rounded-2xl border border-[#19181724] cursor-pointer hover:border-[#19181766] transition-colors">
+            <input type="radio" name="step1" class="mt-1 shrink-0" />
+            <span>
+              <span class="block font-medium">Ездим к клиенту бригадами</span>
+              <span class="block text-sm text-[#19181799] mt-0.5">Плюс мобильный экран монтажника и фотоотчёты</span>
+              <span class="block text-xs text-[#191817bf] mt-1">Монтаж, клининг, обслуживание оборудования</span>
+            </span>
+          </label>
+          <label class="flex gap-3 items-start p-4 rounded-2xl border border-[#19181724] cursor-pointer hover:border-[#19181766] transition-colors">
+            <input type="radio" name="step1" class="mt-1 shrink-0" />
+            <span>
+              <span class="block font-medium">Обслуживаем объекты по графику</span>
+              <span class="block text-sm text-[#19181799] mt-0.5">Программа сама напоминает, к кому пора ехать</span>
+              <span class="block text-xs text-[#191817bf] mt-1">Бассейны, вентиляция, кондиционеры, лифты</span>
+            </span>
+          </label>
+          <label class="flex gap-3 items-start p-4 rounded-2xl border border-[#19181724] cursor-pointer hover:border-[#19181766] transition-colors">
+            <input type="radio" name="step1" class="mt-1 shrink-0" />
+            <span>
+              <span class="block font-medium">Не знаю, нужно разобраться</span>
+              <span class="block text-sm text-[#19181799] mt-0.5">Опишем задачу вместе и подберём состав</span>
+            </span>
+          </label>
+        </div>
+        <p class="mt-3 text-xs text-[#19181773]">Выберите ближайшее — состав уточним при разборе задачи</p>
+
+        <div class="mt-10 text-xs tracking-wide text-[#19181773] font-medium">ШАГ 2 — ОСНОВА, ВХОДИТ ВСЕГДА</div>
+        <div class="mt-4 p-5 rounded-2xl border border-[#19181724]">
+          <div class="flex items-center justify-between gap-4">
+            <div class="font-medium">Учёт заявок и клиентов</div>
+            <div class="font-medium shrink-0">45 000 ₽</div>
+          </div>
+          <p class="text-sm text-[#19181799] mt-1">Статусы заявок · рабочий экран диспетчера</p>
+          <details class="mt-3 group">
+            <summary class="text-sm inline-flex items-center gap-1 text-[#19181799]">что входит <span class="plus">+</span></summary>
+            <ul class="mt-2 space-y-1 text-sm text-[#19181799] list-none pl-0">
+              <li>Список и карточка заявки: клиент, адрес, статус</li>
+              <li>Статусы под ваш процесс, а не типовые</li>
+              <li>Справочник клиентов с историей обращений</li>
+              <li>Поиск и фильтры по любому полю</li>
+              <li>Выгрузка в Excel одной кнопкой</li>
+            </ul>
+          </details>
+        </div>
+
+        <div class="mt-10 text-xs tracking-wide text-[#19181773] font-medium">ШАГ 3 — ЧТО ДОБАВИТЬ</div>
+        <div class="mt-4 space-y-3" id="addons"></div>
+      </div>
+
+      <aside class="lg:sticky lg:top-28 bg-white/50 rounded-2xl border border-[#19181724] p-6">
+        <div class="eyebrow">ВАША СМЕТА</div>
+        <ul class="mt-4 space-y-2 text-sm" id="smeta-lines">
+          <li class="flex justify-between"><span>Основа: учёт заявок</span><span>45 000 ₽</span></li>
+        </ul>
+        <p class="text-xs text-[#19181780] mt-2" id="smeta-empty">Добавьте, что нужно — появится в смете</p>
+        <div class="mt-4 pt-4 border-t border-[#19181724] flex justify-between items-center">
+          <span class="text-sm text-[#19181799]">Итого</span>
+          <span class="text-2xl font-semibold" id="smeta-total">45 000 ₽</span>
+        </div>
+        <div class="mt-4 space-y-1 text-sm text-[#19181799]">
+          <div>Срок сборки — 2 недели</div>
+          <div>Оплата — 50% в начале, 50% при запуске</div>
+          <div>Поддержка — 4 000 ₽/мес, по желанию</div>
+        </div>
+        <p class="mt-4 text-xs text-[#19181780]">Предварительная оценка, не счёт. Точную смету зафиксируем письменно после того, как разберём вашу задачу.</p>
+        <label class="mt-5 flex items-start gap-2 text-xs text-[#19181799]">
+          <input type="checkbox" required class="mt-0.5" />
+          Согласен на обработку персональных данных
+        </label>
+        <button type="button" class="mt-4 w-full btn btn-primary justify-center">
+          Отправить смету <span>→</span>
+        </button>
+        <div class="mt-3 flex gap-2">
+          <a href="https://t.me/" class="flex-1 btn btn-ghost justify-center !py-2.5 !text-sm">Telegram</a>
+          <a href="https://wa.me/" class="flex-1 btn btn-ghost justify-center !py-2.5 !text-sm">WhatsApp</a>
+        </div>
+      </aside>
+    </div>
+
+    <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-10 text-sm">
+      <div>
+        <div class="font-medium">Из чего складывается цена</div>
+        <p class="text-[#19181799] mt-2">Мы считаем не «за программу», а за объём.</p>
+        <ul class="mt-3 space-y-1 text-[#19181799] list-disc pl-4">
+          <li>Сколько экранов нужно собрать</li>
+          <li>Сколько полей и правил у вашего процесса</li>
+          <li>Нужен ли отдельный вид для телефона</li>
+          <li>Переносим ли мы ваши текущие данные</li>
+        </ul>
+      </div>
+      <div>
+        <div class="font-medium">Почему этой цифре можно верить</div>
+        <ul class="mt-3 space-y-1 text-[#19181799] list-disc pl-4">
+          <li>Состав и цена фиксируются до старта</li>
+          <li>Показываем работу по ходу, а не в конце</li>
+          <li>Если задача окажется не наша — скажем прямо</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="border-t border-[#19181714] py-10">
+  <div class="wrap flex flex-col sm:flex-row justify-between gap-4 text-sm text-[#19181780]">
+    <div>Верстак — программы учёта заявок и выездов</div>
+    <a href="index.html" class="hover:text-[#191817] transition-colors">← Вернуться на главную</a>
+  </div>
+</footer>
+
+<script>
+  var ADDONS = [
+    {title:"Мобильный экран исполнителя", sub:"Монтажник видит задачу в телефоне и не забудет про фото", price:9000, items:["Список задач на день у каждого исполнителя","Кнопка «выехал» и «завершил» с отметкой времени","Работает в браузере телефона, ставить ничего не нужно"]},
+    {title:"Фотоотчёт до и после", sub:"Спор с клиентом закрывается фотографией, а не словами", price:6000, items:["Фото прикрепляются к заявке, а не теряются","Обязательные снимки: без них заявку нельзя закрыть","Дата и время съёмки сохраняются"]},
+    {title:"Роли и права доступа", sub:"Монтажник не видит деньги, диспетчер не видит лишнего", price:7500, items:["Три роли: владелец, диспетчер, исполнитель","Каждый видит только своё","Отдельные входы для сотрудников"]},
+    {title:"Уведомления в Telegram", sub:"Новая заявка падает в телефон сразу", price:6000, items:["Сообщение при новой заявке и при её закрытии","Отдельные уведомления исполнителю о его задачах","Ставить приложение не нужно, работает в Telegram"]},
+    {title:"Напоминания и сроки", sub:"Программа сама напомнит о выезде и просрочке", price:7500, items:["Плановая дата у заявки и подсветка просрочки","Повторные визиты по графику: раз в месяц и чаще","Напоминание за день до выезда"]},
+    {title:"Карточка объекта или машины", sub:"Вся история по объекту: кто был, что делал", price:9000, items:["Свой справочник: объекты, адреса, машины","История всех визитов по объекту","Поля под вашу нишу, а не универсальные"]}
+  ];
+  var BASE_PRICE = 45000;
+  var addonsRoot = document.getElementById("addons");
+  ADDONS.forEach(function(a){
+    var wrap = document.createElement("label");
+    wrap.className = "flex gap-3 items-start p-4 rounded-2xl border border-[#19181724] cursor-pointer hover:border-[#19181766] transition-colors";
+    wrap.innerHTML =
+      '<input type="checkbox" data-price="'+a.price+'" data-title="'+a.title+'" class="mt-1 shrink-0 addon-check" />' +
+      '<span class="flex-1 min-w-0">' +
+        '<span class="flex justify-between gap-3"><span class="font-medium">'+a.title+'</span><span class="font-medium shrink-0">+'+a.price.toLocaleString("ru-RU")+' ₽</span></span>' +
+        '<span class="block text-sm text-[#19181799] mt-0.5">'+a.sub+'</span>' +
+        '<details class="mt-2" onclick="event.stopPropagation()"><summary class="text-sm inline-flex items-center gap-1 text-[#19181799]">что входит <span class="plus">+</span></summary>' +
+          '<ul class="mt-2 space-y-1 text-sm text-[#19181799] list-none pl-0">' + a.items.map(function(t){return "<li>"+t+"</li>";}).join("") + '</ul>' +
+        '</details>' +
+      '</span>';
+    addonsRoot.appendChild(wrap);
+  });
+
+  function updateSmeta(){
+    var checks = Array.prototype.filter.call(document.querySelectorAll(".addon-check"), function(c){return c.checked;});
+    var total = BASE_PRICE + checks.reduce(function(s,c){return s + Number(c.dataset.price);}, 0);
+    var lines = document.getElementById("smeta-lines");
+    lines.innerHTML = '<li class="flex justify-between"><span>Основа: учёт заявок</span><span>'+BASE_PRICE.toLocaleString("ru-RU")+' ₽</span></li>' +
+      checks.map(function(c){return '<li class="flex justify-between"><span>'+c.dataset.title+'</span><span>+'+Number(c.dataset.price).toLocaleString("ru-RU")+' ₽</span></li>';}).join("");
+    document.getElementById("smeta-empty").style.display = checks.length ? "none" : "block";
+    document.getElementById("smeta-total").textContent = total.toLocaleString("ru-RU") + " ₽";
+  }
+  document.addEventListener("change", function(e){ if(e.target.classList.contains("addon-check")) updateSmeta(); });
+</script>
+
+</body>
+</html>
