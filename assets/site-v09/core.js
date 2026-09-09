@@ -468,6 +468,13 @@
       put('[data-sx="proto-title"]', s[1]);
       put('[data-sx="proto-text"]', s[2]);
       bars.forEach(function (b, n) { b.classList.toggle('is-on', n <= k); });
+      root.dataset.routeStage = String(k);
+      $$('[data-stage]', root).forEach(function (el) {
+        var active = Number(el.getAttribute('data-stage')) === k;
+        el.classList.toggle('is-active', active);
+        if (active) el.setAttribute('aria-current', 'step');
+        else el.removeAttribute('aria-current');
+      });
       root.dataset.phase = s[0];
     }
 

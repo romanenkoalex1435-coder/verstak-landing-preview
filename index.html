@@ -272,6 +272,13 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 .hero-route::after{content:"";position:absolute;left:18px;top:35px;width:1px;height:0;background:var(--ink-black);transition:height 720ms var(--motion-ease) 120ms}
 .is-motion-ready .hero.is-in-view .hero-route::after{height:calc(66.666% - 24px)}
 @media (prefers-reduced-motion:reduce){.is-motion-ready [data-motion-layer]{opacity:1;transform:none;transition:none}.hero-route::after{height:calc(66.666% - 24px);transition:none}}
+.tone-scene{transition:background-color 900ms var(--motion-ease)}
+.tone-cool{background:#d8dce0}
+.story-route{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:24px}
+.story-route-step{position:relative;padding:12px 10px;border-top:1px solid var(--hairline-strong);font-size:13px;color:var(--ink-secondary-on-bg)}
+.story-route-step::before{content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;border-radius:50%;background:var(--hairline-strong)}
+.story-route-step.is-active{color:var(--ink);font-weight:600}
+.story-route-step.is-active::before{background:var(--ink-black);transform:scale(1.25)}
 
 /* ==========================================================================
    PROTOTYPE  #prototype  — panel treatment
@@ -738,8 +745,14 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
   </section>
 
   <!-- ============== PROTOTYPE ============== -->
-  <section id="prototype" class="proto-wrap" data-sx="proto">
+  <section id="prototype" class="proto-wrap tone-scene tone-cool" data-sx="proto" data-motion-scene="prototype" data-route-stage="0">
     <div class="container">
+      <div class="story-route" aria-label="Текущий этап заявки" data-motion-layer style="--motion-index:0">
+        <span class="story-route-step is-active" data-stage="0">Заявка</span>
+        <span class="story-route-step" data-stage="1">Исполнитель</span>
+        <span class="story-route-step" data-stage="2">Выезд</span>
+        <span class="story-route-step" data-stage="3">Результат</span>
+      </div>
       <div class="section-head">
         <p class="eyebrow">Прототип</p>
         <h2>Так это работает у вас</h2>
