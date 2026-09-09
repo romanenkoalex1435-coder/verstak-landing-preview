@@ -1,0 +1,26 @@
+{
+  "site": "approved-variant-09",
+  "date": "2026-09-09",
+  "passed": true,
+  "checks": {
+    "structure_and_anchors": true,
+    "pricing_60000_100000_175000": true,
+    "timing_2_3_5_weeks": true,
+    "gallery_and_prototype": true,
+    "honest_form_fallback": true,
+    "keyboard_focus": true,
+    "responsive_320_to_1920": true,
+    "important_controls_visible": true,
+    "hero_first_screen": true,
+    "console_and_external_requests": true,
+    "reduced_motion": true,
+    "production_markup_equivalent_to_approved_render": true,
+    "local_resources_present": true,
+    "javascript_syntax": true
+  },
+  "known_external_dependencies": [
+    "form endpoint",
+    "approved privacy policy",
+    "company name and public contact"
+  ]
+}
