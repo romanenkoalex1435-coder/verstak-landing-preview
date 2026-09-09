@@ -272,8 +272,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 .hero-route::after{content:"";position:absolute;left:18px;top:35px;width:1px;height:0;background:var(--ink-black);transition:height 720ms var(--motion-ease) 120ms}
 .is-motion-ready .hero.is-in-view .hero-route::after{height:128px}
 @media (prefers-reduced-motion:reduce){.is-motion-ready [data-motion-decor]{opacity:1;transform:none;transition:none}.hero-route::after{height:128px;transition:none}}
-.tone-scene{transition:background-color 900ms var(--motion-ease)}
-@media (prefers-reduced-motion:reduce){.tone-scene{transition:none}}
+.tone-transition{height:clamp(64px,10vw,140px);background:linear-gradient(to bottom,var(--tone-from),var(--tone-to));pointer-events:none}
 .tone-cool{background:#d8dce0}
 .tone-works{background:#d4d9de}
 .tone-warm{background:#ddd8d0}
@@ -281,6 +280,8 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 .route-complete-mark{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink-black);color:#fff;transform:scale(.7) rotate(-12deg)}
 .is-motion-ready .is-in-view .route-complete-mark{transform:none;transition:transform 520ms var(--motion-ease) 140ms}
 @media (prefers-reduced-motion:reduce){.route-complete-mark,.is-motion-ready .is-in-view .route-complete-mark{transform:none;transition:none}}
+.request-cta-shell{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.request-cta-shell .route-complete{margin-bottom:0}
 .story-route{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:24px}
 .story-route-step{position:relative;padding:12px 10px;border-top:1px solid var(--hairline-strong);font-size:13px;color:var(--ink-secondary-on-bg)}
 .story-route-step::before{content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;border-radius:50%;background:var(--hairline-strong)}
@@ -946,6 +947,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
   </section>
 
   <!-- ============== GALLERY ============== -->
+  <div class="tone-transition" style="--tone-from:var(--bg);--tone-to:#d4d9de" aria-hidden="true"></div>
   <section id="works" class="sect tone-scene tone-works" data-sx="gallery" data-motion-scene="works">
     <div class="container">
       <div class="panel-band">
@@ -1002,6 +1004,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
   </section>
 
   <!-- ============== PROCESS ============== -->
+  <div class="tone-transition" style="--tone-from:#d4d9de;--tone-to:var(--bg)" aria-hidden="true"></div>
   <section id="process" class="sect">
     <div class="container">
       <div class="section-head">
@@ -1109,6 +1112,17 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
           <p class="faq-answer">Нет. Расскажите, как принимаете заявки и распределяете выезды — остальное соберём сами.</p>
         </details>
       </div>
+    </div>
+  </section>
+
+  <div class="tone-transition" style="--tone-from:var(--bg);--tone-to:#ddd8d0" aria-hidden="true"></div>
+  <section id="request-cta" class="sect tone-warm" data-motion-scene="request-cta">
+    <div class="container request-cta-shell">
+      <div class="route-complete" data-motion-decor style="--motion-index:0" aria-label="Маршрут завершён">
+        <span class="route-complete-mark" aria-hidden="true">✓</span>
+        <span>Результат сохранён</span>
+      </div>
+      <a class="btn-primary" href="request.html" data-sx="request-link">Оставить заявку</a>
     </div>
   </section>
 

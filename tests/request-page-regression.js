@@ -18,7 +18,7 @@ assert(index.indexOf('data-sx="form"') === -1, 'home page must not contain the f
 assert(index.indexOf('href="#request"') === -1, 'home page must not link to a request anchor');
 
 var requestLinks = index.match(/<a\b[^>]*data-sx="request-link"[^>]*>/g) || [];
-assert(requestLinks.length === 3, 'header, builder, and footer request CTAs must be marked');
+assert(requestLinks.length === 4, 'header, builder, final CTA, and footer request CTAs must be marked');
 requestLinks.forEach(function (link) {
   assert(/href="request\.html"/.test(link), 'request CTA must link to request.html');
 });

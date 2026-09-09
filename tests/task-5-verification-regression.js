@@ -42,8 +42,7 @@ assert(content.indexOf('root.dataset.routeStage = String(routeStage);') !== -1, 
 assert(content.indexOf('Number(el.getAttribute(\'data-stage\')) === routeStage') !== -1, 'route marker matching must use the semantic route stage');
 assert(content.indexOf("el.setAttribute('aria-current', 'step');") !== -1, 'active route marker must expose aria-current=step');
 
-var toneTransition = html.indexOf('.tone-scene{transition:background-color 900ms var(--motion-ease)}');
-assert(toneTransition !== -1, 'tone-scene transition is missing');
-assert(html.indexOf('@media (prefers-reduced-motion:reduce){.tone-scene{transition:none}}', toneTransition) !== -1, 'reduced motion must disable the tone-scene background transition');
+assert(html.indexOf('.tone-scene{transition:background-color') === -1, 'static tone scenes must not keep a no-op background transition');
+assert(/\.tone-transition\{height:clamp\(64px,10vw,140px\);background:linear-gradient\(to bottom,var\(--tone-from\),var\(--tone-to\)\);pointer-events:none\}/.test(html), 'tone changes must use real gradient transition zones');
 
 console.log('PASS task 5 route-stage mapping and reduced-motion tone transition contract');
