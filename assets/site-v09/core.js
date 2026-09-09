@@ -11,7 +11,13 @@
 
   var $  = function (sel, root) { return (root || document).querySelector(sel); };
   var $$ = function (sel, root) { return [].slice.call((root || document).querySelectorAll(sel)); };
-  var reduced = function () { return matchMedia('(prefers-reduced-motion: reduce)').matches; };
+  var motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  var reduced = function () { return !!(motionQuery && motionQuery.matches); };
+  function onMotionChange(fn) {
+    if (!motionQuery) return;
+    if (motionQuery.addEventListener) motionQuery.addEventListener('change', fn);
+    else if (motionQuery.addListener) motionQuery.addListener(fn);
+  }
 
   (function initMotionScenes() {
     var scenes = $$('[data-motion-scene]');
@@ -551,7 +557,7 @@
       }, { threshold: 0.25 }).observe(root);
     } else { visible = true; }
 
-    matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', sync);
+    onMotionChange(sync);
     content(0);
     sync();
   })();
