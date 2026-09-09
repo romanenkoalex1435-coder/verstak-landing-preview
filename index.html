@@ -273,6 +273,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 .is-motion-ready .hero.is-in-view .hero-route::after{height:calc(66.666% - 24px)}
 @media (prefers-reduced-motion:reduce){.is-motion-ready [data-motion-layer]{opacity:1;transform:none;transition:none}.hero-route::after{height:calc(66.666% - 24px);transition:none}}
 .tone-scene{transition:background-color 900ms var(--motion-ease)}
+@media (prefers-reduced-motion:reduce){.tone-scene{transition:none}}
 .tone-cool{background:#d8dce0}
 .tone-works{background:#d4d9de}
 .tone-warm{background:#ddd8d0}
