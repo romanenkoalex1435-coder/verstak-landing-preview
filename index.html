@@ -29,12 +29,62 @@
   .wa-nav:hover{background:#ffffff0d;border-color:#e8e4d64d}
   .wa-dot{width:6px;height:6px;border-radius:999px;background:#e8e4d633;border:0;padding:0;cursor:pointer}
   .wa-dot.active{background:#e8e4d6}
-  .wa-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #e8e4d614}
-  .wa-row:last-child{border-bottom:0}
-  .wa-status{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:999px;white-space:nowrap}
-  .wa-status.ok{background:#8fae7a26;color:#b6cda4}
-  .wa-status.warn{background:#d4a63c26;color:#e6c07a}
-  .wa-status.overdue{background:#c0564f26;color:#e59a92}
+
+  /* ---- dashboard mockup card (light, like a real screenshot on a dark page) ---- */
+  .dash{border-radius:20px;overflow:hidden;display:flex;background:#f4f5f7;color:#18181a;
+    font-family:Geologica,system-ui,sans-serif;box-shadow:0 24px 60px -30px #00000090}
+  .dash-side{width:172px;flex-shrink:0;background:#161513;color:#e8e4d6;padding:20px 16px;display:none;flex-direction:column}
+  .dash-logo{font-weight:700;font-size:15px;letter-spacing:-.01em}
+  .dash-logo small{display:block;font-size:9px;letter-spacing:.1em;color:#e8e4d661;font-weight:400;margin-top:3px}
+  .dash-navwrap{margin-top:22px;display:flex;flex-direction:column;gap:2px;flex:1}
+  .dash-navitem{display:flex;justify-content:space-between;font-size:12px;padding:7px 9px;border-radius:7px;color:#e8e4d68a}
+  .dash-navitem.active{background:#e8e4d6;color:#161513;font-weight:500}
+  .dash-navitem b{font-weight:400;font-size:10px;opacity:.6}
+  .dash-owner{font-size:10.5px;color:#e8e4d661;border-top:1px solid #e8e4d61a;padding-top:12px;line-height:1.5}
+  .dash-owner b{display:block;color:#e8e4d6cc;font-weight:500}
+
+  .dash-main{flex:1;min-width:0;padding:18px 18px 16px}
+  .dash-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+  .dash-head h4{margin:0;font-size:16px;font-weight:600}
+  .dash-head p{margin:2px 0 0;font-size:11.5px;color:#6b6b6f}
+  .dash-btns{display:flex;gap:6px}
+  .dash-btn{font-size:11px;padding:6px 10px;border-radius:7px;font-weight:500;white-space:nowrap}
+  .dash-btn.ghost{border:1px solid #d8d8dc;color:#333}
+  .dash-btn.solid{color:#fff}
+
+  .dash-kpis{margin-top:14px;display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:#e4e5e9;
+    border:1px solid #e4e5e9;border-radius:12px;overflow:hidden}
+  .dash-kpi{background:#fff;padding:10px 12px}
+  .dash-kpi .v{font-size:19px;font-weight:700;line-height:1}
+  .dash-kpi .l{font-size:10.5px;color:#6b6b6f;margin-top:4px}
+
+  .dash-table{margin-top:12px;border:1px solid #e4e5e9;border-radius:12px;overflow:hidden;background:#fff}
+  .dash-trow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;
+    border-bottom:1px solid #eef0f3;font-size:12px}
+  .dash-trow:last-child{border-bottom:0}
+  .dash-trow.head{font-size:9.5px;letter-spacing:.05em;color:#9a9a9e;text-transform:uppercase;background:#fafafb}
+  .dash-name{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dash-sub{font-size:10.5px;color:#8a8a8e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dash-right{flex-shrink:0;display:flex;align-items:center;gap:10px}
+  .dash-date{font-size:11px;color:#8a8a8e;white-space:nowrap}
+  .dash-pill{font-size:10.5px;font-weight:500;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+  .dash-pill::before{content:"";width:6px;height:6px;border-radius:999px;background:currentColor;flex-shrink:0}
+
+  .dash-foot{margin-top:12px;font-size:10.5px;color:#a3a3a7;text-align:right}
+
+  @media (min-width:640px){
+    .dash-side{display:flex}
+    .dash-main{padding:22px 26px 20px}
+    .dash-kpis{grid-template-columns:repeat(4,1fr)}
+    .dash-date{display:block}
+  }
+  @media (max-width:639px){
+    .dash-date{display:none}
+    .dash-head{flex-direction:column;align-items:stretch}
+    .dash-btns{width:100%;flex-direction:column}
+    .dash-btn{width:100%;text-align:center;box-sizing:border-box}
+    .wa-nav{display:none}
+  }
   summary{cursor:pointer}
   summary::-webkit-details-marker{display:none}
   summary::marker{content:""}
@@ -379,78 +429,131 @@
     });
   })();
 
-  // Work carousel — one illustrative "dashboard" per company. All rows are
-  // demo data (labelled as such in the card), not real client figures.
+  // Work carousel — a small mockup of each company's actual admin screen
+  // (sidebar, KPI row, table), modeled on the real dashboards already built
+  // for iT-Center / Аквацентр / GBC in the portfolio, not a generic list.
   (function () {
+    var STATUS = {
+      ok: "#1e8f5f", warn: "#b8790f", overdue: "#c23b34"
+    };
     var WORKS = [
       {
+        color: "#d5312b", logo: "iT-Center", logoSub: "Сервис-деск · Пятигорск",
+        nav: ["Рабочий стол", "Клиенты · 31", "Заявки", "Специалисты · 4", "Оборудование"],
+        owner: ["Руководитель", "Пятигорск · Бештаугорское ш."],
+        head: ["Рабочий стол", "Среда, 26 августа"], actions: ["Выгрузить отчёт", "Новая заявка"],
+        kpis: [["2", "Просрочено"], ["6", "На сегодня"], ["14", "На неделе"], ["47", "Актов за август"]],
         tag: "ПРИЁМ И РАСПРЕДЕЛЕНИЕ ЗАЯВОК", name: "iT-Center", title: "Заявки и мастера",
         before: "Заявки в WhatsApp, адреса в блокноте, фото терялись.",
         after: "Одна вкладка, из которой видно весь день.",
         rows: [
-          { name: "Ремонт кондиционера, ул. Ленина 14", meta: "Мастерская · сегодня 15:00", status: "ok", label: "в работе" },
-          { name: "Замена компрессора, офис 302", meta: "Выезд · завтра", status: "warn", label: "ожидает" },
-          { name: "Диагностика, ТЦ «Атлант»", meta: "Просрочено на 2 дня", status: "overdue", label: "просрочено" }
+          { name: "Сеть аптек, 4 точки", sub: "Не работает 1С на кассе", date: "был 17 авг", status: "overdue", label: "просрочена" },
+          { name: "Автосервис на объездной", sub: "Не пишет 1 камера у въезда", date: "был 19 авг", status: "overdue", label: "просрочена" },
+          { name: "Магазин техники", sub: "Настройка переадресации", date: "11:00", status: "warn", label: "сегодня" },
+          { name: "Стоматологическая клиника", sub: "Плановая проверка сети", date: "15:00", status: "warn", label: "сегодня" },
+          { name: "Юридическая компания", sub: "Плановый выезд, IT-аудит", date: "28 авг", status: "ok", label: "по графику" }
         ]
       },
       {
+        color: "#0ea5a8", logo: "Аквацентр", logoSub: "Сервис",
+        nav: ["Рабочий стол", "Объекты · 50", "График визитов", "Мастера · 6", "Замеры воды"],
+        owner: ["Руководитель сервиса", "Пятигорск · КМВ"],
+        head: ["Рабочий стол", "Сезон: подготовка к консервации"], actions: ["Выгрузить отчёт", "Назначить визит"],
+        kpis: [["3", "Визит просрочен"], ["7", "На сегодня"], ["18", "На неделе"], ["2", "Вода вне нормы"]],
         tag: "ОБСЛУЖИВАНИЕ ОБЪЕКТОВ ПО ГРАФИКУ", name: "Аквацентр", title: "Объекты и визиты",
         before: "График обслуживания в голове у владельца.",
         after: "Программа сама напоминает, к кому пора ехать.",
         rows: [
-          { name: "Бассейн, санаторий «Заря»", meta: "Плановый визит · через 3 дня", status: "ok", label: "по графику" },
-          { name: "Фильтрация, коттедж на Речной", meta: "Визит сегодня", status: "warn", label: "сегодня" },
-          { name: "Чистка чаши, база отдыха", meta: "Просрочено на 5 дней", status: "overdue", label: "просрочено" }
+          { name: "Санаторий «Машук Аква-Терм»", sub: "2 чаши · рециркуляция", date: "был 15 авг", status: "overdue", label: "просрочен" },
+          { name: "Alpina Family Park", sub: "Аквапарк · 640 м³", date: "был 17 авг", status: "overdue", label: "просрочен" },
+          { name: "Городской фонтан, Кирова", sub: "Сезонный режим", date: "10:00", status: "warn", label: "сегодня" },
+          { name: "Санаторий «Центрсоюз»", sub: "3 чаши · джакузи", date: "10:00", status: "warn", label: "сегодня" },
+          { name: "Спорткомплекс, школа №12", sub: "1 чаша · хлорирование", date: "28 авг", status: "ok", label: "по графику" }
         ]
       },
       {
-        tag: "ЗАПИСЬ И ЗАГРУЗКА ПОСТОВ", name: "GBC Detailing", title: "Посты и запись",
+        color: "#1a1a1a", logo: "GBC", logoSub: "Detailing",
+        nav: ["Записи", "Машины", "Гарантии · 7", "Склад"],
+        owner: ["Владелец", "Пятигорск"],
+        head: ["Гарантии", "Кому напомнить — на 27 августа"], actions: ["Записать на визит", "Новый заказ"],
+        kpis: [["7", "Требуют звонка"], ["1", "Просрочено ТО"], ["3", "Свободных постов"], ["34", "Машин в базе"]],
+        tag: "ЗАПИСЬ, МАШИНЫ И ГАРАНТИИ", name: "GBC Detailing", title: "Гарантии на покрытие",
         before: "Запись в тетради, звонки «когда вас ждать».",
-        after: "Видно занятость постов на неделю вперёд.",
+        after: "Видно занятость постов и у кого заканчивается гарантия.",
         rows: [
-          { name: "Пост 1 — Camry, полировка", meta: "09:00–13:00", status: "ok", label: "занят" },
-          { name: "Пост 2 — запись на четверг", meta: "Ждёт подтверждения клиента", status: "warn", label: "не подтверждено" },
-          { name: "Пост 3 — керамика, Tiggo", meta: "Задержка на 1 день", status: "overdue", label: "задержка" }
+          { name: "BMW X5", sub: "Керамика, 2 слоя", date: "через 18 дн", status: "warn", label: "истекает" },
+          { name: "Mercedes GLE", sub: "Антигравийная плёнка, перед", date: "было 15 авг", status: "overdue", label: "просрочено" },
+          { name: "Toyota Camry", sub: "Керамика кузова", date: "через 36 дн", status: "ok", label: "в сроке" },
+          { name: "Volkswagen Tiguan", sub: "Керамика + химчистка", date: "28 ноя", status: "ok", label: "в сроке" },
+          { name: "Kia Sportage", sub: "Жидкое стекло", date: "через 24 дн", status: "warn", label: "истекает" }
         ]
       },
       {
+        color: "#3b6fd6", logo: "FellowLink", logoSub: "Видеонаблюдение",
+        nav: ["Объекты", "Гарантии", "Регистраторы", "Отчёты"],
+        owner: ["Руководитель монтажа", "Краснодар"],
+        head: ["Объекты по городам", "3 города · 24 объекта"], actions: ["Выгрузить", "Добавить объект"],
+        kpis: [["1", "Гарантия истекла"], ["1", "Истекает скоро"], ["3", "Города"], ["24", "Объектов всего"]],
         tag: "МОНТАЖ СИСТЕМ ВИДЕОНАБЛЮДЕНИЯ · КРАСНОДАР", name: "FellowLink", title: "Объекты и гарантии",
         before: "Объекты стояли в трёх городах, а гарантии и доступы к регистраторам жили в переписке и в голове.",
-        after: "Один экран, где видно каждый объект, его оборудование и до какого числа действует гарантия.",
+        after: "Один экран, где видно каждый объект и до какого числа действует гарантия.",
         rows: [
-          { name: "Магазин «Продукты», Краснодар", meta: "Гарантия до 12.2026", status: "ok", label: "в порядке" },
-          { name: "Склад, Армавир", meta: "Гарантия истекает через 18 дней", status: "warn", label: "истекает" },
-          { name: "Офис, Новороссийск", meta: "Гарантия истекла", status: "overdue", label: "истекла" }
+          { name: "Офис, Новороссийск", sub: "8 камер · регистратор", date: "истекла", status: "overdue", label: "истекла" },
+          { name: "Склад, Армавир", sub: "12 камер · регистратор", date: "через 18 дн", status: "warn", label: "истекает" },
+          { name: "Магазин «Продукты», Краснодар", sub: "6 камер", date: "12.2026", status: "ok", label: "в порядке" },
+          { name: "Автосервис на объездной", sub: "4 камеры", date: "03.2027", status: "ok", label: "в порядке" },
+          { name: "Кофейня в центре", sub: "3 камеры", date: "07.2027", status: "ok", label: "в порядке" }
         ]
       },
       {
+        color: "#d9a62a", logo: "23ELEKTRO", logoSub: "Электромонтаж",
+        nav: ["Заявки", "Объекты", "Специалисты", "Склад"],
+        owner: ["Руководитель бригады", "Ставрополь"],
+        head: ["Заявки на монтаж", "Среда, 26 августа"], actions: ["Выгрузить отчёт", "Новая заявка"],
+        kpis: [["1", "Просрочено"], ["2", "Ждут материалы"], ["5", "На неделе"], ["19", "Заявок за месяц"]],
         tag: "ЭЛЕКТРОМОНТАЖ И ПОДКЛЮЧЕНИЯ", name: "23ELEKTRO", title: "Заявки на монтаж",
         before: "Заявки на подключение принимали по телефону, объекты путались между собой.",
         after: "У каждого объекта своя карточка с историей подключений.",
         rows: [
-          { name: "Подключение щита, ул. Гагарина 8", meta: "Монтаж · сегодня", status: "ok", label: "в работе" },
-          { name: "Замена автоматов, офис «Плюс»", meta: "Ждёт материалы", status: "warn", label: "ожидание" },
-          { name: "Проверка проводки, склад №3", meta: "Просрочено на 1 день", status: "overdue", label: "просрочено" }
+          { name: "Проверка проводки, склад №3", sub: "Плановый аудит", date: "был вчера", status: "overdue", label: "просрочено" },
+          { name: "Замена автоматов, офис «Плюс»", sub: "Ждёт поставку", date: "материалы", status: "warn", label: "ожидание" },
+          { name: "Щиток, ЖК «Северный»", sub: "Ждёт согласования", date: "материалы", status: "warn", label: "ожидание" },
+          { name: "Подключение щита, ул. Гагарина 8", sub: "Монтаж", date: "сегодня", status: "ok", label: "в работе" },
+          { name: "Плановый осмотр, кафе «Уют»", sub: "ТО электрощита", date: "30 авг", status: "ok", label: "в работе" }
         ]
       },
       {
+        color: "#e0672e", logo: "Vinyl Jam", logoSub: "Оклейка и тюнинг",
+        nav: ["Записи", "Машины", "Склад плёнки", "Посты"],
+        owner: ["Владелец студии", "Краснодар"],
+        head: ["Запись и посты", "3 поста · сегодня"], actions: ["Записать", "Новый заказ"],
+        kpis: [["2", "Постов занято"], ["1", "Ждёт плёнку"], ["1", "Просрочено"], ["14", "Заказов за месяц"]],
         tag: "ОКЛЕЙКА И ТЮНИНГ АВТОМОБИЛЕЙ", name: "Vinyl Jam", title: "Запись и расход плёнки",
         before: "Запись в блокноте, расход плёнки на глаз.",
-        after: "Видно, сколько плёнки ушло на каждый автомобиль.",
+        after: "Видно, сколько плёнки ушло на каждый автомобиль и какой пост свободен.",
         rows: [
-          { name: "BMW X5, полная оклейка", meta: "Пост 1 · осталось 2 дня", status: "ok", label: "в работе" },
-          { name: "Camry, оклейка капота", meta: "Ждёт поставку плёнки", status: "warn", label: "ожидание" },
-          { name: "Golf, снятие плёнки", meta: "Просрочено на 3 дня", status: "overdue", label: "просрочено" }
+          { name: "Golf, снятие плёнки", sub: "Пост 3", date: "было 3 дн назад", status: "overdue", label: "просрочено" },
+          { name: "Camry, оклейка капота", sub: "Ждёт поставку плёнки", date: "склад", status: "warn", label: "ожидание" },
+          { name: "BMW X5, полная оклейка", sub: "Пост 1", date: "осталось 2 дн", status: "ok", label: "в работе" },
+          { name: "Tiggo, локальная оклейка", sub: "Пост 2", date: "сегодня", status: "ok", label: "в работе" },
+          { name: "Kia Rio, плановая запись", sub: "Свободный пост", date: "1 сен", status: "ok", label: "запланировано" }
         ]
       },
       {
+        color: "#3e9b5c", logo: "РНД Электрик", logoSub: "Выезды на дом",
+        nav: ["Заявки", "Клиенты", "Электрики", "Отчёты"],
+        owner: ["Диспетчер", "Ростов-на-Дону"],
+        head: ["Заявки и выезды", "Среда, 26 августа"], actions: ["Выгрузить отчёт", "Новая заявка"],
+        kpis: [["1", "Просрочено"], ["3", "Выездов сегодня"], ["2", "Ждут подтверждения"], ["22", "Заявок за месяц"]],
         tag: "ВЫЕЗДЫ ПО ЗАЯВКАМ НА ДОМ · РОСТОВ-НА-ДОНУ", name: "РНД Электрик", title: "Заявки и выезды",
         before: "Заявки принимали по звонку, диспетчер помнил адреса наизусть.",
         after: "Список заявок с адресами и статусом на одном экране.",
         rows: [
-          { name: "Замена проводки, ул. Текучева 92", meta: "Выезд сегодня 17:00", status: "ok", label: "запланировано" },
-          { name: "Установка розеток, кв. 45", meta: "Ждёт подтверждения", status: "warn", label: "ожидание" },
-          { name: "Ремонт щита, частный дом", meta: "Просрочено на 4 дня", status: "overdue", label: "просрочено" }
+          { name: "Ремонт щита, частный дом", sub: "Пер. Доломановский", date: "было 4 дн назад", status: "overdue", label: "просрочено" },
+          { name: "Установка розеток, кв. 45", sub: "Ждёт подтверждения", date: "звонок", status: "warn", label: "ожидание" },
+          { name: "Диагностика проводки, офис", sub: "Ждёт подтверждения", date: "звонок", status: "warn", label: "ожидание" },
+          { name: "Замена проводки, ул. Текучева 92", sub: "Полная замена", date: "17:00", status: "ok", label: "запланировано" },
+          { name: "Монтаж света, кафе", sub: "Плановый выезд", date: "29 авг", status: "ok", label: "запланировано" }
         ]
       }
     ];
@@ -470,29 +573,50 @@
     });
     var dots = dotsWrap.querySelectorAll(".wa-dot");
 
+    function dashHtml(w) {
+      return '<div class="dash">' +
+        '<div class="dash-side">' +
+          '<div class="dash-logo">' + w.logo + '<small>' + w.logoSub.toUpperCase() + '</small></div>' +
+          '<div class="dash-navwrap">' +
+            w.nav.map(function (n, ni) {
+              var parts = n.split(" · ");
+              return '<div class="dash-navitem' + (ni === 0 ? " active" : "") + '">' + parts[0] + (parts[1] ? '<b>' + parts[1] + '</b>' : '') + '</div>';
+            }).join("") +
+          '</div>' +
+          '<div class="dash-owner"><b>' + w.owner[0] + '</b>' + w.owner[1] + '</div>' +
+        '</div>' +
+        '<div class="dash-main">' +
+          '<div class="dash-head">' +
+            '<div><h4>' + w.head[0] + '</h4><p>' + w.head[1] + '</p></div>' +
+            '<div class="dash-btns">' +
+              '<span class="dash-btn ghost">' + w.actions[0] + '</span>' +
+              '<span class="dash-btn solid" style="background:' + w.color + '">' + w.actions[1] + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="dash-kpis">' +
+            w.kpis.map(function (k) { return '<div class="dash-kpi"><div class="v" style="color:' + w.color + '">' + k[0] + '</div><div class="l">' + k[1] + '</div></div>'; }).join("") +
+          '</div>' +
+          '<div class="dash-table">' +
+            w.rows.map(function (r) {
+              return '<div class="dash-trow"><div class="min-w-0" style="min-width:0"><div class="dash-name">' + r.name + '</div><div class="dash-sub">' + r.sub + '</div></div>' +
+                '<div class="dash-right"><span class="dash-pill" style="color:' + STATUS[r.status] + '">' + r.label + '</span><span class="dash-date">' + r.date + '</span></div></div>';
+            }).join("") +
+          '</div>' +
+          '<div class="dash-foot">Пример интерфейса на демонстрационных данных</div>' +
+        '</div>' +
+      '</div>';
+    }
+
     function show(idx) {
       i = (idx + WORKS.length) % WORKS.length;
       var w = WORKS[i];
       card.innerHTML =
-        '<div class="rounded-2xl border border-[#e8e4d61f] p-6 md:p-10">' +
-          '<div class="text-xs tracking-wide text-[#e8e4d661]">' + w.tag + '</div>' +
-          '<h3 class="mt-2 text-xl font-medium">' + w.title + ' — ' + w.name + '</h3>' +
-          '<p class="mt-1 text-sm text-[#e8e4d680]">Макет на демонстрационных данных</p>' +
-          '<div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">' +
-            '<div>' +
-              '<div class="text-xs text-[#e8e4d661] mb-1">БЫЛО</div>' +
-              '<p class="text-sm text-[#e8e4d69e]">' + w.before + '</p>' +
-              '<div class="text-xs text-[#e8e4d661] mb-1 mt-4">СТАЛО</div>' +
-              '<p class="text-sm text-[#e8e4d69e]">' + w.after + '</p>' +
-            '</div>' +
-            '<div class="rounded-xl bg-[#0a0a09] border border-[#e8e4d61a] px-4">' +
-              w.rows.map(function (r) {
-                return '<div class="wa-row"><div class="min-w-0"><div class="text-sm truncate">' + r.name + '</div>' +
-                  '<div class="text-xs text-[#e8e4d661] mt-0.5">' + r.meta + '</div></div>' +
-                  '<span class="wa-status ' + r.status + '">' + r.label + '</span></div>';
-              }).join("") +
-            '</div>' +
-          '</div>' +
+        '<div class="text-xs tracking-wide text-[#e8e4d661]">' + w.tag + '</div>' +
+        '<h3 class="mt-2 text-xl font-medium">' + w.title + ' — ' + w.name + '</h3>' +
+        '<div class="mt-5">' + dashHtml(w) + '</div>' +
+        '<div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm text-[#e8e4d69e] max-w-[720px]">' +
+          '<div><span class="text-[#e8e4d661]">Было — </span>' + w.before + '</div>' +
+          '<div><span class="text-[#e8e4d661]">Стало — </span>' + w.after + '</div>' +
         '</div>';
       dots.forEach(function (d, di) { d.classList.toggle("active", di === i); });
     }
