@@ -1,7 +1,7 @@
 'use strict';
 
 var fs = require('fs');
-var html = fs.readFileSync('index.html', 'utf8');
+var html = fs.readFileSync('request.html', 'utf8');
 var core = fs.readFileSync('assets/site-v09/core.js', 'utf8');
 
 function assert(condition, message) {

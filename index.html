@@ -488,7 +488,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 .bounds-item p{font-size:13.5px;color:var(--ink-secondary);line-height:1.5}
 
 /* ==========================================================================
-   FORM  #request — open field
+   FORM — open field
    ========================================================================== */
 .form-shell{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:48px;align-items:start}
 @media (max-width:900px){.form-shell{grid-template-columns:minmax(0,1fr)}}
@@ -688,8 +688,8 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 .footer-link{font-size:14px;font-weight:600;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--hairline-strong)}
 
 /* section id top spacing consistency */
-#builder,#request{padding-block:88px}
-@media (max-width:640px){#builder,#request{padding-block:56px}}
+#builder{padding-block:88px}
+@media (max-width:640px){#builder{padding-block:56px}}
 
 /* --- правка приёмки: на 320–390 пункты меню уходили за правый край.
        Лента .nav-scroll прокручивалась, поэтому переполнения документа не было,
@@ -721,7 +721,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
         <a href="#faq">Вопросы</a>
       </div>
     </nav>
-    <a class="header-cta" href="#request"><span>Оставить заявку</span></a>
+    <a class="header-cta" href="request.html" data-sx="request-link"><span>Оставить заявку</span></a>
   </div>
 </header>
 
@@ -907,7 +907,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
             <div class="summary-row"><span>Поддержка</span><b>5 000 ₽/мес, по желанию</b></div>
           </div>
           <p class="summary-note">Согласие на обработку данных попросим в форме заявки</p>
-          <a class="summary-cta" href="#request">Перейти к заявке</a>
+          <a class="summary-cta" href="request.html" data-sx="request-link">Перейти к заявке</a>
           <p class="summary-footnote">Предварительная оценка. Точную зафиксируем письменно после того, как разберём вашу задачу</p>
         </aside>
       </div>
@@ -942,66 +942,6 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
             <div class="bounds-item"><h4>Приложения в App Store и Google Play</h4><p>публикацию в сторах не берём: программа открывается в браузере телефона</p></div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== FORM ============== -->
-  <section id="request" class="tone-scene tone-warm" data-sx="form-section" data-motion-scene="request">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">Заявка</p>
-        <h2>Что должна делать ваша программа?</h2>
-        <p>Опишите задачу в двух словах. Состав из конструктора подставится сам.</p>
-      </div>
-
-      <div class="route-complete" data-motion-layer style="--motion-index:0" aria-label="Маршрут завершён">
-        <span class="route-complete-mark" aria-hidden="true">✓</span>
-        <span>Результат сохранён</span>
-      </div>
-
-      <div class="form-shell">
-        <form data-sx="form" novalidate>
-          <div class="field">
-            <label for="f09-name">Как к вам обращаться</label>
-            <input type="text" id="f09-name" name="name" aria-describedby="err-name">
-            <p class="field-error" id="err-name" data-sx-err="name" hidden></p>
-          </div>
-          <div class="field">
-            <label for="f09-contact">Телефон или Telegram</label>
-            <input type="text" id="f09-contact" name="contact" placeholder="+7 900 000-00-00 или @username" aria-describedby="err-contact">
-            <p class="field-error" id="err-contact" data-sx-err="contact" hidden></p>
-          </div>
-          <div class="field">
-            <label for="f09-task">Ваша задача</label>
-            <textarea id="f09-task" name="task" placeholder="Как сейчас ведёте заявки и что теряется"></textarea>
-          </div>
-          <input type="hidden" name="build">
-          <input type="hidden" name="total">
-          <div class="field-checkbox">
-            <input type="checkbox" id="f09-agree" name="agree" aria-describedby="err-agree">
-            <label for="f09-agree">Согласен на обработку персональных данных для обсуждения заявки</label>
-          </div>
-          <p class="field-error" id="err-agree" data-sx-err="agree" hidden></p>
-
-          <button type="submit" class="submit-btn" data-sx="submit">Отправить заявку</button>
-          <p class="form-status" data-sx="status" role="status" aria-live="polite"></p>
-
-          <div class="fallback-box" data-sx="fallback" hidden>
-            <h4>Текст заявки — скопируйте и пришлите нам</h4>
-            <textarea data-sx="fallback-text" readonly></textarea>
-            <button type="button" class="copy-btn" data-sx="copy">Скопировать текст</button>
-          </div>
-        </form>
-
-        <aside class="request-summary">
-          <h3>Ваша сборка</h3>
-          <p class="rs-total" data-sx="sum-total">60 000 ₽</p>
-          <p class="rs-note">один раз, без ежемесячной платы за саму программу</p>
-          <p class="rs-weeks">Срок сборки: <b data-sx="sum-weeks">2 недели</b></p>
-          <div data-sx="sum-rows"></div>
-          <p class="rs-support">Поддержка не выбрана</p>
-        </aside>
       </div>
     </div>
   </section>
@@ -1179,7 +1119,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
       <p class="footer-name">Программа учёта заявок и выездов</p>
       <p class="footer-meta">© <span data-sx="year"></span></p>
     </div>
-    <a class="footer-link" href="#request">Оставить заявку</a>
+    <a class="footer-link" href="request.html" data-sx="request-link">Оставить заявку</a>
   </div>
 </footer>
 

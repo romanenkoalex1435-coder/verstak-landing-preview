@@ -65,6 +65,12 @@
     return {
       get: snapshot,
       fmt: fmt,
+      ids: function () { return chosen.slice(); },
+      restore: function (ids) {
+        if (!Array.isArray(ids)) return;
+        chosen = ids.filter(function (id) { return D.modules.some(function (m) { return m.id === id; }); });
+        emit();
+      },
       has: function (id) { return chosen.indexOf(id) > -1; },
       toggle: function (id) {
         var i = chosen.indexOf(id);
@@ -76,6 +82,23 @@
     };
   })();
   window.SX = SX;
+
+  var requestBuildKey = 'sx-request-build-v1';
+
+  if ($('[data-sx="form"]')) {
+    try {
+      var savedBuild = JSON.parse(sessionStorage.getItem(requestBuildKey));
+      SX.restore(savedBuild && savedBuild.ids);
+    } catch (e) {}
+  }
+
+  $$('[data-sx="request-link"]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      try {
+        sessionStorage.setItem(requestBuildKey, JSON.stringify({ ids: SX.ids() }));
+      } catch (e) {}
+    });
+  });
 
   /* аналитика-заглушка: реального приёмника нет */
   window.sxTrack = window.sxTrack || function () {};
