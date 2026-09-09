@@ -22,6 +22,19 @@
   .navlink{color:#e8e4d6b3;transition:color .15s ease}
   .navlink:hover{color:#e8e4d6}
   .navlink.active{color:#e8e4d6}
+
+  .wa-nav{width:44px;height:44px;border-radius:999px;border:1px solid #e8e4d62e;color:#e8e4d6;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;background:transparent;
+    transition:background-color .15s ease,border-color .15s ease}
+  .wa-nav:hover{background:#ffffff0d;border-color:#e8e4d64d}
+  .wa-dot{width:6px;height:6px;border-radius:999px;background:#e8e4d633;border:0;padding:0;cursor:pointer}
+  .wa-dot.active{background:#e8e4d6}
+  .wa-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #e8e4d614}
+  .wa-row:last-child{border-bottom:0}
+  .wa-status{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .wa-status.ok{background:#8fae7a26;color:#b6cda4}
+  .wa-status.warn{background:#d4a63c26;color:#e6c07a}
+  .wa-status.overdue{background:#c0564f26;color:#e59a92}
   summary{cursor:pointer}
   summary::-webkit-details-marker{display:none}
   summary::marker{content:""}
@@ -226,24 +239,14 @@
 <section id="work" class="wrap py-16 md:py-24 bg-[#131311] border-t border-[#e8e4d62e]">
   <div class="eyebrow">Работы</div>
   <h2 class="mt-3 text-[28px] md:text-[36px] font-medium tracking-tight max-w-[640px]">Семь программ, ни одна не похожа на другую</h2>
-  <p class="mt-4 max-w-[600px] text-[#e8e4d69e] font-light">Каждый бизнес считает своё: один — заявки, другой — гарантии по объектам, третий — сроки плёнки на машинах.</p>
+  <p class="mt-4 max-w-[600px] text-[#e8e4d69e] font-light">Каждый бизнес считает своё: один — заявки, другой — гарантии по объектам, третий — расход плёнки на машинах. Пролистайте — это разные сборки, не один шаблон.</p>
 
-  <div class="mt-10 flex flex-wrap gap-x-8 gap-y-4 text-sm text-[#e8e4d680]">
-    <span>iT-Center</span><span>Аквацентр</span><span>GBC Detailing</span><span>FellowLink</span><span>23ELEKTRO</span><span>Vinyl Jam</span><span>РНД Электрик</span>
+  <div class="mt-10 flex items-center gap-3 md:gap-6">
+    <button type="button" id="workPrev" class="wa-nav" aria-label="Предыдущая компания">←</button>
+    <div class="flex-1 min-w-0" id="workCard"></div>
+    <button type="button" id="workNext" class="wa-nav" aria-label="Следующая компания">→</button>
   </div>
-
-  <div class="mt-10 rounded-2xl border border-[#e8e4d61f] p-6 md:p-10">
-    <div class="text-xs tracking-wide text-[#e8e4d661]">МОНТАЖ СИСТЕМ ВИДЕОНАБЛЮДЕНИЯ · КРАСНОДАР</div>
-    <h3 class="mt-2 text-xl font-medium">Объекты и гарантии — FellowLink</h3>
-    <p class="mt-1 text-sm text-[#e8e4d680]">Объекты по городам и сроки гарантий · макет на демонстрационных данных</p>
-    <p class="mt-4 max-w-[560px] text-[#e8e4d69e] text-sm">Объекты стояли в трёх городах, а гарантии и доступы к регистраторам жили в переписке и в голове. Собрали один экран, где видно каждый объект, его оборудование и до какого числа действует гарантия.</p>
-    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-[#e8e4d69e]">
-      <div class="flex gap-3"><span class="text-[#e8e4d661]">01</span>Объекты сгруппированы по городам — видно, куда ехать одним выездом</div>
-      <div class="flex gap-3"><span class="text-[#e8e4d661]">02</span>Гарантия считается сама, подсвечивает истекающие за 30 дней</div>
-      <div class="flex gap-3"><span class="text-[#e8e4d661]">03</span>Пароли к регистраторам зашифрованы, открываются по нажатию</div>
-      <div class="flex gap-3"><span class="text-[#e8e4d661]">04</span>Фотоотчёт с выезда привязан к объекту, а не к галерее телефона</div>
-    </div>
-  </div>
+  <div class="mt-6 flex justify-center gap-2" id="workDots"></div>
 </section>
 
 <!-- 06 BOUNDARIES -->
@@ -374,6 +377,129 @@
       var el = document.getElementById(id);
       if (el) io.observe(el);
     });
+  })();
+
+  // Work carousel — one illustrative "dashboard" per company. All rows are
+  // demo data (labelled as such in the card), not real client figures.
+  (function () {
+    var WORKS = [
+      {
+        tag: "ПРИЁМ И РАСПРЕДЕЛЕНИЕ ЗАЯВОК", name: "iT-Center", title: "Заявки и мастера",
+        before: "Заявки в WhatsApp, адреса в блокноте, фото терялись.",
+        after: "Одна вкладка, из которой видно весь день.",
+        rows: [
+          { name: "Ремонт кондиционера, ул. Ленина 14", meta: "Мастерская · сегодня 15:00", status: "ok", label: "в работе" },
+          { name: "Замена компрессора, офис 302", meta: "Выезд · завтра", status: "warn", label: "ожидает" },
+          { name: "Диагностика, ТЦ «Атлант»", meta: "Просрочено на 2 дня", status: "overdue", label: "просрочено" }
+        ]
+      },
+      {
+        tag: "ОБСЛУЖИВАНИЕ ОБЪЕКТОВ ПО ГРАФИКУ", name: "Аквацентр", title: "Объекты и визиты",
+        before: "График обслуживания в голове у владельца.",
+        after: "Программа сама напоминает, к кому пора ехать.",
+        rows: [
+          { name: "Бассейн, санаторий «Заря»", meta: "Плановый визит · через 3 дня", status: "ok", label: "по графику" },
+          { name: "Фильтрация, коттедж на Речной", meta: "Визит сегодня", status: "warn", label: "сегодня" },
+          { name: "Чистка чаши, база отдыха", meta: "Просрочено на 5 дней", status: "overdue", label: "просрочено" }
+        ]
+      },
+      {
+        tag: "ЗАПИСЬ И ЗАГРУЗКА ПОСТОВ", name: "GBC Detailing", title: "Посты и запись",
+        before: "Запись в тетради, звонки «когда вас ждать».",
+        after: "Видно занятость постов на неделю вперёд.",
+        rows: [
+          { name: "Пост 1 — Camry, полировка", meta: "09:00–13:00", status: "ok", label: "занят" },
+          { name: "Пост 2 — запись на четверг", meta: "Ждёт подтверждения клиента", status: "warn", label: "не подтверждено" },
+          { name: "Пост 3 — керамика, Tiggo", meta: "Задержка на 1 день", status: "overdue", label: "задержка" }
+        ]
+      },
+      {
+        tag: "МОНТАЖ СИСТЕМ ВИДЕОНАБЛЮДЕНИЯ · КРАСНОДАР", name: "FellowLink", title: "Объекты и гарантии",
+        before: "Объекты стояли в трёх городах, а гарантии и доступы к регистраторам жили в переписке и в голове.",
+        after: "Один экран, где видно каждый объект, его оборудование и до какого числа действует гарантия.",
+        rows: [
+          { name: "Магазин «Продукты», Краснодар", meta: "Гарантия до 12.2026", status: "ok", label: "в порядке" },
+          { name: "Склад, Армавир", meta: "Гарантия истекает через 18 дней", status: "warn", label: "истекает" },
+          { name: "Офис, Новороссийск", meta: "Гарантия истекла", status: "overdue", label: "истекла" }
+        ]
+      },
+      {
+        tag: "ЭЛЕКТРОМОНТАЖ И ПОДКЛЮЧЕНИЯ", name: "23ELEKTRO", title: "Заявки на монтаж",
+        before: "Заявки на подключение принимали по телефону, объекты путались между собой.",
+        after: "У каждого объекта своя карточка с историей подключений.",
+        rows: [
+          { name: "Подключение щита, ул. Гагарина 8", meta: "Монтаж · сегодня", status: "ok", label: "в работе" },
+          { name: "Замена автоматов, офис «Плюс»", meta: "Ждёт материалы", status: "warn", label: "ожидание" },
+          { name: "Проверка проводки, склад №3", meta: "Просрочено на 1 день", status: "overdue", label: "просрочено" }
+        ]
+      },
+      {
+        tag: "ОКЛЕЙКА И ТЮНИНГ АВТОМОБИЛЕЙ", name: "Vinyl Jam", title: "Запись и расход плёнки",
+        before: "Запись в блокноте, расход плёнки на глаз.",
+        after: "Видно, сколько плёнки ушло на каждый автомобиль.",
+        rows: [
+          { name: "BMW X5, полная оклейка", meta: "Пост 1 · осталось 2 дня", status: "ok", label: "в работе" },
+          { name: "Camry, оклейка капота", meta: "Ждёт поставку плёнки", status: "warn", label: "ожидание" },
+          { name: "Golf, снятие плёнки", meta: "Просрочено на 3 дня", status: "overdue", label: "просрочено" }
+        ]
+      },
+      {
+        tag: "ВЫЕЗДЫ ПО ЗАЯВКАМ НА ДОМ · РОСТОВ-НА-ДОНУ", name: "РНД Электрик", title: "Заявки и выезды",
+        before: "Заявки принимали по звонку, диспетчер помнил адреса наизусть.",
+        after: "Список заявок с адресами и статусом на одном экране.",
+        rows: [
+          { name: "Замена проводки, ул. Текучева 92", meta: "Выезд сегодня 17:00", status: "ok", label: "запланировано" },
+          { name: "Установка розеток, кв. 45", meta: "Ждёт подтверждения", status: "warn", label: "ожидание" },
+          { name: "Ремонт щита, частный дом", meta: "Просрочено на 4 дня", status: "overdue", label: "просрочено" }
+        ]
+      }
+    ];
+
+    var card = document.getElementById("workCard");
+    var dotsWrap = document.getElementById("workDots");
+    if (!card || !dotsWrap) return;
+    var i = 0;
+
+    WORKS.forEach(function (_, idx) {
+      var dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "wa-dot";
+      dot.setAttribute("aria-label", "Компания " + (idx + 1));
+      dot.addEventListener("click", function () { show(idx); });
+      dotsWrap.appendChild(dot);
+    });
+    var dots = dotsWrap.querySelectorAll(".wa-dot");
+
+    function show(idx) {
+      i = (idx + WORKS.length) % WORKS.length;
+      var w = WORKS[i];
+      card.innerHTML =
+        '<div class="rounded-2xl border border-[#e8e4d61f] p-6 md:p-10">' +
+          '<div class="text-xs tracking-wide text-[#e8e4d661]">' + w.tag + '</div>' +
+          '<h3 class="mt-2 text-xl font-medium">' + w.title + ' — ' + w.name + '</h3>' +
+          '<p class="mt-1 text-sm text-[#e8e4d680]">Макет на демонстрационных данных</p>' +
+          '<div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">' +
+            '<div>' +
+              '<div class="text-xs text-[#e8e4d661] mb-1">БЫЛО</div>' +
+              '<p class="text-sm text-[#e8e4d69e]">' + w.before + '</p>' +
+              '<div class="text-xs text-[#e8e4d661] mb-1 mt-4">СТАЛО</div>' +
+              '<p class="text-sm text-[#e8e4d69e]">' + w.after + '</p>' +
+            '</div>' +
+            '<div class="rounded-xl bg-[#0a0a09] border border-[#e8e4d61a] px-4">' +
+              w.rows.map(function (r) {
+                return '<div class="wa-row"><div class="min-w-0"><div class="text-sm truncate">' + r.name + '</div>' +
+                  '<div class="text-xs text-[#e8e4d661] mt-0.5">' + r.meta + '</div></div>' +
+                  '<span class="wa-status ' + r.status + '">' + r.label + '</span></div>';
+              }).join("") +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      dots.forEach(function (d, di) { d.classList.toggle("active", di === i); });
+    }
+
+    document.getElementById("workPrev").addEventListener("click", function () { show(i - 1); });
+    document.getElementById("workNext").addEventListener("click", function () { show(i + 1); });
+    show(0);
   })();
 </script>
 
