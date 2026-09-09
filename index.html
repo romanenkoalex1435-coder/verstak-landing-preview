@@ -212,15 +212,8 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
   color:var(--ink-secondary-on-bg);
   max-width:480px;
   line-height:1.5;
-  margin:0 0 28px;
-}
-.hero-route-inline{
-  display:flex;flex-wrap:wrap;align-items:center;gap:8px;
-  font-size:14px;font-weight:600;color:var(--ink-secondary-on-bg);
   margin:0 0 32px;
 }
-.hero-route-inline b{font-weight:600;color:var(--ink)}
-.hero-route-inline .arrow{color:var(--ink-secondary-on-bg);font-weight:400}
 .hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-bottom:28px}
 .btn-primary{
   display:inline-flex;align-items:center;justify-content:center;
@@ -243,46 +236,36 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 .hero-caption{font-size:14px;color:var(--ink-secondary-on-bg)}
 .hero-caption strong{display:block;font-weight:600;color:var(--ink);margin-bottom:4px;font-size:14px}
 
-/* --- rail + panel component (signature move) --- */
-.nav-device{
-  display:grid;
-  grid-template-columns:44px minmax(0,1fr);
-  gap:16px;
-}
-@media (max-width:520px){.nav-device{grid-template-columns:34px minmax(0,1fr);gap:10px}}
-.nav-rail{
-  display:flex;flex-direction:column;align-items:center;
-  padding-block:8px;
-}
-.rail-dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--hairline-strong);
-  flex:0 0 auto;
-}
-.rail-dot.is-current{background:var(--ink-black);width:9px;height:9px}
-.rail-line{width:1px;flex:1 1 auto;background:var(--hairline-strong);margin-block:6px}
+/* --- route component (signature move) --- */
 .nav-panel{
   background:var(--panel);
   border:1px solid var(--hairline);
   border-radius:var(--radius-panel);
   padding:14px;
 }
-.nav-panel-label{
-  font-size:13px;font-weight:600;color:var(--ink-secondary);
-  padding:10px 14px 14px;
+.hero-route{
+  position:relative;
+  display:flex;flex-direction:column;gap:10px;
+  padding:8px 0;
 }
-.nav-row-list{display:flex;flex-direction:column;gap:6px}
-.nav-row{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:15px 18px;border-radius:var(--radius-nested);
+.hero-route::before{
+  content:"";
+  position:absolute;left:18px;top:35px;bottom:35px;
+  width:1px;background:var(--hairline-strong);
+}
+.hero-route-step{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:36px minmax(0,1fr);align-items:center;
+  min-height:54px;padding:0 18px 0 0;
   font-size:16px;font-weight:500;color:var(--ink);
 }
-.nav-row .num{font-size:13px;font-weight:600;color:var(--ink-secondary);font-variant-numeric:tabular-nums}
-.nav-row.is-selected{
-  background:var(--ink-black);color:#fff;
+.route-dot{
+  justify-self:center;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--hairline-strong);
 }
-.nav-row.is-selected .num{color:rgba(255,255,255,.62)}
-.nav-row + .nav-row{position:relative}
+.hero-route-step.is-current{background:var(--ink-black);color:#fff;border-radius:var(--radius-nested)}
+.hero-route-step.is-current .route-dot{width:9px;height:9px;background:#fff}
 
 /* ==========================================================================
    PROTOTYPE  #prototype  — panel treatment
@@ -724,10 +707,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
     <div class="container hero-grid">
       <div class="hero-copy">
         <h1>Делаем программу под ваш порядок работы</h1>
-        <p class="hero-sub">Заявки, исполнители, выезды и результаты — в одной программе. Базовый состав от 60 000 ₽, сборка около трёх недель.</p>
-        <p class="hero-route-inline">
-          <b>Заявка</b><span class="arrow">→</span><b>Исполнитель</b><span class="arrow">→</span><b>Выезд</b><span class="arrow">→</span><b>Результат</b>
-        </p>
+        <p class="hero-sub">Вся работа — в одной программе. Базовый состав от 60 000 ₽, сборка около трёх недель.</p>
         <div class="hero-actions">
           <a class="btn-primary" href="#builder">Собрать программу</a>
           <a class="btn-secondary-link" href="#prototype">Посмотреть, как работает</a>
@@ -739,24 +719,12 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
       </div>
 
       <div class="hero-device" aria-hidden="false">
-        <div class="nav-device">
-          <div class="nav-rail" aria-hidden="true">
-            <span class="rail-dot"></span>
-            <span class="rail-line"></span>
-            <span class="rail-dot"></span>
-            <span class="rail-line"></span>
-            <span class="rail-dot is-current"></span>
-            <span class="rail-line"></span>
-            <span class="rail-dot"></span>
-          </div>
-          <div class="nav-panel">
-            <p class="nav-panel-label">Маршрут заявки</p>
-            <div class="nav-row-list">
-              <div class="nav-row"><span>Заявка</span><span class="num">01</span></div>
-              <div class="nav-row"><span>Исполнитель</span><span class="num">02</span></div>
-              <div class="nav-row is-selected"><span>Выезд</span><span class="num">03</span></div>
-              <div class="nav-row"><span>Результат</span><span class="num">04</span></div>
-            </div>
+        <div class="nav-panel">
+          <div class="hero-route" aria-label="Этапы работы с заявкой">
+            <div class="hero-route-step"><span class="route-dot" aria-hidden="true"></span><span>Заявка</span></div>
+            <div class="hero-route-step"><span class="route-dot" aria-hidden="true"></span><span>Исполнитель</span></div>
+            <div class="hero-route-step is-current"><span class="route-dot" aria-hidden="true"></span><span>Выезд</span></div>
+            <div class="hero-route-step"><span class="route-dot" aria-hidden="true"></span><span>Результат</span></div>
           </div>
         </div>
       </div>
