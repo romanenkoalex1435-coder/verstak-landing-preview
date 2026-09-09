@@ -13,6 +13,23 @@
   var $$ = function (sel, root) { return [].slice.call((root || document).querySelectorAll(sel)); };
   var reduced = function () { return matchMedia('(prefers-reduced-motion: reduce)').matches; };
 
+  (function initMotionScenes() {
+    var scenes = $$('[data-motion-scene]');
+    if (!scenes.length) return;
+    document.documentElement.classList.add('is-motion-ready');
+    function show(scene) { scene.classList.add('is-in-view'); }
+    if (reduced() || !('IntersectionObserver' in window)) {
+      scenes.forEach(show);
+      return;
+    }
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { show(entry.target); observer.unobserve(entry.target); }
+      });
+    }, { threshold: 0.18 });
+    scenes.forEach(function (scene) { observer.observe(scene); });
+  })();
+
   /* ---------- состояние сборки ---------- */
   var SX = (function () {
     var listeners = [];

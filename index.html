@@ -51,6 +51,7 @@
   --font:"Commissioner",-apple-system,"Helvetica Neue",Arial,sans-serif;
   --ease:cubic-bezier(.2,.7,.2,1);
 }
+:root{--motion-ease:cubic-bezier(.22,1,.36,1);--motion-enter:520ms}
 
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -266,6 +267,11 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 }
 .hero-route-step.is-current{background:var(--ink-black);color:#fff;border-radius:var(--radius-nested)}
 .hero-route-step.is-current .route-dot{width:9px;height:9px;background:#fff}
+.is-motion-ready [data-motion-layer]{opacity:0;transform:translateY(18px)}
+.is-motion-ready [data-motion-scene].is-in-view [data-motion-layer]{opacity:1;transform:none;transition:opacity var(--motion-enter) var(--motion-ease),transform var(--motion-enter) var(--motion-ease);transition-delay:calc(var(--motion-index,0) * 80ms)}
+.hero-route::after{content:"";position:absolute;left:18px;top:35px;width:1px;height:0;background:var(--ink-black);transition:height 720ms var(--motion-ease) 120ms}
+.is-motion-ready .hero.is-in-view .hero-route::after{height:calc(66.666% - 24px)}
+@media (prefers-reduced-motion:reduce){.is-motion-ready [data-motion-layer]{opacity:1;transform:none;transition:none}.hero-route::after{height:calc(66.666% - 24px);transition:none}}
 
 /* ==========================================================================
    PROTOTYPE  #prototype  — panel treatment
@@ -703,7 +709,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 <main id="top">
 
   <!-- ============== HERO ============== -->
-  <section class="hero">
+  <section class="hero" data-motion-scene="hero">
     <div class="container hero-grid">
       <div class="hero-copy">
         <h1>Делаем программу под ваш порядок работы</h1>
@@ -721,10 +727,10 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
       <div class="hero-device" aria-hidden="false">
         <div class="nav-panel">
           <div class="hero-route" aria-label="Этапы работы с заявкой">
-            <div class="hero-route-step"><span class="route-dot" aria-hidden="true"></span><span>Заявка</span></div>
-            <div class="hero-route-step"><span class="route-dot" aria-hidden="true"></span><span>Исполнитель</span></div>
-            <div class="hero-route-step is-current"><span class="route-dot" aria-hidden="true"></span><span>Выезд</span></div>
-            <div class="hero-route-step"><span class="route-dot" aria-hidden="true"></span><span>Результат</span></div>
+            <div class="hero-route-step" data-motion-layer style="--motion-index:0"><span class="route-dot" aria-hidden="true"></span><span>Заявка</span></div>
+            <div class="hero-route-step" data-motion-layer style="--motion-index:1"><span class="route-dot" aria-hidden="true"></span><span>Исполнитель</span></div>
+            <div class="hero-route-step is-current" data-motion-layer style="--motion-index:2"><span class="route-dot" aria-hidden="true"></span><span>Выезд</span></div>
+            <div class="hero-route-step" data-motion-layer style="--motion-index:3"><span class="route-dot" aria-hidden="true"></span><span>Результат</span></div>
           </div>
         </div>
       </div>
