@@ -4,13 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Верстак — программа учёта заявок и выездов</title>
-<script>
-  // Runs before the hero paints — decides synchronously whether the intro
-  // has already played this session, so there's no flash of the wrong state.
-  if (sessionStorage.getItem("verstak-intro-played")) {
-    document.documentElement.classList.add("no-intro");
-  }
-</script>
 <script>tailwind = { config: { corePlugins: { preflight: false } } };</script>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,30 +27,27 @@
   a{color:inherit;text-decoration:none}
 
   /* ---- hero intro: chaos of icons converges into a laptop, screen flashes,
-     real hero content underneath is revealed. Plays once per session. ---- */
+     real hero content underneath is revealed. Plays on every load. ---- */
   #hero{position:relative}
   .real-hero{opacity:0;transition:opacity .5s ease}
   .intro-overlay{position:absolute;inset:0;overflow:hidden;background:#080807}
-
-  .no-intro .intro-overlay{display:none}
-  .no-intro .real-hero{opacity:1}
 
   .hi{position:absolute;stroke:#e8e4d6;stroke-width:1.4;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0;
     animation:hiScatter .5s ease forwards, hiConverge 1.05s cubic-bezier(.5,0,.75,0) forwards;}
   @keyframes hiScatter{ from{opacity:0;transform:translateY(8px) scale(.8);} to{opacity:1;transform:translateY(0) scale(1);} }
   @keyframes hiConverge{
     0%{}
-    100%{ left:62%; top:50%; margin-left:-12px; margin-top:-12px; width:24px; opacity:0; transform:rotate(0deg) scale(.4); }
+    100%{ left:50%; top:50%; margin-left:-12px; margin-top:-12px; width:24px; opacity:0; transform:rotate(0deg) scale(.4); }
   }
 
-  .hi-laptop{position:absolute;left:62%;top:50%;width:200px;margin-left:-100px;margin-top:-64px;opacity:0;
+  .hi-laptop{position:absolute;left:50%;top:50%;width:300px;margin-left:-150px;margin-top:-95px;opacity:0;
     animation:hiLaptopIn .5s ease .55s forwards, hiLaptopPulse 1s ease 1.05s forwards, hiLaptopOut .3s ease 1.95s forwards;}
   .hi-laptop svg{width:100%;stroke:#e8e4d6;stroke-width:1.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
   @keyframes hiLaptopIn{ from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
   @keyframes hiLaptopPulse{ 0%{filter:drop-shadow(0 0 0 transparent)} 50%{filter:drop-shadow(0 0 14px #e8e4d655)} 100%{filter:drop-shadow(0 0 0 transparent)} }
   @keyframes hiLaptopOut{ to{opacity:0;transform:scale(1.05)} }
 
-  .hi-flash{position:absolute;left:62%;top:50%;width:136px;height:82px;margin-left:-68px;margin-top:-52px;
+  .hi-flash{position:absolute;left:50%;top:50%;width:200px;height:112px;margin-left:-100px;margin-top:-78px;
     background:#e8e4d6;border-radius:6px;opacity:0;
     animation:hiFlashOn .22s ease 1.85s forwards, hiFlashGrow .65s cubic-bezier(.6,0,.2,1) 2.05s forwards;}
   @keyframes hiFlashOn{ to{opacity:1} }
@@ -334,8 +324,7 @@
     var overlay = document.getElementById("introOverlay");
     var hero = document.querySelector(".real-hero");
     var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!overlay || document.documentElement.classList.contains("no-intro") || reduced) return;
-    sessionStorage.setItem("verstak-intro-played", "1");
+    if (!overlay || reduced) return;
     setTimeout(function () {
       hero.classList.add("reveal");
       overlay.style.display = "none";
