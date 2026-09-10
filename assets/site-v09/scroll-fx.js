@@ -16,6 +16,9 @@
     var items = [].slice.call(document.querySelectorAll('[data-faq]'));
     if (!items.length) return;
 
+    var list = document.querySelector('[data-faq-list]');
+    if (list) list.classList.add('faq-js');
+
     function setOpen(item, open) {
       var btn = item.querySelector('.faq-q');
       var panel = item.querySelector('.faq-panel');

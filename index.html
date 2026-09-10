@@ -290,7 +290,7 @@ main,.site-footer{position:relative;z-index:1}
   position:fixed;left:22px;top:50%;transform:translateY(-50%);z-index:30;
   display:none;flex-direction:column;align-items:flex-start;gap:0;
 }
-@media (min-width:960px){.route-thread{display:flex}}
+@media (min-width:1400px){.route-thread{display:flex}}
 .route-thread-line{
   position:absolute;left:3px;top:6px;bottom:6px;width:1px;background:var(--hairline-strong);
 }
@@ -311,7 +311,7 @@ main,.site-footer{position:relative;z-index:1}
 }
 .route-thread-stop.is-active .route-thread-dot{background:var(--ink-black);transform:scale(1.3)}
 .route-thread-stop.is-active .route-thread-label{opacity:1;transform:none;color:var(--ink)}
-.route-thread:hover .route-thread-label{opacity:1;transform:none}
+.route-thread:hover .route-thread-label,.route-thread-stop:focus-visible .route-thread-label{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.route-thread-fill,.route-thread-dot,.route-thread-label{transition:none}}
 .route-complete{display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;font-size:14px;font-weight:600}
 .route-complete-mark{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink-black);color:#fff;transform:scale(.7) rotate(-12deg)}
@@ -710,9 +710,10 @@ main,.site-footer{position:relative;z-index:1}
 .faq-plus::before{left:6px;right:6px;top:11px;height:1.5px}
 .faq-plus::after{top:6px;bottom:6px;left:11px;width:1.5px}
 .faq-item[data-open] .faq-plus{transform:rotate(45deg)}
-.faq-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows 320ms var(--ease)}
+.faq-panel{display:grid;grid-template-rows:1fr}
 .faq-panel > div{overflow:hidden}
-.faq-item[data-open] .faq-panel{grid-template-rows:1fr}
+.faq-js .faq-panel{grid-template-rows:0fr;transition:grid-template-rows 320ms var(--ease)}
+.faq-js .faq-item[data-open] .faq-panel{grid-template-rows:1fr}
 .faq-answer{padding:2px 22px 20px;font-size:14.5px;color:var(--ink-secondary);line-height:1.6;max-width:640px}
 @media (prefers-reduced-motion:reduce){.faq-item,.faq-q,.faq-plus,.faq-panel{transition:none}}
 

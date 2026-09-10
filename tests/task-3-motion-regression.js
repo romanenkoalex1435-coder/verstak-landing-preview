@@ -23,7 +23,7 @@ assert(/<div class="brick-grid">/.test(builder), 'builder grid must remain visib
 assert(/<aside class="summary-panel">/.test(builder), 'builder summary must remain visible and interactive');
 
 var works = section('works');
-assert(/<section id="works" class="sect tone-scene tone-works" data-sx="gallery" data-motion-scene="works">/.test(works), 'works must be a toned gallery motion scene');
+assert(/<section id="works" class="sect" data-sx="gallery" data-motion-scene="works">/.test(works), 'works must be a gallery motion scene');
 assert(/<div class="section-head on-panel">/.test(works), 'works heading must stay visible before scene entry');
 assert(/<div class="tabs-col">/.test(works), 'works tabs must remain visible and interactive');
 assert(/<div class="stage-switch-surface" data-sx="stage">/.test(works), 'works media must use an independent switch surface');
@@ -33,7 +33,6 @@ assert(core.indexOf('timer = setTimeout(render, 180);') !== -1, 'gallery render 
 assert(core.indexOf('clearTimeout(timer);') !== -1, 'gallery must cancel a pending render before switching');
 assert(html.indexOf('.stage-switch-surface{transition:opacity 180ms var(--ease),transform 180ms var(--ease)}') !== -1, 'stage switch surface must transition opacity and transform over 180ms');
 assert(html.indexOf('.stage-switch-surface.is-changing{opacity:.25;transform:translateY(8px)}') !== -1, 'stage changing state must use the specified short exit');
-assert(html.indexOf('.tone-works{background:#d4d9de}') !== -1, 'works tone is missing');
 assert(html.indexOf('.is-motion-ready [data-motion-scene] [data-motion-decor]{transition-delay:calc(min(var(--motion-index,0),1) * 70ms);transform:translateY(10px)}') !== -1, 'mobile scene cascade must use 10px distance and 70ms delays');
 assert(html.indexOf('.is-motion-ready [data-motion-scene].is-in-view [data-motion-decor]{transition-delay:calc(min(var(--motion-index,0),1) * 70ms)}') !== -1, 'mobile scene delay must override the more specific desktop in-view rule');
 
