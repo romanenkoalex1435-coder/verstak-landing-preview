@@ -272,18 +272,44 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 .hero-route::after{content:"";position:absolute;left:18px;top:35px;width:1px;height:0;background:var(--ink-black);transition:height 720ms var(--motion-ease) 120ms}
 .is-motion-ready .hero.is-in-view .hero-route::after{height:128px}
 @media (prefers-reduced-motion:reduce){.is-motion-ready [data-motion-decor]{opacity:1;transform:none;transition:none}.hero-route::after{height:128px;transition:none}}
-/* ---------- живой scroll-gradient (2-3 blurred blobs, position/color driven by scroll) ---------- */
+/* ---------- живой scroll-gradient: слоистый свет (холодная масса + молочное ядро + тёплая масса) ---------- */
 main,.site-footer{position:relative;z-index:1}
 .scroll-aura{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--bg)}
+.scroll-aura::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 42%,rgba(11,11,12,.06) 100%);
+}
+.scroll-aura::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:140px 140px;
+}
 .aura-blob{
-  position:absolute;top:50%;left:50%;width:62vmax;height:62vmax;border-radius:50%;
-  filter:blur(90px);opacity:.6;
+  position:absolute;top:50%;left:50%;border-radius:50%;
   transform:translate3d(calc(-50% + var(--aura-ax,0px)),calc(-50% + var(--aura-ay,0px)),0);
   background:var(--aura-c,#cfd3d8);
 }
-.aura-blob--a{--aura-ax:var(--aura-ax1,0px);--aura-ay:var(--aura-ay1,0px);--aura-c:var(--aura-c1,#c9ced6)}
-.aura-blob--b{width:50vmax;height:50vmax;--aura-ax:var(--aura-ax2,0px);--aura-ay:var(--aura-ay2,0px);--aura-c:var(--aura-c2,#dcdcda)}
-.aura-blob--c{width:56vmax;height:56vmax;--aura-ax:var(--aura-ax3,0px);--aura-ay:var(--aura-ay3,0px);--aura-c:var(--aura-c3,#e8ddc9)}
+/* холодная масса: крупная, мягкая, сильно рассеянная */
+.aura-blob--a{
+  width:66vmax;height:66vmax;filter:blur(112px);opacity:.5;
+  --aura-ax:var(--aura-ax1,0px);--aura-ay:var(--aura-ay1,0px);--aura-c:var(--aura-c1,#c7ccd3);
+}
+/* молочное ядро: меньше и резче — читается как источник света, а не пятно */
+.aura-blob--b{
+  width:34vmax;height:34vmax;filter:blur(56px);opacity:.85;
+  --aura-ax:var(--aura-ax2,0px);--aura-ay:var(--aura-ay2,0px);--aura-c:var(--aura-c2,#f2f0ea);
+}
+/* тёплая масса */
+.aura-blob--c{
+  width:58vmax;height:58vmax;filter:blur(100px);opacity:.48;
+  --aura-ax:var(--aura-ax3,0px);--aura-ay:var(--aura-ay3,0px);--aura-c:var(--aura-c3,#ecdfc7);
+}
+@media (max-width:640px){
+  .aura-blob--a{width:72vmax;height:72vmax;filter:blur(64px);opacity:.4}
+  .aura-blob--b{width:32vmax;height:32vmax;filter:blur(34px);opacity:.65}
+  .aura-blob--c{width:60vmax;height:60vmax;filter:blur(58px);opacity:.4}
+  .scroll-aura::after{opacity:.035}
+}
 
 /* ---------- маршрутная нить: прототип → конструктор → работы → процесс → заявка ---------- */
 .route-thread{

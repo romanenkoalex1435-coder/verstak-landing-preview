@@ -82,14 +82,14 @@
       var max = root.scrollHeight - window.innerHeight;
       var f = max > 0 ? clamp(window.scrollY / max, 0, 1) : 0;
       var w = window.innerWidth, h = window.innerHeight;
-      target.ax1 = w * 0.16 * Math.sin(f * Math.PI * 1.3);
-      target.ay1 = h * 0.22 * (f - 0.5);
-      target.ax2 = w * -0.14 * Math.sin(f * Math.PI * 1.7 + 1);
-      target.ay2 = h * 0.18 * Math.cos(f * Math.PI * 1.1);
-      target.ax3 = w * 0.10 * Math.cos(f * Math.PI * 0.8);
-      target.ay3 = h * 0.25 * (f - 0.5);
+      target.ax1 = w * 0.20 * Math.sin(f * Math.PI * 1.15);
+      target.ay1 = h * 0.26 * (f - 0.5) + h * 0.05 * Math.sin(f * Math.PI * 0.6);
+      target.ax2 = w * -0.22 * Math.sin(f * Math.PI * 2.1 + 0.6);
+      target.ay2 = h * 0.20 * Math.cos(f * Math.PI * 1.6);
+      target.ax3 = w * 0.16 * Math.cos(f * Math.PI * 0.9 + 0.4);
+      target.ay3 = h * 0.30 * (f - 0.5) - h * 0.06 * Math.sin(f * Math.PI * 1.2);
       target.c1 = toneAt(f);
-      target.c2 = mixWhite(toneAt(f), .4);
+      target.c2 = mixWhite(toneAt(f), .58);
       target.c3 = toneAt(clamp(f + 0.18, 0, 1));
     }
 
