@@ -161,11 +161,14 @@
       var frac = Math.max(0, Math.min(1, ((window.scrollY + viewline) - firstTop) / span));
       thread.style.setProperty('--route-fill', (frac * 100).toFixed(1) + '%');
 
+      var atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
       var activeIndex = 0;
       sections.forEach(function (sec, i) {
         if (sec.getBoundingClientRect().top <= viewline) activeIndex = i;
       });
+      if (atBottom) activeIndex = sections.length - 1;
       stops.forEach(function (stop, i) { stop.classList.toggle('is-active', i === activeIndex); });
+      thread.classList.toggle('is-complete', activeIndex === sections.length - 1);
     }
 
     var ticking = false;
