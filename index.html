@@ -272,10 +272,47 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 .hero-route::after{content:"";position:absolute;left:18px;top:35px;width:1px;height:0;background:var(--ink-black);transition:height 720ms var(--motion-ease) 120ms}
 .is-motion-ready .hero.is-in-view .hero-route::after{height:128px}
 @media (prefers-reduced-motion:reduce){.is-motion-ready [data-motion-decor]{opacity:1;transform:none;transition:none}.hero-route::after{height:128px;transition:none}}
-.tone-transition{height:clamp(64px,10vw,140px);background:linear-gradient(to bottom,var(--tone-from),var(--tone-to));pointer-events:none}
-.tone-cool{background:#d8dce0}
-.tone-works{background:#d4d9de}
-.tone-warm{background:#ddd8d0}
+/* ---------- живой scroll-gradient (2-3 blurred blobs, position/color driven by scroll) ---------- */
+main,.site-footer{position:relative;z-index:1}
+.scroll-aura{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--bg)}
+.aura-blob{
+  position:absolute;top:50%;left:50%;width:62vmax;height:62vmax;border-radius:50%;
+  filter:blur(90px);opacity:.6;
+  transform:translate3d(calc(-50% + var(--aura-ax,0px)),calc(-50% + var(--aura-ay,0px)),0);
+  background:var(--aura-c,#cfd3d8);
+}
+.aura-blob--a{--aura-ax:var(--aura-ax1,0px);--aura-ay:var(--aura-ay1,0px);--aura-c:var(--aura-c1,#c9ced6)}
+.aura-blob--b{width:50vmax;height:50vmax;--aura-ax:var(--aura-ax2,0px);--aura-ay:var(--aura-ay2,0px);--aura-c:var(--aura-c2,#dcdcda)}
+.aura-blob--c{width:56vmax;height:56vmax;--aura-ax:var(--aura-ax3,0px);--aura-ay:var(--aura-ay3,0px);--aura-c:var(--aura-c3,#e8ddc9)}
+
+/* ---------- маршрутная нить: прототип → конструктор → работы → процесс → заявка ---------- */
+.route-thread{
+  position:fixed;left:22px;top:50%;transform:translateY(-50%);z-index:30;
+  display:none;flex-direction:column;align-items:flex-start;gap:0;
+}
+@media (min-width:960px){.route-thread{display:flex}}
+.route-thread-line{
+  position:absolute;left:3px;top:6px;bottom:6px;width:1px;background:var(--hairline-strong);
+}
+.route-thread-fill{
+  position:absolute;left:0;top:0;width:100%;height:var(--route-fill,0%);
+  background:var(--ink-black);transition:height 260ms var(--ease);
+}
+.route-thread-stop{
+  position:relative;display:flex;align-items:center;gap:10px;padding:14px 0;text-decoration:none;
+}
+.route-thread-dot{
+  position:relative;z-index:1;width:7px;height:7px;border-radius:50%;background:var(--hairline-strong);
+  transition:background 220ms var(--ease),transform 220ms var(--ease);
+}
+.route-thread-label{
+  font-size:12.5px;font-weight:500;color:var(--ink-secondary-on-bg);opacity:0;transform:translateX(-4px);
+  transition:opacity 220ms var(--ease),transform 220ms var(--ease);white-space:nowrap;
+}
+.route-thread-stop.is-active .route-thread-dot{background:var(--ink-black);transform:scale(1.3)}
+.route-thread-stop.is-active .route-thread-label{opacity:1;transform:none;color:var(--ink)}
+.route-thread:hover .route-thread-label{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.route-thread-fill,.route-thread-dot,.route-thread-label{transition:none}}
 .route-complete{display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;font-size:14px;font-weight:600}
 .route-complete-mark{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink-black);color:#fff;transform:scale(.7) rotate(-12deg)}
 .is-motion-ready .is-in-view .route-complete-mark{transform:none;transition:transform 520ms var(--motion-ease) 140ms}
@@ -647,33 +684,37 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 .about-sign{font-size:14.5px;color:var(--ink-secondary-on-bg);max-width:560px}
 
 /* ==========================================================================
-   FAQ — panel, native exclusive accordion
+   FAQ — panel, quiet exclusive accordion
    ========================================================================== */
 .faq-list{display:flex;flex-direction:column;gap:10px}
 .faq-item{
   background:var(--panel-nested);border:1px solid var(--hairline);border-radius:var(--radius-nested);
-  overflow:hidden;
+  overflow:hidden;transition:border-color 220ms var(--ease);
 }
-.faq-item summary{
-  list-style:none;cursor:pointer;padding:19px 22px;
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
+.faq-item[data-open]{border-color:var(--hairline-strong)}
+.faq-q{
+  all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  width:100%;padding:19px 22px;cursor:pointer;border-radius:inherit;
   font-size:16px;font-weight:500;color:var(--ink);
+  transition:background 220ms var(--ease);
 }
-.faq-item summary::-webkit-details-marker{display:none}
-.faq-item summary .plus{
+.faq-q:focus-visible{outline:2px solid var(--ink-black);outline-offset:-2px}
+.faq-item[data-open] .faq-q{background:#f2e7d8}
+.faq-plus{
   width:24px;height:24px;border-radius:50%;border:1px solid var(--hairline-strong);
-  flex:0 0 auto;position:relative;
+  flex:0 0 auto;position:relative;transition:transform 260ms var(--ease),border-color 220ms var(--ease);
 }
-.faq-item summary .plus::before,.faq-item summary .plus::after{
+.faq-plus::before,.faq-plus::after{
   content:"";position:absolute;background:var(--ink);
 }
-.faq-item summary .plus::before{left:6px;right:6px;top:11px;height:1.5px}
-.faq-item summary .plus::after{top:6px;bottom:6px;left:11px;width:1.5px;transition:opacity .15s var(--ease)}
-.faq-item[open] summary .plus::after{opacity:0}
-.faq-item[open] summary{background:var(--ink-black);color:#fff}
-.faq-item[open] summary .plus{border-color:rgba(255,255,255,.4)}
-.faq-item[open] summary .plus::before{background:#fff}
-.faq-answer{padding:0 22px 20px;font-size:14.5px;color:var(--ink-secondary);line-height:1.6;max-width:640px}
+.faq-plus::before{left:6px;right:6px;top:11px;height:1.5px}
+.faq-plus::after{top:6px;bottom:6px;left:11px;width:1.5px}
+.faq-item[data-open] .faq-plus{transform:rotate(45deg)}
+.faq-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows 320ms var(--ease)}
+.faq-panel > div{overflow:hidden}
+.faq-item[data-open] .faq-panel{grid-template-rows:1fr}
+.faq-answer{padding:2px 22px 20px;font-size:14.5px;color:var(--ink-secondary);line-height:1.6;max-width:640px}
+@media (prefers-reduced-motion:reduce){.faq-item,.faq-q,.faq-plus,.faq-panel{transition:none}}
 
 /* ==========================================================================
    FOOTER
@@ -709,6 +750,21 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 </style>
 </head>
 <body>
+
+<div class="scroll-aura" aria-hidden="true">
+  <span class="aura-blob aura-blob--a"></span>
+  <span class="aura-blob aura-blob--b"></span>
+  <span class="aura-blob aura-blob--c"></span>
+</div>
+
+<nav class="route-thread" aria-label="Маршрут по странице" data-route-thread>
+  <span class="route-thread-line" aria-hidden="true"><span class="route-thread-fill"></span></span>
+  <a class="route-thread-stop" href="#prototype" data-route-target="prototype"><span class="route-thread-dot" aria-hidden="true"></span><span class="route-thread-label">Прототип</span></a>
+  <a class="route-thread-stop" href="#builder" data-route-target="builder"><span class="route-thread-dot" aria-hidden="true"></span><span class="route-thread-label">Конструктор</span></a>
+  <a class="route-thread-stop" href="#works" data-route-target="works"><span class="route-thread-dot" aria-hidden="true"></span><span class="route-thread-label">Работы</span></a>
+  <a class="route-thread-stop" href="#process" data-route-target="process"><span class="route-thread-dot" aria-hidden="true"></span><span class="route-thread-label">Процесс</span></a>
+  <a class="route-thread-stop" href="#request-cta" data-route-target="request-cta"><span class="route-thread-dot" aria-hidden="true"></span><span class="route-thread-label">Заявка</span></a>
+</nav>
 
 <header class="site-header">
   <div class="container header-row">
@@ -757,7 +813,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
   </section>
 
   <!-- ============== PROTOTYPE ============== -->
-  <section id="prototype" class="proto-wrap tone-scene tone-cool" data-sx="proto" data-motion-scene="prototype" data-route-stage="0">
+  <section id="prototype" class="proto-wrap" data-sx="proto" data-motion-scene="prototype" data-route-stage="0">
     <div class="container">
       <div class="story-route" aria-label="Текущий этап заявки" data-motion-decor style="--motion-index:0">
         <span class="story-route-step is-active" data-stage="0">Заявка</span>
@@ -947,8 +1003,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
   </section>
 
   <!-- ============== GALLERY ============== -->
-  <div class="tone-transition" style="--tone-from:var(--bg);--tone-to:#d4d9de" aria-hidden="true"></div>
-  <section id="works" class="sect tone-scene tone-works" data-sx="gallery" data-motion-scene="works">
+  <section id="works" class="sect" data-sx="gallery" data-motion-scene="works">
     <div class="container">
       <div class="panel-band">
         <div class="section-head on-panel">
@@ -1004,7 +1059,6 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
   </section>
 
   <!-- ============== PROCESS ============== -->
-  <div class="tone-transition" style="--tone-from:#d4d9de;--tone-to:var(--bg)" aria-hidden="true"></div>
   <section id="process" class="sect">
     <div class="container">
       <div class="section-head">
@@ -1082,41 +1136,68 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
         <p>О цене, формате программы и дальнейшей работе.</p>
       </div>
 
-      <div class="faq-list">
-        <details class="faq-item" name="faq-group-09">
-          <summary><span>Это сайт или приложение?</span><span class="plus" aria-hidden="true"></span></summary>
-          <p class="faq-answer">Веб-программа. Открываете в браузере на компьютере или телефоне, ставить ничего не нужно.</p>
-        </details>
-        <details class="faq-item" name="faq-group-09">
-          <summary><span>За что я плачу 60 000 ₽?</span><span class="plus" aria-hidden="true"></span></summary>
-          <p class="faq-answer">За базовую программу: заявки, клиенты, статусы, поиск. Дополнительные блоки считаются отдельно.</p>
-        </details>
-        <details class="faq-item" name="faq-group-09">
-          <summary><span>Будут ежемесячные платежи?</span><span class="plus" aria-hidden="true"></span></summary>
-          <p class="faq-answer">За саму программу — нет. Поддержка 5 000 ₽ в месяц подключается по желанию.</p>
-        </details>
-        <details class="faq-item" name="faq-group-09">
-          <summary><span>Цена в конструкторе окончательная?</span><span class="plus" aria-hidden="true"></span></summary>
-          <p class="faq-answer">Это расчёт выбранного состава. Перед работой уточним объём и зафиксируем сумму письменно.</p>
-        </details>
-        <details class="faq-item" name="faq-group-09">
-          <summary><span>Можно добавить блоки позже?</span><span class="plus" aria-hidden="true"></span></summary>
-          <p class="faq-answer">Да. Согласуем изменения и сроки, потом делаем.</p>
-        </details>
-        <details class="faq-item" name="faq-group-09">
-          <summary><span>Сколько занимает разработка?</span><span class="plus" aria-hidden="true"></span></summary>
-          <p class="faq-answer">Зависит от состава. Срок назовём после разбора задачи, до начала работы.</p>
-        </details>
-        <details class="faq-item" name="faq-group-09">
-          <summary><span>Нужно готовить техническое задание?</span><span class="plus" aria-hidden="true"></span></summary>
-          <p class="faq-answer">Нет. Расскажите, как принимаете заявки и распределяете выезды — остальное соберём сами.</p>
-        </details>
+      <div class="faq-list" data-faq-list>
+        <div class="faq-item" data-faq>
+          <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-panel-1" id="faq-q-1">
+            <span>Это сайт или приложение?</span><span class="faq-plus" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-panel-1" role="region" aria-labelledby="faq-q-1"><div>
+            <p class="faq-answer">Веб-программа. Открываете в браузере на компьютере или телефоне, ставить ничего не нужно.</p>
+          </div></div>
+        </div>
+        <div class="faq-item" data-faq>
+          <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-panel-2" id="faq-q-2">
+            <span>За что я плачу 60 000 ₽?</span><span class="faq-plus" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-panel-2" role="region" aria-labelledby="faq-q-2"><div>
+            <p class="faq-answer">За базовую программу: заявки, клиенты, статусы, поиск. Дополнительные блоки считаются отдельно.</p>
+          </div></div>
+        </div>
+        <div class="faq-item" data-faq>
+          <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-panel-3" id="faq-q-3">
+            <span>Будут ежемесячные платежи?</span><span class="faq-plus" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-panel-3" role="region" aria-labelledby="faq-q-3"><div>
+            <p class="faq-answer">За саму программу — нет. Поддержка 5 000 ₽ в месяц подключается по желанию.</p>
+          </div></div>
+        </div>
+        <div class="faq-item" data-faq>
+          <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-panel-4" id="faq-q-4">
+            <span>Цена в конструкторе окончательная?</span><span class="faq-plus" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-panel-4" role="region" aria-labelledby="faq-q-4"><div>
+            <p class="faq-answer">Это расчёт выбранного состава. Перед работой уточним объём и зафиксируем сумму письменно.</p>
+          </div></div>
+        </div>
+        <div class="faq-item" data-faq>
+          <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-panel-5" id="faq-q-5">
+            <span>Можно добавить блоки позже?</span><span class="faq-plus" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-panel-5" role="region" aria-labelledby="faq-q-5"><div>
+            <p class="faq-answer">Да. Согласуем изменения и сроки, потом делаем.</p>
+          </div></div>
+        </div>
+        <div class="faq-item" data-faq>
+          <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-panel-6" id="faq-q-6">
+            <span>Сколько занимает разработка?</span><span class="faq-plus" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-panel-6" role="region" aria-labelledby="faq-q-6"><div>
+            <p class="faq-answer">Зависит от состава. Срок назовём после разбора задачи, до начала работы.</p>
+          </div></div>
+        </div>
+        <div class="faq-item" data-faq>
+          <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-panel-7" id="faq-q-7">
+            <span>Нужно готовить техническое задание?</span><span class="faq-plus" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-panel-7" role="region" aria-labelledby="faq-q-7"><div>
+            <p class="faq-answer">Нет. Расскажите, как принимаете заявки и распределяете выезды — остальное соберём сами.</p>
+          </div></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <div class="tone-transition" style="--tone-from:var(--bg);--tone-to:#ddd8d0" aria-hidden="true"></div>
-  <section id="request-cta" class="sect tone-warm" data-motion-scene="request-cta">
+  <section id="request-cta" class="sect" data-motion-scene="request-cta">
     <div class="container request-cta-shell">
       <div class="route-complete" data-motion-decor style="--motion-index:0" aria-label="Маршрут завершён">
         <span class="route-complete-mark" aria-hidden="true">✓</span>
@@ -1140,5 +1221,6 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 
 <script src="assets/site-v09/data.js"></script>
 <script src="assets/site-v09/core.js"></script>
+<script src="assets/site-v09/scroll-fx.js"></script>
 </body>
 </html>
