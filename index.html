@@ -272,44 +272,26 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 .hero-route::after{content:"";position:absolute;left:18px;top:35px;width:1px;height:0;background:var(--ink-black);transition:height 720ms var(--motion-ease) 120ms}
 .is-motion-ready .hero.is-in-view .hero-route::after{height:128px}
 @media (prefers-reduced-motion:reduce){.is-motion-ready [data-motion-decor]{opacity:1;transform:none;transition:none}.hero-route::after{height:128px;transition:none}}
-/* ---------- живой scroll-gradient: слоистый свет (холодная масса + молочное ядро + тёплая масса) ---------- */
+/* ---------- живой scroll-gradient: полноэкранное mesh-поле, без отдельных пятен ---------- */
 main,.site-footer{position:relative;z-index:1}
-.scroll-aura{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--bg)}
+.scroll-aura{
+  position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+  background:
+    radial-gradient(circle farthest-corner at var(--mesh-x2,50%) var(--mesh-y2,35%),var(--mesh-c2,#f2f0ea) 0%,transparent 68%),
+    radial-gradient(circle farthest-corner at var(--mesh-x1,15%) var(--mesh-y1,20%),var(--mesh-c1,#c7ccd3) 0%,transparent 72%),
+    radial-gradient(circle farthest-corner at var(--mesh-x3,85%) var(--mesh-y3,80%),var(--mesh-c3,#ecdfc7) 0%,transparent 72%),
+    linear-gradient(var(--mesh-angle,135deg),var(--mesh-c1,#c7ccd3),var(--mesh-c2,#f2f0ea) 50%,var(--mesh-c3,#ecdfc7));
+}
 .scroll-aura::before{
   content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse at center,transparent 42%,rgba(11,11,12,.06) 100%);
+  background:radial-gradient(ellipse at center,transparent 55%,rgba(11,11,12,.05) 100%);
 }
 .scroll-aura::after{
   content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size:140px 140px;
 }
-.aura-blob{
-  position:absolute;top:50%;left:50%;border-radius:50%;
-  transform:translate3d(calc(-50% + var(--aura-ax,0px)),calc(-50% + var(--aura-ay,0px)),0);
-  background:var(--aura-c,#cfd3d8);
-}
-/* холодная масса: крупная, мягкая, сильно рассеянная */
-.aura-blob--a{
-  width:66vmax;height:66vmax;filter:blur(112px);opacity:.5;
-  --aura-ax:var(--aura-ax1,0px);--aura-ay:var(--aura-ay1,0px);--aura-c:var(--aura-c1,#c7ccd3);
-}
-/* молочное ядро: меньше и резче — читается как источник света, а не пятно */
-.aura-blob--b{
-  width:34vmax;height:34vmax;filter:blur(56px);opacity:.85;
-  --aura-ax:var(--aura-ax2,0px);--aura-ay:var(--aura-ay2,0px);--aura-c:var(--aura-c2,#f2f0ea);
-}
-/* тёплая масса */
-.aura-blob--c{
-  width:58vmax;height:58vmax;filter:blur(100px);opacity:.48;
-  --aura-ax:var(--aura-ax3,0px);--aura-ay:var(--aura-ay3,0px);--aura-c:var(--aura-c3,#ecdfc7);
-}
-@media (max-width:640px){
-  .aura-blob--a{width:72vmax;height:72vmax;filter:blur(64px);opacity:.4}
-  .aura-blob--b{width:32vmax;height:32vmax;filter:blur(34px);opacity:.65}
-  .aura-blob--c{width:60vmax;height:60vmax;filter:blur(58px);opacity:.4}
-  .scroll-aura::after{opacity:.035}
-}
+@media (max-width:640px){.scroll-aura::after{opacity:.035}}
 
 /* ---------- маршрутная нить: прототип → конструктор → работы → процесс → заявка ---------- */
 .route-thread{
@@ -800,11 +782,7 @@ main,.site-footer{position:relative;z-index:1}
 </head>
 <body>
 
-<div class="scroll-aura" aria-hidden="true">
-  <span class="aura-blob aura-blob--a"></span>
-  <span class="aura-blob aura-blob--b"></span>
-  <span class="aura-blob aura-blob--c"></span>
-</div>
+<div class="scroll-aura" aria-hidden="true"></div>
 
 <nav class="route-thread" aria-label="Маршрут по странице" data-route-thread>
   <span class="route-thread-line" aria-hidden="true"><span class="route-thread-fill"></span></span>

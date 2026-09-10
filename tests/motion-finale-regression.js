@@ -31,9 +31,10 @@ assert(main.indexOf('<form') === -1 && main.indexOf('data-sx="form"') === -1, 'h
    .tone-works / .tone-warm) with a single scroll-driven ambient gradient, so the
    cold-to-warm transition is continuous instead of three fixed seams. */
 assert(html.indexOf('<div class="scroll-aura"') !== -1 && /aria-hidden="true"/.test(html.slice(html.indexOf('<div class="scroll-aura"'), html.indexOf('<div class="scroll-aura"') + 60)), 'scroll aura layer must exist and stay out of the accessibility tree');
-var auraBlobs = html.match(/<span class="aura-blob aura-blob--[abc]"><\/span>/g) || [];
-assert(auraBlobs.length === 3, 'ambient gradient must render exactly three blurred blobs');
-assert(html.indexOf('--aura-c1') !== -1 && html.indexOf('--aura-ax1') !== -1, 'aura blob position and color must be driven by scroll-linked custom properties');
+var auraCss = html.slice(html.indexOf('.scroll-aura{'), html.indexOf('.scroll-aura::before'));
+assert((auraCss.match(/radial-gradient\(/g) || []).length === 3, 'ambient gradient must layer three radial masses into one full-viewport field');
+assert(auraCss.indexOf('linear-gradient(') !== -1, 'ambient gradient must have a full-coverage base layer so no neutral gap can show between masses');
+assert(html.indexOf('--mesh-c1') !== -1 && html.indexOf('--mesh-x1') !== -1 && html.indexOf('--mesh-angle') !== -1, 'mesh gradient position, angle, and color must be driven by scroll-linked custom properties');
 assert(html.indexOf('.tone-transition') === -1 && html.indexOf('.tone-cool') === -1 && html.indexOf('.tone-works') === -1 && html.indexOf('.tone-warm') === -1, 'discrete tone-strip rules must not coexist with the ambient gradient');
 
 console.log('PASS final CTA follows FAQ and the ambient gradient replaces the discrete tone strips');

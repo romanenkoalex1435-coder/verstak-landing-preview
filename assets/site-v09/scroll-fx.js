@@ -40,8 +40,9 @@
   })();
 
   /* ============================================================
-     Живой scroll-gradient: 2-3 размытых пятна, положение и тон
-     считаются напрямую от прокрутки, без бесконечной анимации.
+     Живой scroll-gradient: полноэкранное mesh-поле (3 радиальных
+     массы + база), положение/угол/тон считаются напрямую от
+     прокрутки, без бесконечной анимации.
      ============================================================ */
   (function () {
     var aura = document.querySelector('.scroll-aura');
@@ -69,11 +70,15 @@
     }
     function mixWhite(c, t) { return [lerp(c[0], 255, t), lerp(c[1], 255, t), lerp(c[2], 255, t)]; }
 
-    var posKeys = ['ax1', 'ay1', 'ax2', 'ay2', 'ax3', 'ay3'];
+    var units = { x1: '%', y1: '%', x2: '%', y2: '%', x3: '%', y3: '%', angle: 'deg' };
+    var scalarKeys = Object.keys(units);
     var colorKeys = ['c1', 'c2', 'c3'];
-    var target = { ax1: 0, ay1: 0, ax2: 0, ay2: 0, ax3: 0, ay3: 0, c1: toneAt(0), c2: mixWhite(toneAt(0), .4), c3: toneAt(0) };
+    var target = {
+      x1: 15, y1: 20, x2: 50, y2: 35, x3: 85, y3: 80, angle: 135,
+      c1: toneAt(0), c2: mixWhite(toneAt(0), .58), c3: toneAt(0)
+    };
     var current = {
-      ax1: 0, ay1: 0, ax2: 0, ay2: 0, ax3: 0, ay3: 0,
+      x1: target.x1, y1: target.y1, x2: target.x2, y2: target.y2, x3: target.x3, y3: target.y3, angle: target.angle,
       c1: target.c1.slice(), c2: target.c2.slice(), c3: target.c3.slice()
     };
     var raf = 0;
@@ -81,13 +86,16 @@
     function computeTargets() {
       var max = root.scrollHeight - window.innerHeight;
       var f = max > 0 ? clamp(window.scrollY / max, 0, 1) : 0;
-      var w = window.innerWidth, h = window.innerHeight;
-      target.ax1 = w * 0.20 * Math.sin(f * Math.PI * 1.15);
-      target.ay1 = h * 0.26 * (f - 0.5) + h * 0.05 * Math.sin(f * Math.PI * 0.6);
-      target.ax2 = w * -0.22 * Math.sin(f * Math.PI * 2.1 + 0.6);
-      target.ay2 = h * 0.20 * Math.cos(f * Math.PI * 1.6);
-      target.ax3 = w * 0.16 * Math.cos(f * Math.PI * 0.9 + 0.4);
-      target.ay3 = h * 0.30 * (f - 0.5) - h * 0.06 * Math.sin(f * Math.PI * 1.2);
+      /* холодная и тёплая массы: широкая амплитуда, центр может уходить за
+         границы viewport (даём координатам выходить за 0-100%) */
+      target.x1 = 50 + 55 * Math.sin(f * Math.PI * 0.9 + 0.3);
+      target.y1 = 45 + 45 * Math.cos(f * Math.PI * 0.7);
+      target.x3 = 50 + 55 * Math.cos(f * Math.PI * 0.8 + 1.1);
+      target.y3 = 50 + 45 * Math.sin(f * Math.PI * 0.6);
+      /* молочное ядро: держим ближе к центру, оно остаётся видимым фокусом света */
+      target.x2 = 50 + 28 * Math.sin(f * Math.PI * 1.4);
+      target.y2 = 38 + 24 * Math.cos(f * Math.PI * 1.0 + 0.6);
+      target.angle = 110 + f * 170;
       target.c1 = toneAt(f);
       target.c2 = mixWhite(toneAt(f), .58);
       target.c3 = toneAt(clamp(f + 0.18, 0, 1));
@@ -95,7 +103,7 @@
 
     function apply(withLerp) {
       var settled = true;
-      posKeys.forEach(function (k) {
+      scalarKeys.forEach(function (k) {
         if (withLerp) {
           current[k] = lerp(current[k], target[k], 0.09);
           if (Math.abs(current[k] - target[k]) > 0.5) settled = false;
@@ -120,8 +128,8 @@
           current[k] = target[k].slice();
         }
       });
-      posKeys.forEach(function (k) { root.style.setProperty('--aura-' + k, current[k].toFixed(1) + 'px'); });
-      colorKeys.forEach(function (k) { root.style.setProperty('--aura-' + k, rgb(current[k])); });
+      scalarKeys.forEach(function (k) { root.style.setProperty('--mesh-' + k, current[k].toFixed(1) + units[k]); });
+      colorKeys.forEach(function (k) { root.style.setProperty('--mesh-' + k, rgb(current[k])); });
       return settled;
     }
 
