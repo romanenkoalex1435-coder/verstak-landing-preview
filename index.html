@@ -513,10 +513,13 @@ main,.site-footer{position:relative;z-index:1}
 .sx-stack-row{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 0;font-size:14px;border-bottom:1px solid var(--hairline);
+  opacity:1;transform:none;transition:opacity .22s ease,transform .22s ease;
 }
+.sx-stack-row.is-settling{opacity:0;transform:translateY(-6px) scale(.98)}
 .sx-stack-row span{color:var(--ink-secondary)}
 .sx-stack-row b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
 .sx-stack-row.is-base span{color:var(--ink);font-weight:500}
+@media (prefers-reduced-motion:reduce){.sx-stack-row{transition:none}}
 .stack-ghost{
   padding:11px 0;font-size:13px;color:var(--ink-secondary-on-bg);font-style:normal;
   border-bottom:1px dashed var(--hairline-strong);
@@ -623,6 +626,13 @@ main,.site-footer{position:relative;z-index:1}
 /* ==========================================================================
    GALLERY  #works — panel treatment (echoes hero rail+panel)
    ========================================================================== */
+.works-scene{position:relative}
+.works-scene-pin{position:relative}
+@media (min-width:961px){
+  .works-scene[data-scrub="on"] .works-scene-pin{
+    position:sticky;top:calc(var(--header-h) + 24px);
+  }
+}
 .gallery-shell{
   display:grid;grid-template-columns:220px minmax(0,1fr);gap:0;
   min-width:0;
@@ -998,37 +1008,6 @@ main,.site-footer{position:relative;z-index:1}
   </section>
 
   <!-- ============== BOUNDARIES ============== -->
-  <section class="sect">
-    <div class="container">
-      <div class="panel-band">
-        <div class="section-head on-panel">
-          <p class="eyebrow on-panel">Границы</p>
-          <h2>Берём задачи, которые можем закрыть</h2>
-          <p>Честно говорим, что берём, а что нет. Отказ на входе дешевле сорванного проекта.</p>
-        </div>
-
-        <div class="bounds-grid">
-          <div class="bounds-col">
-            <p class="bounds-label">Берём</p>
-            <div class="bounds-item"><h4>Учёт заявок и клиентов</h4><p>список, статусы, история по каждому</p></div>
-            <div class="bounds-item"><h4>Мобильный экран исполнителя</h4><p>задачи, чек-лист, фото с объекта</p></div>
-            <div class="bounds-item"><h4>Фотоотчёты и акты</h4><p>формируются сами после визита</p></div>
-            <div class="bounds-item"><h4>Роли и права доступа</h4><p>каждый видит только своё</p></div>
-            <div class="bounds-item"><h4>Выгрузка в Excel</h4><p>данные всегда можно забрать</p></div>
-          </div>
-          <div class="bounds-col">
-            <p class="bounds-label">Не берём</p>
-            <div class="bounds-item"><h4>Интеграцию с 1С</h4><p>берём только вместе с профильным 1С-специалистом на стороне заказчика</p></div>
-            <div class="bounds-item"><h4>Онлайн-кассы и приём платежей</h4><p>нужен отдельный подрядчик с лицензией и договором с банком</p></div>
-            <div class="bounds-item"><h4>Телефонию и запись звонков</h4><p>зависит от вашего оператора</p></div>
-            <div class="bounds-item"><h4>Бухгалтерию</h4><p>это отдельная профессия</p></div>
-            <div class="bounds-item"><h4>Приложения в App Store и Google Play</h4><p>публикацию в сторах не берём: программа открывается в браузере телефона</p></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ============== GALLERY ============== -->
   <section id="works" class="sect" data-sx="gallery" data-motion-scene="works">
     <div class="container">
@@ -1040,6 +1019,8 @@ main,.site-footer{position:relative;z-index:1}
           <p class="gallery-disclaimer" style="margin-top:10px">Концепты на демонстрационных данных. Не являются внедрёнными проектами</p>
         </div>
 
+        <div class="works-scene" data-sx="works-scene">
+        <div class="works-scene-pin" data-sx="works-scene-pin">
         <div class="gallery-shell">
           <div class="tabs-col">
             <div class="tabs-list" data-sx="tabs">
@@ -1077,9 +1058,43 @@ main,.site-footer{position:relative;z-index:1}
             </div>
           </div>
         </div>
+        </div>
+        </div>
 
         <div class="gallery-foot">
           <a class="gallery-cta-link" href="#builder">Посчитать свой состав →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== BOUNDS ============== -->
+  <section class="sect">
+    <div class="container">
+      <div class="panel-band">
+        <div class="section-head on-panel">
+          <p class="eyebrow on-panel">Границы</p>
+          <h2>Берём задачи, которые можем закрыть</h2>
+          <p>Честно говорим, что берём, а что нет. Отказ на входе дешевле сорванного проекта.</p>
+        </div>
+
+        <div class="bounds-grid">
+          <div class="bounds-col">
+            <p class="bounds-label">Берём</p>
+            <div class="bounds-item"><h4>Учёт заявок и клиентов</h4><p>список, статусы, история по каждому</p></div>
+            <div class="bounds-item"><h4>Мобильный экран исполнителя</h4><p>задачи, чек-лист, фото с объекта</p></div>
+            <div class="bounds-item"><h4>Фотоотчёты и акты</h4><p>формируются сами после визита</p></div>
+            <div class="bounds-item"><h4>Роли и права доступа</h4><p>каждый видит только своё</p></div>
+            <div class="bounds-item"><h4>Выгрузка в Excel</h4><p>данные всегда можно забрать</p></div>
+          </div>
+          <div class="bounds-col">
+            <p class="bounds-label">Не берём</p>
+            <div class="bounds-item"><h4>Интеграцию с 1С</h4><p>берём только вместе с профильным 1С-специалистом на стороне заказчика</p></div>
+            <div class="bounds-item"><h4>Онлайн-кассы и приём платежей</h4><p>нужен отдельный подрядчик с лицензией и договором с банком</p></div>
+            <div class="bounds-item"><h4>Телефонию и запись звонков</h4><p>зависит от вашего оператора</p></div>
+            <div class="bounds-item"><h4>Бухгалтерию</h4><p>это отдельная профессия</p></div>
+            <div class="bounds-item"><h4>Приложения в App Store и Google Play</h4><p>публикацию в сторах не берём: программа открывается в браузере телефона</p></div>
+          </div>
         </div>
       </div>
     </div>

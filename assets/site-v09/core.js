@@ -19,6 +19,30 @@
     else if (motionQuery.addListener) motionQuery.addListener(fn);
   }
 
+  /* одометр: плавно перематывает отображаемое число вместо мгновенной подмены */
+  var numberAnimTokens = typeof WeakMap === 'function' ? new WeakMap() : null;
+  function animateNumber(el, to) {
+    var from = parseInt(String(el.textContent || '').replace(/\D/g, ''), 10);
+    if (numberAnimTokens) numberAnimTokens.set(el, {});
+    if (!numberAnimTokens || isNaN(from) || from === to || reduced()) {
+      el.textContent = SX.fmt(to);
+      return;
+    }
+    var token = {};
+    numberAnimTokens.set(el, token);
+    var start = null;
+    var duration = 420;
+    function step(ts) {
+      if (numberAnimTokens.get(el) !== token) return;
+      if (!start) start = ts;
+      var p = Math.min(1, (ts - start) / duration);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = SX.fmt(Math.round(from + (to - from) * eased));
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
   (function initMotionScenes() {
     var scenes = $$('[data-motion-scene]');
     if (!scenes.length) return;
@@ -119,6 +143,7 @@
     var bricks = $$('[data-sx-brick]', root);
     var hint = $('[data-sx="preset-hint"]', root);
     var touched = false;
+    var prevIds = null;
 
     function dropHint() {
       if (hint && hint.parentNode) { hint.parentNode.removeChild(hint); hint = null; }
@@ -154,12 +179,18 @@
         el.classList.toggle('is-on', on);
       });
 
-      $$('[data-sx="total"]', root).forEach(function (el) { el.textContent = SX.fmt(s.total); });
+      $$('[data-sx="total"]', root).forEach(function (el) { animateNumber(el, s.total); });
       $$('[data-sx="weeks"]', root).forEach(function (el) { el.textContent = s.weeksText; });
 
       var stack = $('[data-sx="stack"]', root);
       if (stack) {
+        var currentIds = s.modules.map(function (m) { return m.id; });
+        var addedId = prevIds
+          ? currentIds.filter(function (id) { return prevIds.indexOf(id) === -1; })[0]
+          : null;
+
         stack.replaceChildren();
+        var settlingRow = null;
         s.modules.slice().reverse().forEach(function (m) {
           var row = document.createElement('div');
           row.className = 'sx-stack-row';
@@ -167,6 +198,7 @@
           var p = document.createElement('b'); p.textContent = m.price.toLocaleString('ru-RU');
           row.append(n, p);
           stack.appendChild(row);
+          if (m.id === addedId && !reduced()) { row.classList.add('is-settling'); settlingRow = row; }
         });
         var core = document.createElement('div');
         core.className = 'sx-stack-row is-base';
@@ -177,6 +209,13 @@
 
         var ghost = $('[data-sx="stack-ghost"]', root);
         if (ghost) stack.insertBefore(ghost, stack.firstChild);
+
+        if (settlingRow) {
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { settlingRow.classList.remove('is-settling'); });
+          });
+        }
+        prevIds = currentIds;
       }
     });
   })();
@@ -196,7 +235,7 @@
     /* --- живая сводка --- */
     SX.on(function (s) {
       var t = $('[data-sx="sum-total"]');
-      if (t) t.textContent = SX.fmt(s.total);
+      if (t) animateNumber(t, s.total);
       var w = $('[data-sx="sum-weeks"]');
       if (w) w.textContent = s.weeksText;
 
@@ -473,6 +512,60 @@
     });
 
     show(i, true);
+
+    /* sticky-сцена: дашборд остаётся визуальным якорем, 3 кейса сменяются
+       по scroll-прогрессу через таллер scroll-runway; десктоп-only,
+       ручное переключение (табы/стрелки/клавиатура выше) продолжает работать */
+    (function initScrollScene() {
+      var scene = $('[data-sx="works-scene"]', root);
+      var pin = $('[data-sx="works-scene-pin"]', root);
+      if (!scene || !pin) return;
+
+      var sceneStates = [3, 1, 6];
+      var desktopQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(min-width:961px)') : null;
+      var enabled = false, raf = 0;
+
+      function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+
+      function update() {
+        if (!enabled) return;
+        var rect = scene.getBoundingClientRect();
+        var total = rect.height - window.innerHeight;
+        var f = total > 0 ? clamp(-rect.top / total, 0, 1) : 0;
+        var idx = Math.min(sceneStates.length - 1, Math.floor(f * sceneStates.length));
+        var target = sceneStates[idx];
+        if (target !== i) show(target, false);
+      }
+
+      function onScroll() {
+        if (!enabled) return;
+        if (!raf) raf = requestAnimationFrame(function () { raf = 0; update(); });
+      }
+
+      function enable() {
+        if (enabled) return;
+        enabled = true;
+        scene.style.height = (sceneStates.length * 90) + 'vh';
+        scene.setAttribute('data-scrub', 'on');
+        update();
+      }
+      function disable() {
+        if (!enabled) return;
+        enabled = false;
+        scene.style.height = '';
+        scene.removeAttribute('data-scrub');
+      }
+      function syncScene() {
+        if (desktopQuery && desktopQuery.matches && !reduced()) enable(); else disable();
+      }
+
+      syncScene();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', syncScene);
+      onMotionChange(syncScene);
+      if (desktopQuery && desktopQuery.addEventListener) desktopQuery.addEventListener('change', syncScene);
+      else if (desktopQuery && desktopQuery.addListener) desktopQuery.addListener(syncScene);
+    })();
   })();
 
   /* ============================================================
