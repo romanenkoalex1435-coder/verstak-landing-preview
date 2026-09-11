@@ -392,7 +392,6 @@
         });
       }
       put('[data-sx="caption"]', c.caption);
-      put('[data-sx="niche"]', c.niche);
       put('[data-sx="case-title"]', c.title);
       put('[data-sx="case-lead"]', c.lead);
       put('[data-sx="count"]', (i + 1) + ' / ' + cases.length);
