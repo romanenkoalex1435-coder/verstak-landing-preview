@@ -428,7 +428,7 @@
     var tabs  = $$('[data-sx-tab]', root);
     var stage = $('[data-sx="stage"]', root);
     var shot  = $('[data-sx="shot"]', root);
-    var i = 3, timer = 0;
+    var i = 0, timer = 0;
 
     var tablist = $('[data-sx="tabs"]', root);
     if (tablist) { tablist.setAttribute('role', 'tablist'); tablist.setAttribute('aria-label', 'Демонстрационные кейсы'); }
@@ -439,8 +439,22 @@
     function render() {
       var c = cases[i];
       if (shot) {
-        shot.src = c.image;
-        shot.alt = 'Демонстрационный экран: ' + c.caption;
+        shot.replaceChildren();
+        var head = document.createElement('div'); head.className = 'stage-mock-head';
+        var headLabel = document.createElement('span'); headLabel.textContent = c.caption;
+        var headDot = document.createElement('span'); headDot.className = 'stage-mock-dot';
+        head.append(headLabel, headDot);
+        shot.appendChild(head);
+        c.rows.forEach(function (r) {
+          var row = document.createElement('div'); row.className = 'stage-mock-row';
+          var left = document.createElement('div');
+          var t = document.createElement('p'); t.className = 'stage-mock-row-title'; t.textContent = r.title;
+          var m = document.createElement('p'); m.className = 'stage-mock-row-meta'; m.textContent = r.meta;
+          left.append(t, m);
+          var tag = document.createElement('span'); tag.className = 'stage-mock-tag'; tag.textContent = r.tag;
+          row.append(left, tag);
+          shot.appendChild(row);
+        });
       }
       put('[data-sx="caption"]', c.caption);
       put('[data-sx="niche"]', c.niche);
@@ -521,7 +535,7 @@
       var pin = $('[data-sx="works-scene-pin"]', root);
       if (!scene || !pin) return;
 
-      var sceneStates = [3, 1, 6];
+      var sceneStates = [0, 1, 2];
       var desktopQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(min-width:961px)') : null;
       var enabled = false, raf = 0;
 

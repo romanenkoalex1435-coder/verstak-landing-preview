@@ -53,10 +53,9 @@
     function rgb(c) { return 'rgb(' + Math.round(c[0]) + ',' + Math.round(c[1]) + ',' + Math.round(c[2]) + ')'; }
 
     var stops = [
-      [0,    [207, 211, 216]],
-      [0.35, [220, 220, 218]],
-      [0.7,  [231, 221, 206]],
-      [1,    [232, 221, 201]]
+      [0,   [244, 227, 208]],
+      [0.5, [214, 214, 226]],
+      [1,   [186, 209, 236]]
     ];
     function toneAt(f) {
       for (var i = 0; i < stops.length - 1; i++) {
