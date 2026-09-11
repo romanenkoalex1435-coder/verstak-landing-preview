@@ -23,6 +23,7 @@
   var numberAnimTokens = typeof WeakMap === 'function' ? new WeakMap() : null;
   function animateNumber(el, to) {
     var from = parseInt(String(el.textContent || '').replace(/\D/g, ''), 10);
+    if (numberAnimTokens) numberAnimTokens.set(el, {});
     if (!numberAnimTokens || isNaN(from) || from === to || reduced()) {
       el.textContent = SX.fmt(to);
       return;
