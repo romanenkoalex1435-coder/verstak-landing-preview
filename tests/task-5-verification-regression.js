@@ -43,6 +43,9 @@ assert(content.indexOf('Number(el.getAttribute(\'data-stage\')) === routeStage')
 assert(content.indexOf("el.setAttribute('aria-current', 'step');") !== -1, 'active route marker must expose aria-current=step');
 
 assert(html.indexOf('.tone-scene{transition:background-color') === -1, 'static tone scenes must not keep a no-op background transition');
-assert(/\.tone-transition\{height:clamp\(64px,10vw,140px\);background:linear-gradient\(to bottom,var\(--tone-from\),var\(--tone-to\)\);pointer-events:none\}/.test(html), 'tone changes must use real gradient transition zones');
+assert(html.indexOf('.scroll-aura{') !== -1, 'tone changes must be driven by the scroll-linked ambient gradient');
+var reducedMotionBlock = html.slice(html.indexOf('@media (prefers-reduced-motion:reduce){\n  .route-thread-fill'));
+assert(reducedMotionBlock.indexOf('.route-thread-fill,.route-thread-dot,.route-thread-label{transition:none}') !== -1, 'reduced-motion must disable eased route-thread transitions');
+assert(reducedMotionBlock.indexOf('.route-thread.is-complete .route-thread-stop:last-child .route-thread-dot{animation:none}') !== -1, 'reduced-motion must disable the route-thread completion settle animation');
 
 console.log('PASS task 5 route-stage mapping and reduced-motion tone transition contract');
