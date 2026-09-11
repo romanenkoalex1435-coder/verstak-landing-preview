@@ -20,13 +20,13 @@ var request = section('request');
 assert(/<section id="request"[^>]*data-sx="form-section"[^>]*data-motion-scene="request"/.test(request), 'request must be a request motion scene');
 assert(/<section id="request"[^>]*class="[^"]*tone-scene[^\"]*tone-warm[^\"]*"/.test(request), 'request must use the warm scene tone');
 
-var completion = '<div class="route-complete" data-motion-layer style="--motion-index:0" aria-label="Маршрут завершён">';
+var completion = '<div class="route-complete" data-motion-layer style="--motion-index:0" aria-label="Маршрут пройден">';
 var completionAt = request.indexOf(completion);
 var formAt = request.indexOf('<form data-sx="form"');
 assert(completionAt !== -1, 'request completion indicator is missing');
 assert(formAt !== -1 && completionAt < formAt, 'completion indicator must precede the form');
 assert(request.indexOf('<span class="route-complete-mark" aria-hidden="true">✓</span>', completionAt) !== -1, 'completion mark is missing or exposed');
-assert(request.indexOf('<span>Результат сохранён</span>', completionAt) !== -1, 'completion copy is missing');
+assert(request.indexOf('<span>Маршрут пройден</span>', completionAt) !== -1, 'completion copy is missing');
 
 assert(html.indexOf('.tone-warm{background:#ddd8d0}') !== -1, 'warm scene tone is missing');
 assert(html.indexOf('.route-complete{display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;font-size:14px;font-weight:600}') !== -1, 'completion indicator layout is missing');
@@ -34,7 +34,7 @@ assert(html.indexOf('.route-complete-mark{display:grid;place-items:center;width:
 assert(html.indexOf('.is-motion-ready .is-in-view .route-complete-mark{transform:none;transition:transform 520ms var(--motion-ease) 140ms}') !== -1, 'completion mark entrance is missing');
 assert(html.indexOf('@media (prefers-reduced-motion:reduce){.route-complete-mark,.is-motion-ready .is-in-view .route-complete-mark{transform:none;transition:none}}') !== -1, 'completion mark reduced-motion state is missing');
 
-var controlNames = ['name', 'contact', 'task', 'agree'];
+var controlNames = ['name', 'contact', 'task'];
 var previous = -1;
 controlNames.forEach(function (name) {
   var position = request.indexOf('name="' + name + '"');

@@ -230,7 +230,7 @@
     var status   = $('[data-sx="status"]');
     var btn      = $('[data-sx="submit"]', form) || $('[data-sx="submit"]');
     var fallback = $('[data-sx="fallback"]');
-    var sending = false, sent = false, started = false;
+    var started = false;
 
     /* --- живая сводка --- */
     SX.on(function (s) {
@@ -273,7 +273,7 @@
 
     function validate() {
       var bad = [];
-      var name = fieldOf('name'), contact = fieldOf('contact'), agree = fieldOf('agree');
+      var name = fieldOf('name'), contact = fieldOf('contact');
 
       if (name) {
         if (!name.value.trim()) { setErr('name', 'Напишите, как к вам обращаться'); bad.push(name); }
@@ -287,10 +287,6 @@
         else if (!okPhone && !okTg) { setErr('contact', 'Похоже на опечатку. Телефон или @имя в Telegram'); bad.push(contact); }
         else setErr('contact', '');
       }
-      if (agree) {
-        if (!agree.checked) { setErr('agree', 'Без согласия мы не можем обработать заявку'); bad.push(agree); }
-        else setErr('agree', '');
-      }
       return bad;
     }
 
@@ -299,8 +295,6 @@
       var n = e.target.getAttribute('name');
       if (n && e.target.getAttribute('aria-invalid') === 'true') validate();
     });
-    var ag = fieldOf('agree');
-    if (ag) ag.addEventListener('change', function () { if (ag.checked) setErr('agree', ''); });
 
     /* --- копирование текста заявки --- */
     var copyBtn = $('[data-sx="copy"]');
@@ -316,9 +310,11 @@
       } catch (e) {}
     });
 
+    /* онлайн-приёма нет и не планируется в этом прелонче (правовое решение,
+       см. docs/legal-launch-checklist.md) — форма всегда собирает текст
+       локально и никогда не сообщает о «доставке» */
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (sending || sent) return;
 
       var bad = validate();
       if (bad.length) {
@@ -327,10 +323,6 @@
         bad[0].focus();
         return;
       }
-
-      sending = true;
-      if (btn) { btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.dataset.label = btn.textContent; btn.textContent = 'Отправляем…'; }
-      if (status) { status.textContent = ''; status.dataset.state = ''; }
 
       var s = SX.get();
       var payload = {
@@ -343,77 +335,20 @@
       payload.name = payload.name.trim();
       payload.contact = payload.contact.trim();
 
-      function restore() {
-        sending = false;
-        if (btn) { btn.disabled = false; btn.removeAttribute('aria-busy'); btn.textContent = btn.dataset.label || 'Отправить заявку'; }
+      if (status) { status.textContent = 'Текст обращения готов — скопируйте его ниже и пришлите нам.'; status.dataset.state = 'ok'; }
+      window.sxTrack('form_text_ready', { total: payload.total });
+
+      if (fallback) {
+        fallback.hidden = false;
+        var t = $('[data-sx="fallback-text"]', fallback) || $('textarea', fallback);
+        if (t) t.value = 'Обращение с сайта\n' +
+          'Имя: ' + payload.name + '\n' +
+          'Контакт: ' + payload.contact + '\n' +
+          'Задача: ' + (payload.task || '—') + '\n' +
+          'Состав: ' + (payload.build.length ? payload.build.join(', ') : 'только базовый') + '\n' +
+          'Предварительно: ' + SX.fmt(payload.total);
+        fallback.scrollIntoView({ block: 'nearest' });
       }
-
-      /* доставлено — только по явному подтверждению сервера */
-      function delivered() {
-        sending = false; sent = true;
-        if (status) { status.textContent = 'Заявка доставлена. Ответим в течение рабочего дня.'; status.dataset.state = 'ok'; }
-        window.sxTrack('form_success', { total: payload.total });
-        form.reset();
-        if (btn) { btn.disabled = true; btn.textContent = 'Заявка доставлена'; }
-      }
-
-      /* не дошло — данные не теряем */
-      function failed(msg) {
-        restore();
-        if (status) {
-          status.textContent = msg || 'Не получилось отправить. Данные сохранены — нажмите ещё раз.';
-          status.dataset.state = 'bad';
-        }
-        window.sxTrack('form_delivery_failed', { total: payload.total });
-      }
-
-      /* канала доставки нет — честно говорим и даём скопировать */
-      function unavailable() {
-        restore();
-        if (status) {
-          status.textContent = 'Отправка пока недоступна. Данные не отправлены — мы ещё подключаем приём заявок. Скопируйте текст ниже или напишите нам напрямую.';
-          status.dataset.state = 'bad';
-        }
-        window.sxTrack('form_delivery_unavailable', { total: payload.total });
-        if (fallback) {
-          fallback.hidden = false;
-          var t = $('[data-sx="fallback-text"]', fallback) || $('textarea', fallback);
-          if (t) t.value = 'Заявка с сайта\n' +
-            'Имя: ' + payload.name + '\n' +
-            'Контакт: ' + payload.contact + '\n' +
-            'Задача: ' + (payload.task || '—') + '\n' +
-            'Состав: ' + (payload.build.length ? payload.build.join(', ') : 'только базовый') + '\n' +
-            'Предварительно: ' + SX.fmt(payload.total);
-        }
-      }
-
-      var endpoint = (window.SX_FORM_ENDPOINT || '').trim();
-      if (!endpoint) { unavailable(); return; }
-
-      var ctl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
-      var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 12000);
-
-      fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        signal: ctl ? ctl.signal : undefined
-      }).then(function (r) {
-        clearTimeout(timer);
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.text().then(function (txt) {
-          var ok = false;
-          try { var j = JSON.parse(txt); ok = !!(j && (j.ok === true || j.status === 'ok' || j.delivered === true)); }
-          catch (e) { ok = /^\s*(ok|success)\s*$/i.test(txt); }
-          if (!ok) throw new Error('unconfirmed');
-          delivered();
-        });
-      }).catch(function (err) {
-        clearTimeout(timer);
-        if (err && err.name === 'AbortError') return failed('Сервер не ответил вовремя. Данные сохранены — попробуйте ещё раз.');
-        if (err && err.message === 'unconfirmed') return failed('Сервер принял запрос, но не подтвердил доставку. Данные сохранены — попробуйте ещё раз.');
-        failed();
-      });
     });
   })();
 

@@ -21,8 +21,8 @@ var requestCta = section('request-cta');
 assert(requestCta.start > faq.start, 'final request CTA must follow the FAQ');
 assert(/<section id="request-cta"[^>]*data-motion-scene="request-cta"/.test(requestCta.html), 'final CTA must be a request-cta motion scene');
 assert(requestCta.html.indexOf('<div class="route-complete"') !== -1, 'final CTA must contain the completion indicator');
-assert(requestCta.html.indexOf('Результат сохранён') !== -1, 'final CTA must retain the completion copy');
-assert(/<a class="btn-primary" href="request\.html" data-sx="request-link">Оставить заявку<\/a>/.test(requestCta.html), 'final CTA must link to request.html');
+assert(requestCta.html.indexOf('Соберите обращение — без отправки данных') !== -1, 'final CTA must retain the next-step copy');
+assert(/<a class="btn-primary" href="request\.html" data-sx="request-link">Собрать обращение<\/a>/.test(requestCta.html), 'final CTA must link to request.html');
 
 var main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
 assert(main.indexOf('<form') === -1 && main.indexOf('data-sx="form"') === -1, 'home page must not contain the old request form');
