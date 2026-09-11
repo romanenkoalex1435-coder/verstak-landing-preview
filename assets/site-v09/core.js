@@ -460,60 +460,6 @@
     });
 
     show(i, true);
-
-    /* sticky-сцена: дашборд остаётся визуальным якорем, 3 кейса сменяются
-       по scroll-прогрессу через таллер scroll-runway; десктоп-only,
-       ручное переключение (табы/стрелки/клавиатура выше) продолжает работать */
-    (function initScrollScene() {
-      var scene = $('[data-sx="works-scene"]', root);
-      var pin = $('[data-sx="works-scene-pin"]', root);
-      if (!scene || !pin) return;
-
-      var sceneStates = [0, 1, 2];
-      var desktopQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(min-width:961px)') : null;
-      var enabled = false, raf = 0;
-
-      function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
-
-      function update() {
-        if (!enabled) return;
-        var rect = scene.getBoundingClientRect();
-        var total = rect.height - window.innerHeight;
-        var f = total > 0 ? clamp(-rect.top / total, 0, 1) : 0;
-        var idx = Math.min(sceneStates.length - 1, Math.floor(f * sceneStates.length));
-        var target = sceneStates[idx];
-        if (target !== i) show(target, false);
-      }
-
-      function onScroll() {
-        if (!enabled) return;
-        if (!raf) raf = requestAnimationFrame(function () { raf = 0; update(); });
-      }
-
-      function enable() {
-        if (enabled) return;
-        enabled = true;
-        scene.style.height = (sceneStates.length * 90) + 'vh';
-        scene.setAttribute('data-scrub', 'on');
-        update();
-      }
-      function disable() {
-        if (!enabled) return;
-        enabled = false;
-        scene.style.height = '';
-        scene.removeAttribute('data-scrub');
-      }
-      function syncScene() {
-        if (desktopQuery && desktopQuery.matches && !reduced()) enable(); else disable();
-      }
-
-      syncScene();
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', syncScene);
-      onMotionChange(syncScene);
-      if (desktopQuery && desktopQuery.addEventListener) desktopQuery.addEventListener('change', syncScene);
-      else if (desktopQuery && desktopQuery.addListener) desktopQuery.addListener(syncScene);
-    })();
   })();
 
   /* ============================================================

@@ -572,6 +572,7 @@ main,.site-footer{position:relative;z-index:1}
   .bounds-col{padding:0}
 }
 .bounds-label{font-size:14px;font-weight:600;margin-bottom:18px;color:var(--ink)}
+.bounds-label.process-divider{margin-top:40px;padding-top:40px;border-top:1px solid var(--hairline-strong)}
 .bounds-item{padding:16px 0;border-bottom:1px solid var(--hairline)}
 .bounds-item:last-child{border-bottom:none}
 .bounds-item h4{font-size:15px;font-weight:600;margin:0 0 4px}
@@ -580,13 +581,6 @@ main,.site-footer{position:relative;z-index:1}
 /* ==========================================================================
    GALLERY  #works — panel treatment (echoes hero rail+panel)
    ========================================================================== */
-.works-scene{position:relative}
-.works-scene-pin{position:relative}
-@media (min-width:961px){
-  .works-scene[data-scrub="on"] .works-scene-pin{
-    position:sticky;top:calc(var(--header-h) + 24px);
-  }
-}
 .gallery-shell{
   display:grid;grid-template-columns:220px minmax(0,1fr);gap:0;
   min-width:0;
@@ -785,8 +779,8 @@ main,.site-footer{position:relative;z-index:1}
   <section class="hero" data-motion-scene="hero">
     <div class="container hero-grid">
       <div class="hero-copy">
-        <h1>Делаем программу под ваш порядок работы</h1>
-        <p class="hero-sub">Вся работа — в одной программе. Базовый состав от 60 000 ₽, сборка около трёх недель.</p>
+        <h1>Программа для заявок, выездов и результата — под порядок вашей компании</h1>
+        <p class="hero-sub">База — от 60 000 ₽ и от двух недель. Типовая сборка из трёх блоков — около трёх недель. Точные цену и срок называем после разбора задачи.</p>
         <div class="hero-actions">
           <a class="btn-primary" href="#builder">Собрать программу</a>
           <a class="btn-secondary-link" href="#prototype">Посмотреть, как работает</a>
@@ -980,8 +974,6 @@ main,.site-footer{position:relative;z-index:1}
           <p class="gallery-disclaimer" style="margin-top:10px">Структура будущего интерфейса на демонстрационных данных. Это не готовый продукт и не кейс клиента</p>
         </div>
 
-        <div class="works-scene" data-sx="works-scene">
-        <div class="works-scene-pin" data-sx="works-scene-pin">
         <div class="gallery-shell">
           <div class="tabs-col">
             <div class="tabs-list" data-sx="tabs">
@@ -1013,8 +1005,6 @@ main,.site-footer{position:relative;z-index:1}
             </div>
           </div>
         </div>
-        </div>
-        </div>
 
         <div class="gallery-foot">
           <a class="gallery-cta-link" href="#builder">Посчитать свой состав →</a>
@@ -1023,14 +1013,14 @@ main,.site-footer{position:relative;z-index:1}
     </div>
   </section>
 
-  <!-- ============== BOUNDS ============== -->
-  <section class="sect">
+  <!-- ============== BOUNDS + PROCESS ============== -->
+  <section id="process" class="sect">
     <div class="container">
       <div class="panel-band">
         <div class="section-head on-panel">
-          <p class="eyebrow on-panel">Границы</p>
-          <h2>Берём задачи, которые можем закрыть</h2>
-          <p>Честно говорим, что берём, а что нет. Отказ на входе дешевле сорванного проекта.</p>
+          <p class="eyebrow on-panel">Границы и процесс</p>
+          <h2>Что берём → как делаем</h2>
+          <p>Честно говорим, что берём, а что нет. До разработки согласуем состав, цену и сроки — на каждом этапе видно, что происходит.</p>
         </div>
 
         <div class="bounds-grid">
@@ -1051,50 +1041,40 @@ main,.site-footer{position:relative;z-index:1}
             <div class="bounds-item"><h4>Приложения в App Store и Google Play</h4><p>публикацию в сторах не берём: программа открывается в браузере телефона</p></div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ============== PROCESS ============== -->
-  <section id="process" class="sect">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">Процесс</p>
-        <h2>От вашей задачи до рабочего кабинета</h2>
-        <p>До разработки договоримся о составе, цене и сроках. На каждом этапе видно, что происходит.</p>
-      </div>
-
-      <div class="process-list">
-        <div class="process-item">
-          <span class="process-num">01</span>
-          <div class="process-body">
-            <p class="process-tag">Задача</p>
-            <h3>Разбираем ваш день</h3>
-            <p>Как приходит заявка, кто выезжает и где теряется информация</p>
+        <p class="bounds-label process-divider">Как делаем</p>
+        <div class="process-list">
+          <div class="process-item">
+            <span class="process-num">01</span>
+            <div class="process-body">
+              <p class="process-tag">Задача</p>
+              <h3>Разбираем ваш день</h3>
+              <p>Как приходит заявка, кто выезжает и где теряется информация</p>
+            </div>
           </div>
-        </div>
-        <div class="process-item">
-          <span class="process-num">02</span>
-          <div class="process-body">
-            <p class="process-tag">Состав</p>
-            <h3>Согласуем состав</h3>
-            <p>Уточняем блоки, стоимость и сроки. Всё письменно, до начала работы</p>
+          <div class="process-item">
+            <span class="process-num">02</span>
+            <div class="process-body">
+              <p class="process-tag">Состав</p>
+              <h3>Согласуем состав</h3>
+              <p>Уточняем блоки, стоимость и сроки. Всё письменно, до начала работы</p>
+            </div>
           </div>
-        </div>
-        <div class="process-item">
-          <span class="process-num">03</span>
-          <div class="process-body">
-            <p class="process-tag">Разработка</p>
-            <h3>Собираем программу</h3>
-            <p>Показываем по частям — вы видите результат по ходу, а не в конце</p>
+          <div class="process-item">
+            <span class="process-num">03</span>
+            <div class="process-body">
+              <p class="process-tag">Разработка</p>
+              <h3>Собираем программу</h3>
+              <p>Показываем по частям — вы видите результат по ходу, а не в конце</p>
+            </div>
           </div>
-        </div>
-        <div class="process-item">
-          <span class="process-num">04</span>
-          <div class="process-body">
-            <p class="process-tag">Передача</p>
-            <h3>Передаём результат</h3>
-            <p>Переносим текущие данные и учим сотрудников работать</p>
+          <div class="process-item">
+            <span class="process-num">04</span>
+            <div class="process-body">
+              <p class="process-tag">Передача</p>
+              <h3>Передаём результат</h3>
+              <p>Переносим текущие данные и учим сотрудников работать</p>
+            </div>
           </div>
         </div>
       </div>
@@ -1173,7 +1153,7 @@ main,.site-footer{position:relative;z-index:1}
             <span>Сколько занимает разработка?</span><span class="faq-plus" aria-hidden="true"></span>
           </button>
           <div class="faq-panel" id="faq-panel-6" role="region" aria-labelledby="faq-q-6"><div>
-            <p class="faq-answer">Зависит от состава. Срок назовём после разбора задачи, до начала работы.</p>
+            <p class="faq-answer">База — от двух недель. Типовой состав из трёх блоков собираем около трёх недель. Точный срок называем после разбора задачи, до старта работы.</p>
           </div></div>
         </div>
         <div class="faq-item" data-faq>
