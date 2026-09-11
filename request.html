@@ -76,6 +76,8 @@ a{color:inherit}h1,h2,h3,h4,p{margin:0}
 .copy-btn{margin-top:12px;padding:10px 20px;border-radius:var(--radius-pill);background:transparent;border:1px solid var(--border-strong);font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;transition:background-color .15s var(--ease)}
 .copy-btn:hover{background:rgba(22,21,15,.06)}
 .success-note{margin-top:14px;font-size:13.5px;color:var(--ink-secondary)}
+.privacy-note{max-width:640px;font-size:13.5px;color:var(--ink-secondary);margin:0 0 28px;padding:12px 16px;border-left:2px solid var(--border-strong)}
+.legal-note{margin-top:18px;font-size:12.5px;color:var(--ink-tertiary);line-height:1.5;max-width:520px}
 </style>
 </head>
 <body>
@@ -93,6 +95,8 @@ a{color:inherit}h1,h2,h3,h4,p{margin:0}
         <h1>Расскажите, как сейчас работает ваша компания</h1>
         <p>Мы покажем, какой может быть её система. Техническое задание не нужно.</p>
       </div>
+
+      <p class="privacy-note">Данные остаются в браузере — сайт их никуда не отправляет. После заполнения соберём текст обращения для копирования.</p>
 
       <form data-sx="form" novalidate>
         <div class="field">
@@ -115,20 +119,17 @@ a{color:inherit}h1,h2,h3,h4,p{margin:0}
         </div>
         <input type="hidden" name="build">
         <input type="hidden" name="total">
-        <div class="field-checkbox">
-          <input type="checkbox" id="f10-agree" name="agree" aria-describedby="err-agree">
-          <label for="f10-agree">Согласен на обработку персональных данных для обсуждения заявки</label>
-        </div>
-        <p class="field-error" id="err-agree" data-sx-err="agree" hidden></p>
 
-        <button type="submit" class="submit-btn" data-sx="submit">Обсудить систему</button>
+        <button type="submit" class="submit-btn" data-sx="submit">Собрать текст обращения</button>
         <p class="form-status" data-sx="status" role="status" aria-live="polite"></p>
 
         <div class="fallback-box" data-sx="fallback" hidden>
-          <h4>Текст заявки — скопируйте и пришлите нам</h4>
+          <h4>Текст обращения — скопируйте и пришлите нам</h4>
           <textarea data-sx="fallback-text" readonly></textarea>
           <button type="button" class="copy-btn" data-sx="copy">Скопировать текст</button>
         </div>
+
+        <p class="legal-note">Онлайн-приём заявок отключён. Расчёт предварительный и не является офертой — условия фиксируются письменно после разбора задачи.</p>
       </form>
     </div>
   </section>

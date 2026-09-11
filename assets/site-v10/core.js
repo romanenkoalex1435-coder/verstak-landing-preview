@@ -341,7 +341,7 @@
     }
     function validate() {
       var bad = [];
-      var name = fieldOf('name'), contact = fieldOf('contact'), agree = fieldOf('agree');
+      var name = fieldOf('name'), contact = fieldOf('contact');
       if (name) { if (!name.value.trim()) { setErr('name', 'Напишите, как к вам обращаться'); bad.push(name); } else setErr('name', ''); }
       if (contact) {
         var c = contact.value.trim();
@@ -351,7 +351,6 @@
         else if (!okPhone && !okTg) { setErr('contact', 'Похоже на опечатку. Телефон или @имя в Telegram'); bad.push(contact); }
         else setErr('contact', '');
       }
-      if (agree) { if (!agree.checked) { setErr('agree', 'Без согласия мы не можем обработать заявку'); bad.push(agree); } else setErr('agree', ''); }
       return bad;
     }
 
@@ -360,8 +359,6 @@
       var n = e.target.getAttribute('name');
       if (n && e.target.getAttribute('aria-invalid') === 'true') validate();
     });
-    var ag = fieldOf('agree');
-    if (ag) ag.addEventListener('change', function () { if (ag.checked) setErr('agree', ''); });
 
     var copyBtn = $('[data-sx="copy"]');
     if (copyBtn) copyBtn.addEventListener('click', function () {
@@ -371,9 +368,13 @@
       try { document.execCommand('copy'); var old = copyBtn.textContent; copyBtn.textContent = 'Скопировано'; setTimeout(function () { copyBtn.textContent = old; }, 2000); } catch (e) {}
     });
 
+    /* Prelaunch: online submission stays off until the legal/PDn baseline is
+       closed (see docs/legal-launch-checklist.md) — no fetch is attempted,
+       ever. The form only assembles text locally for the person to copy. */
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (sending || sent) return;
+      if (sent) return;
+
       var bad = validate();
       if (bad.length) {
         if (status) { status.textContent = 'Проверьте отмеченные поля'; status.dataset.state = 'bad'; }
@@ -381,132 +382,34 @@
         bad[0].focus();
         return;
       }
-      sending = true;
-      if (btn) { btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.dataset.label = btn.textContent; btn.textContent = 'Отправляем…'; }
-      if (status) { status.textContent = ''; status.dataset.state = ''; }
 
       var s = SX.get();
       var payload = {
-        name: (fieldOf('name') || {}).value || '',
-        contact: (fieldOf('contact') || {}).value || '',
-        company: (fieldOf('company') || {}).value || '',
+        name: (fieldOf('name') || {}).value.trim() || '',
+        contact: (fieldOf('contact') || {}).value.trim() || '',
+        company: (fieldOf('company') || {}).value.trim() || '',
         task: ((fieldOf('task') || {}).value || '').trim(),
         build: s.modules.map(function (m) { return m.name; }),
-        total: s.total, weeks: s.weeks
+        total: s.total
       };
-      payload.name = payload.name.trim();
-      payload.contact = payload.contact.trim();
-      payload.company = payload.company.trim();
 
-      function restore() { sending = false; if (btn) { btn.disabled = false; btn.removeAttribute('aria-busy'); btn.textContent = btn.dataset.label || 'Отправить заявку'; } }
-      function delivered() {
-        sending = false; sent = true;
-        if (status) { status.textContent = 'Заявка доставлена. Ответим в течение рабочего дня.'; status.dataset.state = 'ok'; }
-        window.sxTrack('form_success', { total: payload.total });
-        form.reset();
-        if (btn) { btn.disabled = true; btn.textContent = 'Заявка доставлена'; }
-      }
-      function failed(msg) {
-        restore();
-        if (status) { status.textContent = msg || 'Не получилось отправить. Данные сохранены — нажмите ещё раз.'; status.dataset.state = 'bad'; }
-        window.sxTrack('form_delivery_failed', { total: payload.total });
-      }
-      function unavailable() {
-        restore();
-        if (status) { status.textContent = 'Отправка пока недоступна. Данные не отправлены — мы ещё подключаем приём заявок. Скопируйте текст ниже или напишите нам напрямую.'; status.dataset.state = 'bad'; }
-        window.sxTrack('form_delivery_unavailable', { total: payload.total });
-        if (fallback) {
-          fallback.hidden = false;
-          var t = $('[data-sx="fallback-text"]', fallback) || $('textarea', fallback);
-          if (t) t.value = 'Заявка с сайта\n' +
-            'Имя: ' + payload.name + '\n' +
-            'Контакт: ' + payload.contact + '\n' +
-            'Компания: ' + (payload.company || '—') + '\n' +
-            'Что сейчас вручную: ' + (payload.task || '—') + '\n' +
-            'Состав: ' + (payload.build.length ? payload.build.join(', ') : 'только базовый') + '\n' +
-            'Предварительно: ' + SX.fmt(payload.total);
-        }
-      }
+      sent = true;
+      if (btn) { btn.disabled = true; btn.textContent = 'Текст собран ниже'; }
+      if (status) { status.textContent = 'Онлайн-приём заявок отключён. Текст обращения собран ниже — скопируйте и пришлите нам напрямую.'; status.dataset.state = 'ok'; }
+      window.sxTrack('form_assembled', { total: payload.total });
 
-      var endpoint = (window.SX_FORM_ENDPOINT || '').trim();
-      if (!endpoint) { unavailable(); return; }
-      var ctl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
-      var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 12000);
-      fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: ctl ? ctl.signal : undefined })
-        .then(function (r) {
-          clearTimeout(timer);
-          if (!r.ok) throw new Error('HTTP ' + r.status);
-          return r.text().then(function (txt) {
-            var ok = false;
-            try { var j = JSON.parse(txt); ok = !!(j && (j.ok === true || j.status === 'ok' || j.delivered === true)); }
-            catch (e) { ok = /^\s*(ok|success)\s*$/i.test(txt); }
-            if (!ok) throw new Error('unconfirmed');
-            delivered();
-          });
-        })
-        .catch(function (err) {
-          clearTimeout(timer);
-          if (err && err.name === 'AbortError') return failed('Сервер не ответил вовремя. Данные сохранены — попробуйте ещё раз.');
-          if (err && err.message === 'unconfirmed') return failed('Сервер принял запрос, но не подтвердил доставку. Данные сохранены — попробуйте ещё раз.');
-          failed();
-        });
+      if (fallback) {
+        fallback.hidden = false;
+        var t = $('[data-sx="fallback-text"]', fallback) || $('textarea', fallback);
+        if (t) t.value = 'Обращение с сайта\n' +
+          'Имя: ' + payload.name + '\n' +
+          'Контакт: ' + payload.contact + '\n' +
+          'Компания: ' + (payload.company || '—') + '\n' +
+          'Что сейчас вручную: ' + (payload.task || '—') + '\n' +
+          'Состав: ' + (payload.build.length ? payload.build.join(', ') : 'только базовый') + '\n' +
+          'Предварительно: ' + SX.fmt(payload.total);
+      }
     });
-  })();
-
-  /* ============================================================
-     5. ГАЛЕРЕЯ ДЕМО-КЕЙСОВ
-     ============================================================ */
-  (function () {
-    var root = $('[data-sx="gallery"]');
-    if (!root) return;
-    var cases = D.cases;
-    var tabs = $$('[data-sx-tab]', root);
-    var stage = $('[data-sx="stage"]', root);
-    var shot = $('[data-sx="shot"]', root);
-    var i = 0, timer = 0;
-    var tablist = $('[data-sx="tabs"]', root);
-    if (tablist) { tablist.setAttribute('role', 'tablist'); }
-    if (stage) { stage.id = stage.id || 'sx-gallery-panel'; stage.setAttribute('role', 'tabpanel'); }
-    function put(sel, text) { var el = $(sel, root); if (el) el.textContent = text; }
-    function render() {
-      var c = cases[i];
-      if (shot) { shot.src = c.image; shot.alt = 'Демонстрационный экран: ' + c.caption; }
-      put('[data-sx="caption"]', c.caption);
-      put('[data-sx="niche"]', c.niche);
-      put('[data-sx="case-title"]', c.title);
-      put('[data-sx="case-lead"]', c.lead);
-      put('[data-sx="count"]', (i + 1) + ' / ' + cases.length);
-      var feat = $('[data-sx="features"]', root);
-      if (feat) {
-        feat.replaceChildren();
-        c.features.forEach(function (text, k) {
-          var row = document.createElement('div'); row.className = 'sx-feat-row';
-          var n = document.createElement('i'); n.textContent = '0' + (k + 1);
-          var s = document.createElement('span'); s.textContent = text;
-          row.append(n, s); feat.appendChild(row);
-        });
-      }
-      tabs.forEach(function (t, k) { t.classList.toggle('is-on', k === i); t.setAttribute('aria-selected', String(k === i)); });
-      var pr = $('[data-sx="progress"]', root);
-      if (pr) pr.style.width = ((i + 1) / cases.length * 100) + '%';
-      if (stage) stage.classList.remove('is-changing');
-    }
-    function show(n, immediate) {
-      i = (n + cases.length) % cases.length;
-      clearTimeout(timer);
-      if (immediate || reduced() || !stage) { render(); return; }
-      stage.classList.add('is-changing');
-      timer = setTimeout(render, 160);
-    }
-    tabs.forEach(function (t, k) {
-      t.id = t.id || 'sx-gallery-tab-' + k;
-      t.setAttribute('role', 'tab');
-      t.addEventListener('click', function () { show(k); });
-    });
-    var prev = $('[data-sx="prev"]', root), next = $('[data-sx="next"]', root);
-    if (prev) prev.addEventListener('click', function () { show(i - 1); });
-    if (next) next.addEventListener('click', function () { show(i + 1); });
-    show(0, true);
   })();
 
   $$('[data-sx="year"]').forEach(function (el) { el.textContent = String(new Date().getFullYear()); });
