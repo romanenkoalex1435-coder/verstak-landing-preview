@@ -160,112 +160,44 @@
     onMotionChange(function () { if (reduced()) stopAuto(); });
   })();
 
-  /* ============================================================
-     2. ИНТЕРАКТИВНОЕ ДЕМО — таблица заявок + карточка
-     ============================================================ */
-  (function initDemo() {
-    var root = $('[data-sx="demo"]');
-    if (!root) return;
-    var rows = D.protoRows;
-    var pipeline = D.protoPipeline;
-    var stepText = D.protoStepText;
-    var trs = $$('[data-sx-row]', root);
-    var panel = $('[data-sx="demo-panel"]', root);
-    var current = 0;
-
-    function toneForStage(stage) { return stage >= 4 ? 'done' : (stage >= 2 ? 'progress' : 'new'); }
-
-    function paintRowChip(i) {
-      var r = rows[i];
-      var chip = trs[i] && trs[i].querySelector('.status-chip');
-      if (!chip) return;
-      chip.setAttribute('data-tone', toneForStage(r.stage));
-      chip.textContent = pipeline[r.stage];
-    }
-
-    function paintMobile() {
-      var r = rows[current];
-      var setText = function (sel, val) { var el = $(sel, root); if (el) el.textContent = val; };
-      setText('[data-sx="mobile-title"]', r.title);
-      setText('[data-sx="mobile-obj"]', r.obj);
-      setText('[data-sx="mobile-time"]', 'Исполнитель: ' + (r.assignee === '—' ? 'не назначен' : r.assignee) + ' · ' + r.time);
-      setText('[data-sx="mobile-status"]', pipeline[r.stage]);
-      var chip = $('[data-sx="mobile-status-chip"]', root);
-      if (chip) chip.setAttribute('data-tone', toneForStage(r.stage));
-      var advBtn = $('[data-sx="mobile-advance"]', root);
-      if (advBtn) { advBtn.disabled = r.stage >= pipeline.length - 1; advBtn.textContent = r.stage >= pipeline.length - 1 ? 'Заявка закрыта' : 'Отметить: ' + pipeline[r.stage + 1]; }
-    }
-
-    function render(i, animate) {
-      current = i;
-      var r = rows[i];
-      var doRender = function () {
-        var setText = function (sel, val) { var el = $(sel, root); if (el) el.textContent = val; };
-        setText('[data-sx="demo-id"]', '№ ' + r.id);
-        setText('[data-sx="demo-title"]', r.title);
-        setText('[data-sx="demo-obj"]', r.obj);
-        setText('[data-sx="demo-assignee"]', r.assignee === '—' ? 'Не назначен' : r.assignee);
-        setText('[data-sx="demo-time"]', r.time);
-        setText('[data-sx="demo-status"]', pipeline[r.stage]);
-        var statusChip = $('[data-sx="demo-status-chip"]', root);
-        if (statusChip) statusChip.setAttribute('data-tone', toneForStage(r.stage));
-        setText('[data-sx="demo-step-title"]', stepText[r.stage][0]);
-        setText('[data-sx="demo-step-text"]', stepText[r.stage][1]);
-        $$('[data-sx="demo-bars"] > *', root).forEach(function (b, n) { b.classList.toggle('is-on', n <= r.stage); });
-        trs.forEach(function (tr, n) { tr.classList.toggle('is-active', n === i); tr.setAttribute('aria-current', n === i ? 'true' : 'false'); });
-        paintRowChip(i);
-        paintMobile();
-        if (panel) panel.classList.remove('is-changing');
-      };
-      if (animate && panel && !reduced()) {
-        panel.classList.add('is-changing');
-        setTimeout(doRender, 150);
-      } else { doRender(); }
-    }
-
-    trs.forEach(function (tr, i) {
-      tr.setAttribute('tabindex', '0');
-      tr.setAttribute('role', 'button');
-      tr.addEventListener('click', function () { render(i, true); });
-      tr.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); render(i, true); }
-      });
-    });
-
-    /* клик по этапу — меняем статус текущей заявки вживую */
-    $$('[data-sx-stage]', root).forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var stage = Number(btn.getAttribute('data-sx-stage'));
-        rows[current].stage = stage;
-        render(current, true);
-      });
-    });
-
-    var mobileAdvance = $('[data-sx="mobile-advance"]', root);
-    if (mobileAdvance) mobileAdvance.addEventListener('click', function () {
-      var r = rows[current];
-      if (r.stage < pipeline.length - 1) { r.stage += 1; render(current, true); }
-    });
-
-    /* переключатель список / экран исполнителя */
-    var btnDesktop = $('[data-sx="view-desktop"]', root);
-    var btnMobile = $('[data-sx="view-mobile"]', root);
-    var shell = $('.demo-shell', root);
-    var mobileFrame = $('[data-sx="demo-mobile"]', root);
-    function setView(isMobile) {
-      if (btnDesktop) btnDesktop.classList.toggle('is-on', !isMobile);
-      if (btnMobile) btnMobile.classList.toggle('is-on', isMobile);
-      if (shell) shell.hidden = isMobile;
-      if (mobileFrame) mobileFrame.hidden = !isMobile;
-      if (isMobile) paintMobile();
-    }
-    if (btnDesktop) btnDesktop.addEventListener('click', function () { setView(false); });
-    if (btnMobile) btnMobile.addEventListener('click', function () { setView(true); });
-
-    render(0, false);
-  })();
-
   window.sxTrack = window.sxTrack || function () {};
+
+  /* ============================================================
+     2. КАЛЬКУЛЯТОР — предварительная оценка стоимости
+     ============================================================ */
+  (function initCalculator() {
+    var root = $('[data-sx="calc"]');
+    if (!root) return;
+    var chosen = [];
+    function weeksText(n) {
+      var d = n % 100, t = n % 10;
+      if (d >= 11 && d <= 14) return n + ' недель';
+      if (t === 1) return n + ' неделя';
+      if (t >= 2 && t <= 4) return n + ' недели';
+      return n + ' недель';
+    }
+    function render() {
+      var mods = D.modules.filter(function (m) { return chosen.indexOf(m.id) > -1; });
+      var total = D.base.price + mods.reduce(function (a, m) { return a + m.price; }, 0);
+      var weeks = Math.min(6, 2 + Math.ceil(mods.length / 3));
+      $$('[data-sx-chip]', root).forEach(function (chip) {
+        chip.setAttribute('aria-pressed', String(chosen.indexOf(chip.getAttribute('data-sx-chip')) > -1));
+      });
+      var totalEl = $('[data-sx="calc-total"]');
+      if (totalEl) totalEl.textContent = fmt(total);
+      var weeksEl = $('[data-sx="calc-weeks"]');
+      if (weeksEl) weeksEl.textContent = weeksText(weeks);
+    }
+    $$('[data-sx-chip]', root).forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        var id = chip.getAttribute('data-sx-chip');
+        var i = chosen.indexOf(id);
+        if (i > -1) chosen.splice(i, 1); else chosen.push(id);
+        render();
+      });
+    });
+    render();
+  })();
 
   /* ============================================================
      3. ФОРМА
