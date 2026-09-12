@@ -173,6 +173,29 @@
     var panel = $('[data-sx="demo-panel"]', root);
     var current = 0;
 
+    function toneForStage(stage) { return stage >= 4 ? 'done' : (stage >= 2 ? 'progress' : 'new'); }
+
+    function paintRowChip(i) {
+      var r = rows[i];
+      var chip = trs[i] && trs[i].querySelector('.status-chip');
+      if (!chip) return;
+      chip.setAttribute('data-tone', toneForStage(r.stage));
+      chip.textContent = pipeline[r.stage];
+    }
+
+    function paintMobile() {
+      var r = rows[current];
+      var setText = function (sel, val) { var el = $(sel, root); if (el) el.textContent = val; };
+      setText('[data-sx="mobile-title"]', r.title);
+      setText('[data-sx="mobile-obj"]', r.obj);
+      setText('[data-sx="mobile-time"]', 'Исполнитель: ' + (r.assignee === '—' ? 'не назначен' : r.assignee) + ' · ' + r.time);
+      setText('[data-sx="mobile-status"]', pipeline[r.stage]);
+      var chip = $('[data-sx="mobile-status-chip"]', root);
+      if (chip) chip.setAttribute('data-tone', toneForStage(r.stage));
+      var advBtn = $('[data-sx="mobile-advance"]', root);
+      if (advBtn) { advBtn.disabled = r.stage >= pipeline.length - 1; advBtn.textContent = r.stage >= pipeline.length - 1 ? 'Заявка закрыта' : 'Отметить: ' + pipeline[r.stage + 1]; }
+    }
+
     function render(i, animate) {
       current = i;
       var r = rows[i];
@@ -184,10 +207,14 @@
         setText('[data-sx="demo-assignee"]', r.assignee === '—' ? 'Не назначен' : r.assignee);
         setText('[data-sx="demo-time"]', r.time);
         setText('[data-sx="demo-status"]', pipeline[r.stage]);
+        var statusChip = $('[data-sx="demo-status-chip"]', root);
+        if (statusChip) statusChip.setAttribute('data-tone', toneForStage(r.stage));
         setText('[data-sx="demo-step-title"]', stepText[r.stage][0]);
         setText('[data-sx="demo-step-text"]', stepText[r.stage][1]);
         $$('[data-sx="demo-bars"] > *', root).forEach(function (b, n) { b.classList.toggle('is-on', n <= r.stage); });
         trs.forEach(function (tr, n) { tr.classList.toggle('is-active', n === i); tr.setAttribute('aria-current', n === i ? 'true' : 'false'); });
+        paintRowChip(i);
+        paintMobile();
         if (panel) panel.classList.remove('is-changing');
       };
       if (animate && panel && !reduced()) {
@@ -205,110 +232,43 @@
       });
     });
 
+    /* клик по этапу — меняем статус текущей заявки вживую */
+    $$('[data-sx-stage]', root).forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var stage = Number(btn.getAttribute('data-sx-stage'));
+        rows[current].stage = stage;
+        render(current, true);
+      });
+    });
+
+    var mobileAdvance = $('[data-sx="mobile-advance"]', root);
+    if (mobileAdvance) mobileAdvance.addEventListener('click', function () {
+      var r = rows[current];
+      if (r.stage < pipeline.length - 1) { r.stage += 1; render(current, true); }
+    });
+
+    /* переключатель список / экран исполнителя */
+    var btnDesktop = $('[data-sx="view-desktop"]', root);
+    var btnMobile = $('[data-sx="view-mobile"]', root);
+    var shell = $('.demo-shell', root);
+    var mobileFrame = $('[data-sx="demo-mobile"]', root);
+    function setView(isMobile) {
+      if (btnDesktop) btnDesktop.classList.toggle('is-on', !isMobile);
+      if (btnMobile) btnMobile.classList.toggle('is-on', isMobile);
+      if (shell) shell.hidden = isMobile;
+      if (mobileFrame) mobileFrame.hidden = !isMobile;
+      if (isMobile) paintMobile();
+    }
+    if (btnDesktop) btnDesktop.addEventListener('click', function () { setView(false); });
+    if (btnMobile) btnMobile.addEventListener('click', function () { setView(true); });
+
     render(0, false);
   })();
 
-  /* ============================================================
-     3. КОНСТРУКТОР
-     ============================================================ */
-  var SX = (function () {
-    var listeners = [];
-    var chosen = D.modules.filter(function (m) { return m.preset; }).map(function (m) { return m.id; });
-    function mods() { return D.modules.filter(function (m) { return chosen.indexOf(m.id) > -1; }); }
-    function total() { return D.base.price + mods().reduce(function (a, m) { return a + m.price; }, 0); }
-    function weeks() { return Math.min(6, 2 + Math.ceil(mods().length / 3)); }
-    function weeksText(n) {
-      var d = n % 100, t = n % 10;
-      if (d >= 11 && d <= 14) return n + ' недель';
-      if (t === 1) return n + ' неделя';
-      if (t >= 2 && t <= 4) return n + ' недели';
-      return n + ' недель';
-    }
-    function snapshot() { return { modules: mods(), total: total(), weeks: weeks(), weeksText: weeksText(weeks()), base: D.base }; }
-    function emit() { var s = snapshot(); listeners.forEach(function (fn) { try { fn(s); } catch (e) {} }); }
-    return {
-      get: snapshot, fmt: fmt,
-      ids: function () { return chosen.slice(); },
-      restore: function (ids) {
-        if (!Array.isArray(ids)) return;
-        chosen = ids.filter(function (id) { return D.modules.some(function (m) { return m.id === id; }); });
-        emit();
-      },
-      has: function (id) { return chosen.indexOf(id) > -1; },
-      toggle: function (id) {
-        var i = chosen.indexOf(id);
-        if (i > -1) chosen.splice(i, 1); else chosen.push(id);
-        emit();
-      },
-      baseOnly: function () { chosen = []; emit(); },
-      on: function (fn) { listeners.push(fn); fn(snapshot()); }
-    };
-  })();
-  window.SX = SX;
-
-  var requestBuildKey = 'sx-request-build-v1';
-  if ($('[data-sx="form"]')) {
-    try {
-      var savedBuild = JSON.parse(sessionStorage.getItem(requestBuildKey));
-      SX.restore(savedBuild && savedBuild.ids);
-    } catch (e) {}
-  }
-  $$('[data-sx="request-link"]').forEach(function (link) {
-    link.addEventListener('click', function () {
-      try { sessionStorage.setItem(requestBuildKey, JSON.stringify({ ids: SX.ids() })); } catch (e) {}
-    });
-  });
-
   window.sxTrack = window.sxTrack || function () {};
 
-  (function () {
-    var root = $('[data-sx="constructor"]');
-    if (!root) return;
-    var bricks = $$('[data-sx-brick]', root);
-    var hint = $('[data-sx="preset-hint"]', root);
-    var touched = false;
-    function dropHint() { if (hint && hint.parentNode) { hint.parentNode.removeChild(hint); hint = null; } }
-    bricks.forEach(function (el) {
-      var id = el.getAttribute('data-sx-brick');
-      function toggle() {
-        if (!touched) { touched = true; dropHint(); }
-        SX.toggle(id);
-        window.sxTrack('constructor_change', { count: SX.get().modules.length });
-      }
-      el.addEventListener('click', toggle);
-    });
-    var baseBtn = $('[data-sx="base-only"]', root);
-    if (baseBtn) baseBtn.addEventListener('click', function () { touched = true; dropHint(); SX.baseOnly(); window.sxTrack('constructor_reset_to_base'); });
-
-    SX.on(function (s) {
-      bricks.forEach(function (el) {
-        var on = SX.has(el.getAttribute('data-sx-brick'));
-        el.setAttribute('aria-pressed', String(on));
-        el.classList.toggle('is-on', on);
-      });
-      $$('[data-sx="total"]', root).forEach(function (el) { el.textContent = SX.fmt(s.total); });
-      $$('[data-sx="weeks"]', root).forEach(function (el) { el.textContent = s.weeksText; });
-      var stack = $('[data-sx="stack"]', root);
-      if (stack) {
-        stack.replaceChildren();
-        s.modules.slice().reverse().forEach(function (m) {
-          var row = document.createElement('div'); row.className = 'sx-stack-row';
-          var n = document.createElement('span'); n.textContent = m.name;
-          var p = document.createElement('b'); p.textContent = m.price.toLocaleString('ru-RU');
-          row.append(n, p); stack.appendChild(row);
-        });
-        var core = document.createElement('div'); core.className = 'sx-stack-row is-base';
-        var cn = document.createElement('span'); cn.textContent = D.base.name;
-        var cp = document.createElement('b'); cp.textContent = D.base.price.toLocaleString('ru-RU');
-        core.append(cn, cp); stack.appendChild(core);
-        var ghost = $('[data-sx="stack-ghost"]', root);
-        if (ghost) stack.insertBefore(ghost, stack.firstChild);
-      }
-    });
-  })();
-
   /* ============================================================
-     4. ФОРМА
+     3. ФОРМА
      ============================================================ */
   (function () {
     var form = $('[data-sx="form"]');
@@ -317,20 +277,6 @@
     var btn = $('[data-sx="submit"]', form) || $('[data-sx="submit"]');
     var fallback = $('[data-sx="fallback"]');
     var sending = false, sent = false, started = false;
-
-    SX.on(function (s) {
-      var t = $('[data-sx="sum-total"]'); if (t) t.textContent = SX.fmt(s.total);
-      var w = $('[data-sx="sum-weeks"]'); if (w) w.textContent = s.weeksText;
-      var rows = $('[data-sx="sum-rows"]');
-      if (rows) {
-        rows.replaceChildren();
-        var add = function (text) { var p = document.createElement('p'); p.className = 'sx-sum-row'; p.textContent = text; rows.appendChild(p); };
-        add(D.base.name + ' — ' + SX.fmt(D.base.price));
-        s.modules.forEach(function (m) { add(m.name + ' — ' + SX.fmt(m.price)); });
-      }
-      var hidBuild = form.querySelector('[name="build"]'); if (hidBuild) hidBuild.value = s.modules.map(function (m) { return m.name; }).join(', ');
-      var hidTotal = form.querySelector('[name="total"]'); if (hidTotal) hidTotal.value = String(s.total);
-    });
 
     function fieldOf(n) { return form.querySelector('[name="' + n + '"]'); }
     function setErr(name, msg) {
@@ -383,20 +329,17 @@
         return;
       }
 
-      var s = SX.get();
       var payload = {
         name: (fieldOf('name') || {}).value.trim() || '',
         contact: (fieldOf('contact') || {}).value.trim() || '',
         company: (fieldOf('company') || {}).value.trim() || '',
-        task: ((fieldOf('task') || {}).value || '').trim(),
-        build: s.modules.map(function (m) { return m.name; }),
-        total: s.total
+        task: ((fieldOf('task') || {}).value || '').trim()
       };
 
       sent = true;
       if (btn) { btn.disabled = true; btn.textContent = 'Текст собран ниже'; }
       if (status) { status.textContent = 'Онлайн-приём заявок отключён. Текст обращения собран ниже — скопируйте и пришлите нам напрямую.'; status.dataset.state = 'ok'; }
-      window.sxTrack('form_assembled', { total: payload.total });
+      window.sxTrack('form_assembled', {});
 
       if (fallback) {
         fallback.hidden = false;
@@ -405,9 +348,7 @@
           'Имя: ' + payload.name + '\n' +
           'Контакт: ' + payload.contact + '\n' +
           'Компания: ' + (payload.company || '—') + '\n' +
-          'Что сейчас вручную: ' + (payload.task || '—') + '\n' +
-          'Состав: ' + (payload.build.length ? payload.build.join(', ') : 'только базовый') + '\n' +
-          'Предварительно: ' + SX.fmt(payload.total);
+          'Что сейчас вручную: ' + (payload.task || '—');
       }
     });
   })();

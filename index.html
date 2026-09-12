@@ -51,6 +51,7 @@
   --radius-pill:999px;
   --container:1320px;
   --container-narrow:760px;
+  --container-wide:1600px;
   --header-h:76px;
   --header-h-m:64px;
   --font:"Commissioner",-apple-system,"Helvetica Neue",Arial,sans-serif;
@@ -79,7 +80,8 @@ strong{font-weight:600}
 
 .container{max-width:var(--container);margin:0 auto;padding-inline:32px}
 .container-narrow{max-width:var(--container-narrow);margin:0 auto;padding-inline:32px}
-@media (max-width:640px){.container,.container-narrow{padding-inline:20px}}
+.container-wide{max-width:var(--container-wide);margin:0 auto;padding-inline:32px}
+@media (max-width:640px){.container,.container-narrow,.container-wide{padding-inline:20px}}
 
 section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
 
@@ -287,6 +289,25 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
 .contrast-card.is-fixed .contrast-step i{color:rgba(255,255,255,.35)}
 
 /* ==========================================================================
+   WORKFLOW → INTERFACE (signature)
+   ========================================================================== */
+.workflow-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:64px;align-items:start}
+@media (max-width:900px){.workflow-grid{grid-template-columns:minmax(0,1fr);gap:40px}}
+.workflow-steps{display:flex;flex-direction:column;position:relative;padding-left:36px}
+.workflow-steps::before{content:"";position:absolute;left:9px;top:8px;bottom:8px;width:1px;background:var(--border-strong)}
+.workflow-step{position:relative;padding-bottom:36px}
+.workflow-step:last-child{padding-bottom:0}
+.workflow-step::before{content:"";position:absolute;left:-36px;top:2px;width:19px;height:19px;border-radius:50%;background:var(--surface);border:1.5px solid var(--border-strong)}
+.workflow-step.is-final::before{background:var(--accent);border-color:var(--accent)}
+.workflow-step-tag{font-family:var(--font-mono);font-size:11px;color:var(--ink-tertiary);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
+.workflow-step h4{font-size:17.5px;font-weight:600;letter-spacing:-.005em;margin-bottom:4px}
+.workflow-step p{font-size:14px;color:var(--ink-secondary);line-height:1.5;max-width:340px}
+.workflow-result{position:sticky;top:calc(var(--header-h) + 24px)}
+.workflow-result-label{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--ink-tertiary);margin-bottom:16px;text-transform:uppercase;letter-spacing:.04em}
+.workflow-result-label svg{width:16px;height:16px;color:var(--accent);flex:0 0 auto}
+@media (max-width:900px){.workflow-result{position:static}}
+
+/* ==========================================================================
    ONE DESIGN SYSTEM
    ========================================================================== */
 .system-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -329,6 +350,21 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
 .demo-step-title{font-size:14.5px;font-weight:600;margin-bottom:4px}
 .demo-step-text{font-size:13.5px;color:var(--ink-secondary);line-height:1.5}
 .demo-disclaimer{font-size:12px;color:var(--ink-tertiary);margin-top:18px}
+.demo-bars>button{background:none;border:none;font:inherit;text-align:left;margin:0;padding-right:0;-webkit-appearance:none;appearance:none}
+.demo-bars>button:hover{color:var(--ink)}
+.demo-view-switch{display:flex;gap:6px}
+.demo-view-toggle{font-size:12.5px;font-weight:600;padding:8px 15px;border-radius:var(--radius-pill);border:1px solid var(--border-strong);background:var(--surface);color:var(--ink-secondary);cursor:pointer;transition:background-color .15s var(--ease),color .15s var(--ease)}
+.demo-view-toggle.is-on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.demo-mobile-frame{padding:36px 22px 44px;display:flex;justify-content:center}
+.demo-mobile-phone{width:100%;max-width:320px;background:var(--surface);border:1px solid var(--border);border-radius:26px;padding:24px 22px;box-shadow:var(--shadow-lg)}
+.demo-mobile-label{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-tertiary);margin-bottom:14px}
+.demo-mobile-phone h4{font-size:19px;font-weight:600;letter-spacing:-.005em;margin:12px 0 6px}
+.demo-mobile-phone .meta{font-size:14px;color:var(--ink-secondary);margin-bottom:4px}
+.demo-mobile-phone .who{font-size:12.5px;color:var(--ink-tertiary)}
+.demo-mobile-actions{display:flex;flex-direction:column;gap:10px;margin-top:26px}
+.demo-mobile-actions button{padding:13px;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface-sunken);font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;transition:background-color .15s var(--ease)}
+.demo-mobile-actions button.is-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.demo-mobile-actions button:hover{filter:brightness(.96)}
 
 /* ==========================================================================
    CAPABILITIES / SCALING
@@ -376,64 +412,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
 .price-cta small{font-size:12.5px;color:var(--ink-tertiary)}
 .price-more{margin-top:20px}
 
-/* ---------- constructor (secondary, de-emphasized) ---------- */
-.builder-toggle-wrap{margin-top:20px}
-.builder-panel{margin-top:24px;padding-top:32px;border-top:1px solid var(--border)}
-.builder-shell{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:40px;align-items:start}
-@media (max-width:960px){.builder-shell{grid-template-columns:minmax(0,1fr)}}
-.base-card{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 22px;border-radius:var(--radius-md);background:var(--surface-sunken);margin-bottom:22px}
-.base-card-name{font-size:15.5px;font-weight:600;margin:0 0 4px}
-.base-card-desc{font-size:13px;color:var(--ink-secondary)}
-.base-card-price{font-family:var(--font-mono);font-size:18px;font-weight:500;white-space:nowrap}
-.builder-list-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
-.builder-list-head h4{font-size:14.5px;font-weight:600}
-.reset-btn{font-size:13px;font-weight:600;color:var(--ink);background:transparent;border:1px solid var(--border-strong);border-radius:var(--radius-pill);padding:8px 16px;cursor:pointer;transition:background-color .15s var(--ease)}
-.reset-btn:hover{background:rgba(22,21,15,.06)}
-.brick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media (max-width:760px){.brick-grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:520px){.brick-grid{grid-template-columns:minmax(0,1fr)}}
-.brick{text-align:left;width:100%;background:transparent;border:1px solid var(--border-strong);border-radius:var(--radius-sm);padding:15px;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-height:112px;transition:border-color .15s var(--ease),box-shadow .15s var(--ease)}
-.brick:hover{border-color:var(--border-hover)}
-.brick-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-.brick-name{font-size:13.5px;font-weight:600}
-.brick-price{font-family:var(--font-mono);font-size:12px;color:var(--ink-secondary);white-space:nowrap}
-.brick-desc{font-size:12.5px;color:var(--ink-secondary);line-height:1.4}
-.brick-check{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border-strong);flex:0 0 auto;position:relative}
-.brick[aria-pressed="true"]{background:var(--surface);border-color:var(--accent);box-shadow:var(--shadow-sm)}
-.brick[aria-pressed="true"] .brick-check{border-color:var(--accent);background:var(--accent)}
-.brick[aria-pressed="true"] .brick-check::after{content:"";position:absolute;left:4.5px;top:1.5px;width:4.5px;height:8px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(40deg)}
-.summary-panel{background:var(--surface-sunken);border-radius:var(--radius-md);padding:24px;position:sticky;top:calc(var(--header-h) + 20px)}
-@media (max-width:960px){.summary-panel{position:static}}
-.summary-panel h4{font-size:14.5px;font-weight:600;margin:0 0 14px}
-.sx-stack-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;font-size:13.5px;border-bottom:1px solid var(--border)}
-.sx-stack-row span{color:var(--ink-secondary)}
-.sx-stack-row b{font-family:var(--font-mono);font-weight:500}
-.sx-stack-row.is-base span{color:var(--ink);font-weight:500}
-.stack-ghost{padding:10px 0;font-size:12.5px;color:var(--ink-tertiary);border-bottom:1px dashed var(--border-strong)}
-.summary-totals{margin-top:16px}
-.summary-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;font-size:13.5px}
-.summary-row span{color:var(--ink-secondary)}
-.summary-row b{font-family:var(--font-mono);font-weight:500}
-.summary-row.total b{font-size:21px}
-.summary-note{font-size:11.5px;color:var(--ink-tertiary);margin:12px 0 18px}
-.summary-cta{display:flex;align-items:center;justify-content:center;width:100%;padding:14px 20px;border-radius:var(--radius-md);background:var(--ink);color:#fff;font-size:14.5px;font-weight:600;text-decoration:none;margin-bottom:10px;transition:background-color .15s var(--ease)}
-.summary-cta:hover{background:#2c2a22}
-.summary-footnote{font-size:11.5px;color:var(--ink-tertiary);line-height:1.5}
-
-/* ==========================================================================
-   BOUNDARIES
-   ========================================================================== */
-.bounds-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
-@media (max-width:760px){.bounds-grid{grid-template-columns:minmax(0,1fr);gap:32px}}
-.bounds-col{padding:0 32px}
-.bounds-col:first-child{padding-left:0;border-right:1px solid var(--border)}
-.bounds-col:last-child{padding-right:0}
-@media (max-width:760px){.bounds-col:first-child{border-right:none;border-bottom:1px solid var(--border);padding:0 0 32px}.bounds-col{padding:0}}
-.bounds-label{font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:.04em;font-weight:500;margin-bottom:18px;color:var(--ink-secondary)}
-.bounds-item{padding:15px 0;border-bottom:1px solid var(--border)}
-.bounds-item:last-child{border-bottom:none}
-.bounds-item h4{font-size:15px;font-weight:600;margin:0 0 4px}
-.bounds-item p{font-size:13.5px;color:var(--ink-secondary);line-height:1.5}
+.integrations-note{margin-top:40px;font-size:14px;color:var(--ink-tertiary);text-align:center;max-width:560px;margin-inline:auto;line-height:1.5}
 
 /* ==========================================================================
    FOUNDERS
@@ -540,9 +519,10 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
           <a class="link-arrow" href="#demo">Посмотреть, как это работает →</a>
         </div>
         <p class="hero-caption" data-motion-decor style="--motion-index:3">
-          <span><b>Сервисные компании</b></span>
-          <span><b>Монтаж и производство</b></span>
-          <span><b>Обслуживание объектов</b></span>
+          <span><b>Сервис</b></span>
+          <span><b>Производство</b></span>
+          <span><b>Продажи</b></span>
+          <span><b>Операционка объектов</b></span>
         </p>
       </div>
 
@@ -599,6 +579,78 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
             <div class="contrast-step"><i>02</i><span>Процесс разложен на объекты и статусы</span></div>
             <div class="contrast-step"><i>03</i><span>Система спроектирована под структуру</span></div>
             <div class="contrast-step"><i>04</i><span>Вся работа — в одном месте</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== WORKFLOW → INTERFACE ============== -->
+  <section class="sect panel-sunken" data-motion-scene="workflow">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Как это устроено</p>
+        <h2>Сначала разбираем, как работает компания</h2>
+        <p>Обычный рабочий процесс — шаг за шагом — становится интерфейсом. Не наоборот.</p>
+      </div>
+
+      <div class="workflow-grid">
+        <div class="workflow-steps">
+          <div class="workflow-step" data-motion-decor style="--motion-index:0">
+            <p class="workflow-step-tag">01</p>
+            <h4>Заявка пришла</h4>
+            <p>Клиент написал или позвонил — обращение зафиксировано в одной строке.</p>
+          </div>
+          <div class="workflow-step" data-motion-decor style="--motion-index:1">
+            <p class="workflow-step-tag">02</p>
+            <h4>Менеджер проверил</h4>
+            <p>Уточнил детали, определил, кто должен этим заниматься.</p>
+          </div>
+          <div class="workflow-step" data-motion-decor style="--motion-index:2">
+            <p class="workflow-step-tag">03</p>
+            <h4>Назначен ответственный</h4>
+            <p>У задачи появился конкретный исполнитель и срок.</p>
+          </div>
+          <div class="workflow-step" data-motion-decor style="--motion-index:3">
+            <p class="workflow-step-tag">04</p>
+            <h4>Работа выполнена</h4>
+            <p>Статус обновлён, добавлены фото и комментарии по факту.</p>
+          </div>
+          <div class="workflow-step is-final" data-motion-decor style="--motion-index:4">
+            <p class="workflow-step-tag">05</p>
+            <h4>Результат оформлен документом</h4>
+            <p>Клиент получил акт или отчёт — история осталась в системе.</p>
+          </div>
+        </div>
+
+        <div class="workflow-result" data-motion-decor style="--motion-index:2">
+          <p class="workflow-result-label"><svg viewBox="0 0 20 26" fill="none"><path d="M10 1v22M2 15l8 8 8-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Становится интерфейсом</p>
+          <div class="crm-shell">
+            <div class="sw-flow">
+              <span class="sw-flow-step">Заявка</span><span class="sw-flow-arrow" aria-hidden="true">→</span>
+              <span class="sw-flow-step">Проверка</span><span class="sw-flow-arrow" aria-hidden="true">→</span>
+              <span class="sw-flow-step">Исполнитель</span><span class="sw-flow-arrow" aria-hidden="true">→</span>
+              <span class="sw-flow-step">Работа</span><span class="sw-flow-arrow" aria-hidden="true">→</span>
+              <span class="sw-flow-step is-last">Документ</span>
+            </div>
+            <div class="sw-record">
+              <div class="sw-record-head">
+                <span class="sw-record-label mono">Заявка №2384</span>
+                <span class="status-chip" data-tone="progress">В работе</span>
+              </div>
+              <h3>Обслуживание кондиционера</h3>
+              <p class="sw-record-meta">ул. Ленина, 45 · офис 12</p>
+              <div class="sw-record-foot">
+                <span class="sw-record-who">Исполнитель: Илья</span>
+                <span class="sw-record-time mono">Сегодня, 14:30</span>
+              </div>
+            </div>
+            <div class="sw-objects">
+              <span class="sw-object is-primary">Заявки</span>
+              <span class="sw-object">Клиенты</span>
+              <span class="sw-object">Объекты</span>
+              <span class="sw-object">Исполнители</span>
+            </div>
           </div>
         </div>
       </div>
@@ -684,22 +736,28 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
 
   <!-- ============== INTERACTIVE DEMO ============== -->
   <section id="demo" class="sect panel-sunken">
-    <div class="container">
+    <div class="container-wide">
       <div class="section-head">
         <p class="eyebrow">Демо</p>
         <h2>Кликните заявку — откроется карточка</h2>
-        <p>Так работает система изнутри: список заявок слева, карточка с историей и статусом — справа.</p>
+        <p>Список заявок слева, карточка с историей и статусом — справа. Статус можно менять прямо здесь, а справа — как это выглядит у исполнителя в телефоне.</p>
       </div>
 
       <div class="crm-shell" data-sx="demo">
+        <div class="crm-toolbar" style="padding:18px 22px 0">
+          <h4>Заявки и выезды</h4>
+          <div class="demo-view-switch">
+            <button type="button" class="demo-view-toggle is-on" data-sx="view-desktop">Список</button>
+            <button type="button" class="demo-view-toggle" data-sx="view-mobile">Экран исполнителя</button>
+          </div>
+        </div>
         <div class="demo-shell">
           <div class="demo-table-col">
-            <div class="crm-toolbar"><h4>Заявки и выезды</h4><span>Демонстрационный сценарий</span></div>
             <div style="overflow-x:auto">
             <table class="crm-table" style="min-width:420px">
               <thead><tr><th>Заявка / объект</th><th>Исполнитель</th><th>Статус</th></tr></thead>
               <tbody>
-                <tr class="demo-row" data-sx-row><td>Не охлаждает сплит-система<span class="sub">Офис на Ленина, 45 · каб. 12</span></td><td>Не назначен</td><td><span class="status-chip" data-tone="new">Новая</span></td></tr>
+                <tr class="demo-row" data-sx-row><td>Обслуживание кондиционера<span class="sub">ул. Ленина, 45 · офис 12</span></td><td>Илья</td><td><span class="status-chip" data-tone="progress">В работе</span></td></tr>
                 <tr class="demo-row" data-sx-row><td>Уборка после ремонта<span class="sub">ЖК Северный, кв. 74</span></td><td>Бригада 2</td><td><span class="status-chip" data-tone="progress">В работе</span></td></tr>
                 <tr class="demo-row" data-sx-row><td>Замена фильтров, 3 блока<span class="sub">Кафе на Пушкина</span></td><td>Илья</td><td><span class="status-chip" data-tone="progress">Фото</span></td></tr>
                 <tr class="demo-row" data-sx-row><td>Профилактика вентиляции<span class="sub">Склад на Промышленной</span></td><td>Бригада 1</td><td><span class="status-chip" data-tone="done">Закрыта</span></td></tr>
@@ -709,7 +767,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
             </div>
           </div>
           <div class="demo-side-col">
-            <p class="crm-side-title" style="padding:0 0 12px">В карточке заявки</p>
+            <p class="crm-side-title" style="padding:0 0 12px">В карточке заявки — нажимайте на статус</p>
             <div class="demo-panel" data-sx="demo-panel">
               <div class="demo-panel-head">
                 <span class="mono" style="font-size:12px;color:var(--ink-tertiary)" data-sx="demo-id"></span>
@@ -719,11 +777,25 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
               <p class="meta" data-sx="demo-obj"></p>
               <p class="who">Исполнитель: <span data-sx="demo-assignee"></span> · <span data-sx="demo-time"></span></p>
               <div class="demo-bars" data-sx="demo-bars">
-                <span>Новая</span><span>Назначена</span><span>В работе</span><span>Фото</span><span>Закрыта</span>
+                <button type="button" data-sx-stage="0">Новая</button><button type="button" data-sx-stage="1">Назначена</button><button type="button" data-sx-stage="2">В работе</button><button type="button" data-sx-stage="3">Фото</button><button type="button" data-sx-stage="4">Закрыта</button>
               </div>
               <p class="demo-step-title" data-sx="demo-step-title"></p>
               <p class="demo-step-text" data-sx="demo-step-text"></p>
               <p class="demo-disclaimer">Пример интерфейса, не данные клиента</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-mobile-frame" data-sx="demo-mobile" hidden>
+          <div class="demo-mobile-phone">
+            <p class="demo-mobile-label">Экран исполнителя · телефон</p>
+            <span class="status-chip" data-tone="progress" data-sx="mobile-status-chip"><span data-sx="mobile-status"></span></span>
+            <h4 data-sx="mobile-title"></h4>
+            <p class="meta" data-sx="mobile-obj"></p>
+            <p class="who" data-sx="mobile-time"></p>
+            <div class="demo-mobile-actions">
+              <button type="button" class="is-primary" data-sx="mobile-advance">Отметить следующий этап</button>
+              <button type="button">Добавить фото</button>
             </div>
           </div>
         </div>
@@ -784,8 +856,25 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
     </div>
   </section>
 
-  <!-- ============== PRICE ============== -->
+  <!-- ============== FOUNDERS ============== -->
   <section class="sect panel-sunken">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">О нас</p>
+        <h2>Проект не уходит в отдел продаж</h2>
+      </div>
+      <div class="founders-wrap">
+        <p class="founders-quote">Разбираем задачу сами. Проектируем сами. <span>Показываем результат напрямую — без пересказа через отдел продаж и без промежуточных менеджеров.</span></p>
+        <div class="founder-cards">
+          <div class="founder-card"><span class="founder-avatar" aria-hidden="true">Д</span><div><p class="founder-name">Дмитрий</p><p class="founder-role">Сооснователь, разработка</p></div></div>
+          <div class="founder-card"><span class="founder-avatar" aria-hidden="true">А</span><div><p class="founder-name">Александр</p><p class="founder-role">Сооснователь, работа с клиентами</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== PRICE ============== -->
+  <section class="sect">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">Стоимость</p>
@@ -803,84 +892,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
         </div>
       </div>
 
-      <div class="builder-toggle-wrap">
-        <button class="link-arrow" type="button" data-sx="builder-toggle" aria-expanded="false" aria-controls="builder-panel">Прикинуть состав подробнее →</button>
-      </div>
-
-      <div class="builder-panel" id="builder-panel" data-sx="builder-panel" hidden>
-        <div id="builder" data-sx="constructor">
-          <div class="base-card">
-            <div><p class="base-card-name">Основа: учёт заявок и клиентов</p><p class="base-card-desc">Входит в любой состав</p></div>
-            <div class="base-card-price mono">60 000 ₽</div>
-          </div>
-          <div class="builder-shell">
-            <div>
-              <div class="builder-list-head">
-                <h4>Добавьте блоки под свой процесс</h4>
-                <button class="reset-btn" type="button" data-sx="base-only">Начать с базы</button>
-              </div>
-              <div class="brick-grid">
-                <button type="button" class="brick" data-sx-brick="card"><div class="brick-top"><span class="brick-name">Карточка объекта</span><span class="brick-check" aria-hidden="true"></span></div><p class="brick-desc">Адрес, оборудование, история работ</p><span class="brick-price">+ 10 000 ₽</span></button>
-                <button type="button" class="brick" data-sx-brick="mobile"><div class="brick-top"><span class="brick-name">Мобильный экран</span><span class="brick-check" aria-hidden="true"></span></div><p class="brick-desc">Для исполнителя, прямо в телефоне</p><span class="brick-price">+ 20 000 ₽</span></button>
-                <button type="button" class="brick" data-sx-brick="photo"><div class="brick-top"><span class="brick-name">Фотоотчёты</span><span class="brick-check" aria-hidden="true"></span></div><p class="brick-desc">До и после, без них не закрыть</p><span class="brick-price">+ 10 000 ₽</span></button>
-                <button type="button" class="brick" data-sx-brick="terms"><div class="brick-top"><span class="brick-name">Сроки и напоминания</span><span class="brick-check" aria-hidden="true"></span></div><p class="brick-desc">Гарантии, ТО, повторные визиты</p><span class="brick-price">+ 15 000 ₽</span></button>
-                <button type="button" class="brick" data-sx-brick="roles"><div class="brick-top"><span class="brick-name">Роли и доступы</span><span class="brick-check" aria-hidden="true"></span></div><p class="brick-desc">Кто что видит и может менять</p><span class="brick-price">+ 10 000 ₽</span></button>
-                <button type="button" class="brick" data-sx-brick="tg"><div class="brick-top"><span class="brick-name">Telegram</span><span class="brick-check" aria-hidden="true"></span></div><p class="brick-desc">Уведомления приходят сами</p><span class="brick-price">+ 10 000 ₽</span></button>
-                <button type="button" class="brick" data-sx-brick="excel"><div class="brick-top"><span class="brick-name">Выгрузка в Excel</span><span class="brick-check" aria-hidden="true"></span></div><p class="brick-desc">Любой список одной кнопкой</p><span class="brick-price">+ 5 000 ₽</span></button>
-                <button type="button" class="brick" data-sx-brick="import"><div class="brick-top"><span class="brick-name">Перенос данных</span><span class="brick-check" aria-hidden="true"></span></div><p class="brick-desc">Из таблиц или другой программы</p><span class="brick-price">+ 15 000 ₽</span></button>
-                <button type="button" class="brick" data-sx-brick="stock"><div class="brick-top"><span class="brick-name">Склад расходников</span><span class="brick-check" aria-hidden="true"></span></div><p class="brick-desc">Остатки и списание по работам</p><span class="brick-price">+ 20 000 ₽</span></button>
-              </div>
-            </div>
-            <aside class="summary-panel">
-              <h4>Ваша сборка</h4>
-              <div data-sx="stack"><p class="stack-ghost" data-sx="stack-ghost">следующий блок встанет сюда</p></div>
-              <div class="summary-totals">
-                <div class="summary-row total"><span>Итого</span><b class="tnum" data-sx="total">60 000 ₽</b></div>
-                <div class="summary-row"><span>Срок сборки</span><b data-sx="weeks">2 недели</b></div>
-                <div class="summary-row"><span>Оплата</span><b>50 / 50</b></div>
-              </div>
-              <p class="summary-note">Предварительная оценка. Точную сумму зафиксируем письменно после разбора задачи.</p>
-              <a class="summary-cta" href="request.html" data-sx="request-link">Перейти к заявке</a>
-            </aside>
-          </div>
-        </div>
-      </div>
-
-      <div class="bounds-grid" style="margin-top:72px">
-        <div class="bounds-col">
-          <p class="bounds-label">Берём</p>
-          <div class="bounds-item"><h4>Учёт заявок и клиентов</h4><p>список, статусы, история по каждому</p></div>
-          <div class="bounds-item"><h4>Мобильный экран исполнителя</h4><p>задачи, чек-лист, фото с объекта</p></div>
-          <div class="bounds-item"><h4>Фотоотчёты и акты</h4><p>формируются сами после визита</p></div>
-          <div class="bounds-item"><h4>Роли и права доступа</h4><p>каждый видит только своё</p></div>
-          <div class="bounds-item"><h4>Выгрузка в Excel</h4><p>данные всегда можно забрать</p></div>
-        </div>
-        <div class="bounds-col">
-          <p class="bounds-label">Не берём</p>
-          <div class="bounds-item"><h4>Интеграцию с 1С</h4><p>берём только вместе с профильным 1С-специалистом на стороне заказчика</p></div>
-          <div class="bounds-item"><h4>Онлайн-кассы и приём платежей</h4><p>нужен отдельный подрядчик с лицензией и договором с банком</p></div>
-          <div class="bounds-item"><h4>Телефонию и запись звонков</h4><p>зависит от вашего оператора</p></div>
-          <div class="bounds-item"><h4>Бухгалтерию</h4><p>это отдельная профессия</p></div>
-          <div class="bounds-item"><h4>Публикацию в App Store и Google Play</h4><p>система открывается в браузере телефона, без сторов</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== FOUNDERS ============== -->
-  <section class="sect">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">О нас</p>
-        <h2>Два основателя, прямой разговор</h2>
-      </div>
-      <div class="founders-wrap">
-        <p class="founders-quote">С нами не работает отдел продаж из десяти человек. <span>Разбираем задачу сами, проектируем сами и показываем результат напрямую — без пересказа через третьи руки.</span></p>
-        <div class="founder-cards">
-          <div class="founder-card"><span class="founder-avatar" aria-hidden="true">Д</span><div><p class="founder-name">Дмитрий</p><p class="founder-role">Сооснователь, разработка</p></div></div>
-          <div class="founder-card"><span class="founder-avatar" aria-hidden="true">А</span><div><p class="founder-name">Александр</p><p class="founder-role">Сооснователь, работа с клиентами</p></div></div>
-        </div>
-      </div>
+      <p class="integrations-note">Сложные интеграции разбираем отдельно: 1С, телефония, платежи и специализированные системы подключаются по задаче, после технической оценки.</p>
     </div>
   </section>
 
@@ -892,13 +904,14 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
         <h2>До того, как начнём</h2>
       </div>
       <div class="faq-list">
-        <details class="faq-item" name="faq-group-10"><summary><span>Это готовая CRM с настройками или разработка с нуля?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Ни то, ни другое. Мы не донастраиваем чужую коробку и не пишем код с нуля каждый раз — у нас есть собственная система компонентов и логики, из которой мы собираем структуру под ваш процесс. Быстрее, чем разработка с нуля, и точнее, чем настройка готового сервиса.</p></details>
-        <details class="faq-item" name="faq-group-10"><summary><span>Почему интерфейсы у разных клиентов такие разные?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Потому что процессы разные: у сервисной компании — заявки и выезды, у производства — этапы и материалы. Собраны они на одной внутренней системе, поэтому логика и качество одинаковые, а структура — под конкретный бизнес.</p></details>
-        <details class="faq-item" name="faq-group-10"><summary><span>За что я плачу от 60 000 ₽?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Это стоимость базовой рабочей системы: заявки, клиенты, статусы, поиск. Если процесс сложнее — считаем отдельно, после разбора вместе с вами.</p></details>
-        <details class="faq-item" name="faq-group-10"><summary><span>Будут ежемесячные платежи?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">За саму систему — нет, это разовая разработка. Поддержка 5 000 ₽ в месяц подключается по желанию.</p></details>
         <details class="faq-item" name="faq-group-10"><summary><span>Нужно готовить техническое задание?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Нет. Расскажите, как сейчас принимаете заявки и распределяете работу — структуру разложим сами и покажем на согласование.</p></details>
-        <details class="faq-item" name="faq-group-10"><summary><span>Сколько занимает разработка?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Простая система собирается за 2–3 недели. Срок для более сложной логики называем после разбора процесса, до начала работы.</p></details>
-        <details class="faq-item" name="faq-group-10"><summary><span>Можно расширить систему позже?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Да, это обычная практика: начинаете с рабочего минимума, дальше добавляете модули по мере роста.</p></details>
+        <details class="faq-item" name="faq-group-10"><summary><span>Можно заменить Excel и несколько разных сервисов одной системой?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Да, это одна из основных задач: собрать в одном месте то, что сейчас живёт в таблицах, чатах и разных сервисах, — без потери данных и привычек команды.</p></details>
+        <details class="faq-item" name="faq-group-10"><summary><span>Вы разрабатываете CRM с нуля или настраиваете готовую?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Ни то, ни другое в чистом виде. У нас есть собственная система компонентов и логики — из неё мы собираем структуру под ваш процесс. Быстрее, чем разработка с нуля, и точнее, чем настройка готового сервиса.</p></details>
+        <details class="faq-item" name="faq-group-10"><summary><span>Можно подключить наши текущие данные?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Да. Текущих клиентов, объекты и историю переносим при запуске — это часть процесса, а не отдельная услуга.</p></details>
+        <details class="faq-item" name="faq-group-10"><summary><span>Можно дорабатывать систему после запуска?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Да, это обычная практика: начинаете с рабочего минимума, дальше система растёт вместе с бизнесом.</p></details>
+        <details class="faq-item" name="faq-group-10"><summary><span>Можно работать с телефона?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Да. Система открывается в браузере телефона — отдельное приложение и публикация в сторах не нужны.</p></details>
+        <details class="faq-item" name="faq-group-10"><summary><span>Кому принадлежат данные?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Вам. Мы не храним данные вашей компании у себя без отдельной договорённости; выгрузка в Excel доступна в любой момент, доступы настраиваются по ролям.</p></details>
+        <details class="faq-item" name="faq-group-10"><summary><span>Сколько стоит разработка?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Простая система — от 60 000 ₽. Точную сумму называем после короткого разбора процесса: чем сложнее логика, тем точнее нужна оценка.</p></details>
       </div>
     </div>
   </section>
