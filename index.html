@@ -287,18 +287,6 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
 .contrast-card.is-fixed .contrast-step i{color:rgba(255,255,255,.35)}
 
 /* ==========================================================================
-   PHILOSOPHY / TRANSFORMATION
-   ========================================================================== */
-.flow-strip{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:36px}
-.flow-pill{padding:11px 20px;border-radius:var(--radius-pill);background:var(--surface);border:1px solid var(--border);font-size:14.5px;font-weight:600;color:var(--ink-secondary)}
-.flow-pill.is-final{background:var(--ink);color:#fff;border-color:var(--ink)}
-.flow-sep{align-self:center;color:var(--ink-tertiary)}
-.transform-arrow{display:flex;flex-direction:column;align-items:center;gap:6px;padding:26px 0;color:var(--ink-tertiary)}
-.transform-arrow span{font-size:13px;font-weight:600;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.04em}
-.transform-arrow svg{width:20px;height:26px}
-.mini-crm{max-width:560px;margin:0 auto}
-
-/* ==========================================================================
    ONE DESIGN SYSTEM
    ========================================================================== */
 .system-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -512,7 +500,6 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
     </a>
     <nav class="nav-list" aria-label="Основная навигация">
       <a href="#product">Продукт</a>
-      <a href="#approach">Подход</a>
       <a href="#demo">Демо</a>
       <a href="#process">Как работаем</a>
     </nav>
@@ -530,7 +517,6 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
     </div>
     <nav class="nav-mobile-list" aria-label="Мобильная навигация">
       <a href="#product">Продукт</a>
-      <a href="#approach">Подход</a>
       <a href="#demo">Демо</a>
       <a href="#process">Как работаем</a>
       <a href="#faq">Вопросы</a>
@@ -551,7 +537,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
         <p class="hero-sub" data-motion-decor style="--motion-index:1">Разбираем, как реально работает ваша компания, и собираем систему под этот порядок — без готового шаблона и без необходимости подстраивать работу под чужую логику.</p>
         <div class="hero-actions" data-motion-decor style="--motion-index:2">
           <a class="btn btn-primary btn-lg" href="request.html" data-sx="request-link">Обсудить систему</a>
-          <a class="link-arrow" href="#approach">Посмотреть, как это работает →</a>
+          <a class="link-arrow" href="#demo">Посмотреть, как это работает →</a>
         </div>
         <p class="hero-caption" data-motion-decor style="--motion-index:3">
           <span><b>Сервисные компании</b></span>
@@ -615,40 +601,6 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
             <div class="contrast-step"><i>04</i><span>Вся работа — в одном месте</span></div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== PHILOSOPHY / TRANSFORMATION ============== -->
-  <section id="approach" class="sect panel-sunken" data-motion-scene="approach">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">Подход</p>
-        <h2>Мы начинаем с процесса, а не с экрана</h2>
-        <p>Сначала смотрим, как заявка на самом деле проходит через компанию. Уже вокруг этого процесса появляется интерфейс — не наоборот.</p>
-      </div>
-
-      <div class="flow-strip" data-motion-decor style="--motion-index:0">
-        <span class="flow-pill">Заявка пришла</span><span class="flow-sep">→</span>
-        <span class="flow-pill">Менеджер проверил</span><span class="flow-sep">→</span>
-        <span class="flow-pill">Назначен исполнитель</span><span class="flow-sep">→</span>
-        <span class="flow-pill">Работа выполнена</span><span class="flow-sep">→</span>
-        <span class="flow-pill">Добавлены фото</span><span class="flow-sep">→</span>
-        <span class="flow-pill is-final">Результат передан клиенту</span>
-      </div>
-
-      <div class="transform-arrow" data-motion-decor style="--motion-index:1">
-        <svg viewBox="0 0 20 26" fill="none"><path d="M10 1v22M2 15l8 8 8-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Становится интерфейсом</span>
-      </div>
-
-      <div class="mini-crm crm-shell" data-motion-decor style="--motion-index:2">
-        <div class="crm-toolbar" style="padding:18px 20px 0"><h4>Заявки</h4><span>5 активных</span></div>
-        <table class="crm-table" style="padding:14px 20px 20px;display:block">
-          <tbody>
-            <tr><td style="border:none;padding:14px 20px">Не охлаждает сплит-система<span class="sub">Офис на Ленина, 45</span></td><td style="border:none;padding:14px 20px;text-align:right"><span class="status-chip" data-tone="new">Новая</span></td></tr>
-          </tbody>
-        </table>
       </div>
     </div>
   </section>
