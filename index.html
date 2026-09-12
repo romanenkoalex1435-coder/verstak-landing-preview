@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VERSTAK — CRM под ваш бизнес, не наоборот</title>
-<meta name="description" content="Проектируем и собираем CRM и внутренние системы под реальный процесс вашей компании — на единой инженерной платформе VERSTAK. Базовая система — от 60 000 ₽.">
+<meta name="description" content="Проектируем и собираем CRM и внутренние системы под реальный процесс вашей компании — на единой инженерной платформе VERSTAK. Базовая система — от 40 000 ₽.">
 <meta property="og:title" content="VERSTAK — CRM под ваш бизнес, не наоборот">
 <meta property="og:description" content="Не подстраиваем бизнес под готовую CRM. Разбираем, как работает компания, и собираем систему под её процесс.">
 <meta property="og:type" content="website">
@@ -336,33 +336,15 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
 .process-step p{font-size:14.5px;color:var(--ink-secondary);line-height:1.5}
 
 /* ==========================================================================
-   PRICE + CALCULATOR — one section
+   PRICE — one number, one section
    ========================================================================== */
-.calc-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:56px;align-items:start}
-@media (max-width:900px){.calc-grid{grid-template-columns:minmax(0,1fr);gap:36px}}
-.calc-info{position:sticky;top:calc(var(--header-h) + 24px)}
-@media (max-width:900px){.calc-info{position:static}}
-.price-figure{font-family:var(--font-display);font-size:clamp(32px,3.6vw,46px);font-weight:700;letter-spacing:-.01em}
+.price-block{max-width:480px;margin:0 auto;text-align:center}
+.price-figure{font-family:var(--font-display);font-size:clamp(36px,4.6vw,54px);font-weight:700;letter-spacing:-.01em}
 .price-figure span{color:var(--accent)}
-.price-note{font-size:15px;color:var(--ink-secondary);margin-top:12px;max-width:340px;line-height:1.5}
-.calc-info .btn{margin-top:24px}
-.calc-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-.calc-chip{display:inline-flex;align-items:center;gap:9px;padding:10px 14px;border-radius:var(--radius-pill);border:1px solid var(--border-strong);background:var(--surface);font-size:13.5px;font-weight:600;color:var(--ink-secondary);cursor:pointer;transition:border-color .15s var(--ease),background-color .15s var(--ease),color .15s var(--ease)}
-.calc-chip:hover{border-color:var(--border-hover)}
-.calc-chip .box{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border-strong);flex:0 0 auto;position:relative}
-.calc-chip[aria-pressed="true"]{background:var(--surface-sunken);border-color:var(--accent);color:var(--ink)}
-.calc-chip[aria-pressed="true"] .box{background:var(--accent);border-color:var(--accent)}
-.calc-chip[aria-pressed="true"] .box::after{content:"";position:absolute;left:4px;top:1px;width:4px;height:8px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(40deg)}
-.calc-chip-price{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-tertiary)}
-.calc-summary{background:var(--surface-sunken);border-radius:var(--radius-md);padding:22px}
-.calc-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;font-size:14px;border-bottom:1px solid var(--border)}
-.calc-row span{color:var(--ink-secondary)}
-.calc-row b{font-family:var(--font-mono);font-weight:500}
-.calc-row.total{border-bottom:none;padding-top:14px}
-.calc-row.total b{font-size:24px;font-weight:700}
-.calc-cta{display:flex;align-items:center;justify-content:center;width:100%;padding:14px 20px;border-radius:var(--radius-md);background:var(--ink);color:#fff;font-size:14.5px;font-weight:600;text-decoration:none;margin-top:16px;transition:background-color .15s var(--ease)}
-.calc-cta:hover{background:#2c2a22}
-.calc-footnote{font-size:11.5px;color:var(--ink-tertiary);margin-top:12px;line-height:1.5}
+.price-includes{display:inline-flex;flex-direction:column;gap:11px;text-align:left;margin:28px 0;padding:0}
+.price-includes li{display:flex;align-items:center;gap:11px;font-size:15.5px;color:var(--ink-secondary)}
+.price-includes li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+.price-note{font-size:14.5px;color:var(--ink-tertiary);margin-bottom:26px;line-height:1.5}
 
 /* ==========================================================================
    FAQ
@@ -676,39 +658,23 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
     </div>
   </section>
 
-  <!-- ============== PRICE + CALCULATOR ============== -->
+  <!-- ============== PRICE ============== -->
   <section id="price" class="sect panel-sunken">
     <div class="container">
-      <div class="section-head">
+      <div class="section-head center">
         <p class="eyebrow">Стоимость</p>
         <h2>Простая система, понятная цена</h2>
       </div>
-      <div class="calc-grid">
-        <div class="calc-info">
-          <p class="price-figure">от <span>60 000 ₽</span></p>
-          <p class="price-note">База включает клиентов, заявки, статусы, историю и поиск. Дальше состав зависит от процесса.</p>
-          <a class="btn btn-dark btn-lg" href="request.html" data-sx="request-link">Обсудить систему</a>
-        </div>
-        <div>
-          <p class="crm-side-title" style="padding:0 0 12px">Что может понадобиться</p>
-          <div class="calc-chips" data-sx="calc">
-            <button type="button" class="calc-chip" data-sx-chip="card"><span class="box" aria-hidden="true"></span>Карточки объектов <span class="calc-chip-price">+10 000 ₽</span></button>
-            <button type="button" class="calc-chip" data-sx-chip="mobile"><span class="box" aria-hidden="true"></span>Мобильный интерфейс <span class="calc-chip-price">+20 000 ₽</span></button>
-            <button type="button" class="calc-chip" data-sx-chip="photo"><span class="box" aria-hidden="true"></span>Фотоотчёты <span class="calc-chip-price">+10 000 ₽</span></button>
-            <button type="button" class="calc-chip" data-sx-chip="terms"><span class="box" aria-hidden="true"></span>Напоминания <span class="calc-chip-price">+15 000 ₽</span></button>
-            <button type="button" class="calc-chip" data-sx-chip="roles"><span class="box" aria-hidden="true"></span>Роли <span class="calc-chip-price">+10 000 ₽</span></button>
-            <button type="button" class="calc-chip" data-sx-chip="tg"><span class="box" aria-hidden="true"></span>Telegram <span class="calc-chip-price">+10 000 ₽</span></button>
-            <button type="button" class="calc-chip" data-sx-chip="excel"><span class="box" aria-hidden="true"></span>Выгрузка в Excel <span class="calc-chip-price">+5 000 ₽</span></button>
-            <button type="button" class="calc-chip" data-sx-chip="import"><span class="box" aria-hidden="true"></span>Перенос данных <span class="calc-chip-price">+15 000 ₽</span></button>
-            <button type="button" class="calc-chip" data-sx-chip="stock"><span class="box" aria-hidden="true"></span>Склад <span class="calc-chip-price">+20 000 ₽</span></button>
-          </div>
-          <div class="calc-summary">
-            <div class="calc-row total"><span>Предварительно</span><b class="tnum" data-sx="calc-total">60 000 ₽</b></div>
-            <div class="calc-row"><span>Ориентировочный срок</span><b data-sx="calc-weeks">2 недели</b></div>
-            <a class="calc-cta" href="request.html" data-sx="request-link">Обсудить такой состав</a>
-            <p class="calc-footnote">Расчёт предварительный. Финальную стоимость фиксируем после разбора задачи.</p>
-          </div>
-        </div>
+      <div class="price-block">
+        <p class="price-figure">от <span>40 000 ₽</span></p>
+        <ul class="price-includes">
+          <li>Учёт клиентов и заявок</li>
+          <li>Статусы и история по каждому обращению</li>
+          <li>Поиск и фильтры</li>
+          <li>Сборка за 2–3 недели</li>
+        </ul>
+        <p class="price-note">Это стоимость простой рабочей системы. Если процесс сложнее — считаем отдельно, после короткого разбора вашей задачи.</p>
+        <a class="btn btn-dark btn-lg" href="request.html" data-sx="request-link">Обсудить систему</a>
       </div>
     </div>
   </section>
@@ -723,7 +689,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
       <div class="faq-list">
         <details class="faq-item" name="faq-group-10"><summary><span>Это готовая CRM или разработка?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Ни то, ни другое в чистом виде. У нас есть собственная система компонентов и логики — из неё мы собираем структуру под ваш процесс. Быстрее, чем разработка с нуля, и точнее, чем настройка готового сервиса.</p></details>
         <details class="faq-item" name="faq-group-10"><summary><span>Нужно ли готовить техническое задание?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Нет. Расскажите, как сейчас принимаете заявки и распределяете работу — структуру разложим сами и покажем на согласование.</p></details>
-        <details class="faq-item" name="faq-group-10"><summary><span>Сколько стоит?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Простая система — от 60 000 ₽. Точную сумму называем после короткого разбора процесса: чем сложнее логика, тем точнее нужна оценка.</p></details>
+        <details class="faq-item" name="faq-group-10"><summary><span>Сколько стоит?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Простая система — от 40 000 ₽. Точную сумму называем после короткого разбора процесса: чем сложнее логика, тем точнее нужна оценка.</p></details>
         <details class="faq-item" name="faq-group-10"><summary><span>Сколько занимает разработка?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Простая система собирается за 2–3 недели. Срок для более сложной логики называем после разбора процесса.</p></details>
         <details class="faq-item" name="faq-group-10"><summary><span>Есть ли ежемесячная плата?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">За саму систему — нет, это разовая разработка. Поддержка 5 000 ₽ в месяц подключается по желанию.</p></details>
         <details class="faq-item" name="faq-group-10"><summary><span>Можно ли расширять систему позже?</span><span class="plus" aria-hidden="true"></span></summary><p class="faq-answer">Да, это обычная практика: начинаете с рабочего минимума, дальше система растёт вместе с бизнесом.</p></details>
@@ -753,7 +719,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
     <a class="footer-link" href="request.html" data-sx="request-link">Обсудить систему</a>
   </div>
   <div class="container">
-    <p class="footer-legal" style="font-size:12px;color:var(--ink-tertiary);margin-top:18px;max-width:640px">Онлайн-приём заявок отключён. Расчёт в конструкторе предварительный и не является офертой — условия фиксируются письменно после разбора задачи.</p>
+    <p class="footer-legal" style="font-size:12px;color:var(--ink-tertiary);margin-top:18px;max-width:640px">Онлайн-приём заявок отключён. Указанная стоимость предварительная и не является офертой — условия фиксируются письменно после разбора задачи.</p>
   </div>
 </footer>
 

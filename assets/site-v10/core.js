@@ -17,8 +17,6 @@
     if (motionQuery.addEventListener) motionQuery.addEventListener('change', fn);
     else if (motionQuery.addListener) motionQuery.addListener(fn);
   }
-  function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽'; }
-
   /* ============================================================
      0. SCROLL REVEAL + HEADER COMPACTION
      ============================================================ */
@@ -163,44 +161,7 @@
   window.sxTrack = window.sxTrack || function () {};
 
   /* ============================================================
-     2. КАЛЬКУЛЯТОР — предварительная оценка стоимости
-     ============================================================ */
-  (function initCalculator() {
-    var root = $('[data-sx="calc"]');
-    if (!root) return;
-    var chosen = [];
-    function weeksText(n) {
-      var d = n % 100, t = n % 10;
-      if (d >= 11 && d <= 14) return n + ' недель';
-      if (t === 1) return n + ' неделя';
-      if (t >= 2 && t <= 4) return n + ' недели';
-      return n + ' недель';
-    }
-    function render() {
-      var mods = D.modules.filter(function (m) { return chosen.indexOf(m.id) > -1; });
-      var total = D.base.price + mods.reduce(function (a, m) { return a + m.price; }, 0);
-      var weeks = Math.min(6, 2 + Math.ceil(mods.length / 3));
-      $$('[data-sx-chip]', root).forEach(function (chip) {
-        chip.setAttribute('aria-pressed', String(chosen.indexOf(chip.getAttribute('data-sx-chip')) > -1));
-      });
-      var totalEl = $('[data-sx="calc-total"]');
-      if (totalEl) totalEl.textContent = fmt(total);
-      var weeksEl = $('[data-sx="calc-weeks"]');
-      if (weeksEl) weeksEl.textContent = weeksText(weeks);
-    }
-    $$('[data-sx-chip]', root).forEach(function (chip) {
-      chip.addEventListener('click', function () {
-        var id = chip.getAttribute('data-sx-chip');
-        var i = chosen.indexOf(id);
-        if (i > -1) chosen.splice(i, 1); else chosen.push(id);
-        render();
-      });
-    });
-    render();
-  })();
-
-  /* ============================================================
-     3. ФОРМА
+     2. ФОРМА
      ============================================================ */
   (function () {
     var form = $('[data-sx="form"]');
