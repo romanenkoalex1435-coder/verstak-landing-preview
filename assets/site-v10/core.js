@@ -165,32 +165,20 @@
   })();
 
   /* ============================================================
-     1C. ВИДЕО-ДЕМО #product — один прогон, без loop
+     1C. ВИДЕО-ДЕМО #product — фоновый loop, без ручного управления
      ============================================================ */
   (function initProductVideo() {
     var root = $('[data-sx="product-video"]');
     if (!root) return;
     var video = $('[data-sx="product-video-el"]', root);
-    var toggle = $('[data-sx="product-video-toggle"]', root);
-    var label = toggle ? $('[data-sx="product-video-toggle-label"]', toggle) : null;
-    if (!video || !toggle) return;
+    if (!video) return;
 
     var src = video.getAttribute('data-src');
     var sourceAttached = false;
-    var autoplayAttempted = false;
-    var started = false;
 
     var saveData = !!(navigator.connection && navigator.connection.saveData);
     var isMobile = typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 760px)').matches;
-    var noAutoplay = saveData || isMobile || reduced();
-
-    function setLabel(text) { (label || toggle).textContent = text; }
-
-    function syncLabel() {
-      if (video.ended) { setLabel('Повторить'); return; }
-      if (!video.paused) { setLabel('Пауза'); return; }
-      setLabel(started ? 'Продолжить' : (noAutoplay ? 'Посмотреть сборку' : 'Воспроизвести'));
-    }
+    if (saveData || isMobile || reduced()) return; /* постер без автозапуска */
 
     function attachSource() {
       if (sourceAttached || !src) return;
@@ -201,30 +189,13 @@
     function safePlay() {
       attachSource();
       var p = video.play();
-      if (p && typeof p.catch === 'function') p.catch(function () { syncLabel(); });
+      if (p && typeof p.catch === 'function') p.catch(function () {});
     }
 
-    function tryAutoplay() {
-      if (autoplayAttempted || noAutoplay || started) return;
-      autoplayAttempted = true;
-      safePlay();
+    function isInViewport() {
+      var r = root.getBoundingClientRect();
+      return r.bottom > 0 && r.top < window.innerHeight;
     }
-
-    function userToggle() {
-      if (video.ended) { video.currentTime = 0; safePlay(); return; }
-      if (video.paused) { safePlay(); } else { video.pause(); }
-    }
-
-    toggle.addEventListener('click', userToggle);
-    video.addEventListener('click', userToggle);
-
-    video.addEventListener('play', function () { started = true; syncLabel(); });
-    video.addEventListener('pause', syncLabel);
-    video.addEventListener('ended', syncLabel);
-    video.addEventListener('error', function () {
-      setLabel('Видео недоступно');
-      toggle.disabled = true;
-    });
 
     if ('IntersectionObserver' in window) {
       /* грузим source заранее, до появления рядом с экраном */
@@ -233,23 +204,25 @@
       }, { threshold: 0, rootMargin: '200px 0px' });
       preloadObserver.observe(root);
 
-      /* автозапуск и пауза считаются по реальным границам вьюпорта, без rootMargin */
+      /* играет, пока видно хотя бы наполовину; при уходе — пауза, без ручного управления */
       new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            if (entry.intersectionRatio >= 0.5) tryAutoplay();
-          } else if (!video.paused && !video.ended) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            safePlay();
+          } else if (!video.paused) {
             video.pause();
           }
         });
       }, { threshold: [0, 0.5] }).observe(root);
+    } else {
+      attachSource();
+      safePlay();
     }
 
     document.addEventListener('visibilitychange', function () {
-      if (document.hidden && !video.paused && !video.ended) video.pause();
+      if (document.hidden) { if (!video.paused) video.pause(); }
+      else if (video.paused && isInViewport()) { safePlay(); }
     });
-
-    syncLabel();
   })();
 
   window.sxTrack = window.sxTrack || function () {};

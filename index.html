@@ -304,20 +304,9 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
 .product-video-title{font-size:clamp(32px,5.5vw,60px);font-weight:560;letter-spacing:-.02em;line-height:1.05;color:var(--bg);margin:0 0 18px}
 .product-video-lead{font-size:17px;line-height:1.55;color:var(--on-dark-secondary);margin:0 0 36px;max-width:640px}
 @media (max-width:760px){.product-video-lead{margin-bottom:28px}}
-.product-video-frame{position:relative;width:100%;aspect-ratio:1280/720;border-radius:14px;overflow:hidden;background:var(--ink);border:1px solid rgba(245,243,237,.08)}
-.product-video-frame video{display:block;width:100%;height:100%;cursor:pointer}
-.product-video-foot{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:18px;flex-wrap:wrap}
-.product-video-caption{font-size:13.5px;color:var(--on-dark-secondary);line-height:1.5;max-width:520px;margin:0}
-.product-video-toggle{
-  flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:var(--radius-pill);
-  background:transparent;border:1px solid rgba(245,243,237,.28);color:var(--bg);font-size:13.5px;font-weight:600;
-  cursor:pointer;transition:border-color .15s var(--ease),background-color .15s var(--ease);
-}
-.product-video-toggle:disabled{opacity:.5;cursor:not-allowed}
-@media (hover:hover) and (pointer:fine){
-  .product-video-toggle:not(:disabled):hover{border-color:var(--bg);background:rgba(245,243,237,.08)}
-}
-.product-video-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.product-video-frame{position:relative;width:100vw;margin-left:calc(50% - 50vw);aspect-ratio:1280/720;overflow:hidden;background:var(--ink)}
+.product-video-frame video{display:block;width:100%;height:100%}
+.product-video-caption{font-size:13.5px;color:var(--on-dark-secondary);line-height:1.5;max-width:520px;margin:18px 0 0}
 
 /* ==========================================================================
    CAPABILITIES / SCALING — compact 4-up progression
@@ -575,28 +564,29 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
           <h2 class="product-video-title" data-motion-decor style="--motion-index:0">Ваш процесс.<br>Одна система.</h2>
           <p class="product-video-lead" data-motion-decor style="--motion-index:1">Заявки — в таблицах, договорённости — в переписке, задачи — в заметках. Разрабатываем CRM, которая связывает их по правилам вашей работы.</p>
         </div>
+      </div>
 
-        <div class="product-video" data-sx="product-video">
-          <div class="product-video-frame">
-            <video
-              data-sx="product-video-el"
-              poster="assets/site-v10/media/product-assembly-poster.jpg"
-              preload="none"
-              muted
-              playsinline
-              width="1280" height="720"
-              data-src="assets/site-v10/media/product-assembly.mp4"
-              aria-label="Иллюстрация: разрозненные данные собираются в единую систему"
-            ></video>
-            <noscript>
-              <video src="assets/site-v10/media/product-assembly.mp4" poster="assets/site-v10/media/product-assembly-poster.jpg" controls playsinline style="display:block;width:100%;height:100%;position:absolute;inset:0"></video>
-            </noscript>
-          </div>
-          <div class="product-video-foot">
-            <p class="product-video-caption">Иллюстрация подхода. Структуру, роли и этапы проектируем под вашу компанию.</p>
-            <button class="product-video-toggle" type="button" data-sx="product-video-toggle"><span data-sx="product-video-toggle-label">Воспроизвести</span></button>
-          </div>
+      <div class="product-video" data-sx="product-video">
+        <div class="product-video-frame">
+          <video
+            data-sx="product-video-el"
+            poster="assets/site-v10/media/product-assembly-poster.jpg"
+            preload="none"
+            muted
+            loop
+            playsinline
+            width="1280" height="720"
+            data-src="assets/site-v10/media/product-assembly.mp4"
+            aria-label="Иллюстрация: разрозненные данные собираются в единую систему"
+          ></video>
+          <noscript>
+            <video src="assets/site-v10/media/product-assembly.mp4" poster="assets/site-v10/media/product-assembly-poster.jpg" controls loop muted playsinline style="display:block;width:100%;height:100%;position:absolute;inset:0"></video>
+          </noscript>
         </div>
+      </div>
+
+      <div class="container">
+        <p class="product-video-caption">Иллюстрация подхода. Структуру, роли и этапы проектируем под вашу компанию.</p>
       </div>
     </div>
 
