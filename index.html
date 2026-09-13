@@ -294,19 +294,55 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
 .product-extra strong{color:var(--ink);font-weight:600}
 
 /* ==========================================================================
-   PRODUCT VIDEO — one-shot assembly clip
+   PRODUCT VIDEO — windows assemble right, copy reveals left
    ========================================================================== */
-.product-video-block{background:var(--ink);padding-block:88px 72px}
-@media (max-width:760px){.product-video-block{padding-block:56px 44px}}
-.product-video-copy{max-width:720px}
-.product-video-block .eyebrow{color:var(--on-dark-secondary)}
-[data-motion-scene="product-video"] [data-motion-decor]{transform:translateY(8px)}
-.product-video-title{font-size:clamp(32px,5.5vw,60px);font-weight:560;letter-spacing:-.02em;line-height:1.05;color:var(--bg);margin:0 0 18px}
-.product-video-lead{font-size:17px;line-height:1.55;color:var(--on-dark-secondary);margin:0 0 36px;max-width:640px}
-@media (max-width:760px){.product-video-lead{margin-bottom:28px}}
-.product-video-frame{position:relative;width:100vw;margin-left:calc(50% - 50vw);aspect-ratio:1280/720;overflow:hidden;background:var(--ink)}
-.product-video-frame video{display:block;width:100%;height:100%}
-.product-video-caption{font-size:13.5px;color:var(--on-dark-secondary);line-height:1.5;max-width:520px;margin:18px 0 0}
+.product-video-block{background:#000}
+.product-video{position:relative}
+
+.product-video-copy{padding:40px 24px 32px}
+.product-video-eyebrow{color:var(--on-dark-secondary)}
+.product-video-title{font-size:clamp(26px,4vw,42px);font-weight:560;letter-spacing:-.02em;line-height:1.12;color:var(--bg);margin:0 0 16px}
+.product-video-lead{font-size:15.5px;line-height:1.55;color:var(--on-dark-secondary);margin:0 0 26px;max-width:420px}
+.product-video-actions{display:flex}
+
+.product-video-frame{position:relative;width:100vw;margin-left:calc(50% - 50vw);aspect-ratio:1280/720;overflow:hidden;background:#000}
+.product-video-frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
+
+.product-video-controls{position:absolute;right:5%;bottom:6%;z-index:2}
+.product-video-toggle{
+  display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:var(--radius-pill);
+  background:rgba(0,0,0,.35);border:1px solid rgba(245,243,237,.28);color:var(--bg);font-size:13px;font-weight:600;
+  cursor:pointer;transition:border-color .15s var(--ease),background-color .15s var(--ease);
+}
+.product-video-toggle:disabled{opacity:.5;cursor:not-allowed}
+@media (hover:hover) and (pointer:fine){
+  .product-video-toggle:not(:disabled):hover{border-color:var(--bg);background:rgba(0,0,0,.55)}
+}
+.product-video-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+[data-sx="product-video-reveal"]{opacity:1;transform:none}
+
+@media (min-width:761px){
+  .product-video-copy{
+    position:absolute;z-index:2;left:0;top:50%;width:38%;
+    padding:0 0 0 5%;box-sizing:border-box;transform:translateY(-50%);
+  }
+  .product-video-lead{max-width:none}
+  .product-video-copy.is-pending [data-sx="product-video-reveal"]{
+    opacity:0;transform:translateY(10px);visibility:hidden;
+  }
+  .product-video-copy.is-pending.is-revealed [data-sx="product-video-reveal"]{
+    opacity:1;transform:none;visibility:visible;
+    transition:opacity 400ms var(--motion-ease),transform 400ms var(--motion-ease);
+    transition-delay:calc(var(--motion-index,0) * 80ms);
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .product-video-copy.is-pending [data-sx="product-video-reveal"],
+  .product-video-copy.is-pending.is-revealed [data-sx="product-video-reveal"]{
+    opacity:1;transform:none;visibility:visible;transition:none;transition-delay:0ms;
+  }
+}
 
 /* ==========================================================================
    CAPABILITIES / SCALING — compact 4-up progression
@@ -558,35 +594,36 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
   <section id="product">
 
     <div class="product-video-block">
-      <div class="container">
-        <div class="product-video-copy" data-motion-scene="product-video">
-          <p class="eyebrow" data-motion-decor style="--motion-index:0">От разрозненных данных к системе</p>
-          <h2 class="product-video-title" data-motion-decor style="--motion-index:0">Ваш процесс.<br>Одна система.</h2>
-          <p class="product-video-lead" data-motion-decor style="--motion-index:1">Заявки — в таблицах, договорённости — в переписке, задачи — в заметках. Разрабатываем CRM, которая связывает их по правилам вашей работы.</p>
-        </div>
-      </div>
-
       <div class="product-video" data-sx="product-video">
+        <div class="product-video-copy" data-sx="product-video-copy">
+          <p class="eyebrow product-video-eyebrow" data-sx="product-video-reveal" style="--motion-index:0">Под ваш процесс</p>
+          <h2 class="product-video-title" data-sx="product-video-reveal" style="--motion-index:0">Всё связано.<br>Всё на своих местах.</h2>
+          <p class="product-video-lead" data-sx="product-video-reveal" style="--motion-index:1">Разрабатываем CRM под вашу работу: заявки, исполнители, переписка и этапы — в одной системе.</p>
+          <div class="product-video-actions" data-sx="product-video-reveal" style="--motion-index:2">
+            <a class="btn btn-primary btn-lg" href="request.html" data-sx="request-link">Обсудить систему</a>
+          </div>
+        </div>
+
         <div class="product-video-frame">
           <video
             data-sx="product-video-el"
-            poster="assets/site-v10/media/product-assembly-poster.jpg"
+            poster="assets/site-v10/media/product-assembly-right-poster.jpg"
             preload="none"
             muted
-            loop
             playsinline
             width="1280" height="720"
-            data-src="assets/site-v10/media/product-assembly.mp4"
-            aria-label="Иллюстрация: разрозненные данные собираются в единую систему"
+            data-src="assets/site-v10/media/product-assembly-right.mp4"
+            data-reveal-at="4.6"
+            aria-label="Иллюстрация: разрозненные окна собираются в одно приложение"
           ></video>
           <noscript>
-            <video src="assets/site-v10/media/product-assembly.mp4" poster="assets/site-v10/media/product-assembly-poster.jpg" controls loop muted playsinline style="display:block;width:100%;height:100%;position:absolute;inset:0"></video>
+            <video src="assets/site-v10/media/product-assembly-right.mp4" poster="assets/site-v10/media/product-assembly-right-poster.jpg" controls playsinline style="display:block;width:100%;height:100%;position:absolute;inset:0"></video>
           </noscript>
-        </div>
-      </div>
 
-      <div class="container">
-        <p class="product-video-caption">Иллюстрация подхода. Структуру, роли и этапы проектируем под вашу компанию.</p>
+          <div class="product-video-controls" data-sx="product-video-controls">
+            <button class="product-video-toggle" type="button" data-sx="product-video-toggle"><span data-sx="product-video-toggle-label">Воспроизвести</span></button>
+          </div>
+        </div>
       </div>
     </div>
 
