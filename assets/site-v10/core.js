@@ -12,11 +12,6 @@
   var $$ = function (sel, root) { return [].slice.call((root || document).querySelectorAll(sel)); };
   var motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
   var reduced = function () { return !!(motionQuery && motionQuery.matches); };
-  function onMotionChange(fn) {
-    if (!motionQuery) return;
-    if (motionQuery.addEventListener) motionQuery.addEventListener('change', fn);
-    else if (motionQuery.addListener) motionQuery.addListener(fn);
-  }
   /* ============================================================
      0. SCROLL REVEAL + HEADER COMPACTION
      ============================================================ */
@@ -140,22 +135,33 @@
     });
 
     render();
+  })();
 
-    /* лёгкий автопереход, останавливается при взаимодействии и вне экрана */
-    var auto = null, userTouched = false, visible = false;
-    function startAuto() {
-      if (auto || userTouched || reduced()) return;
-      auto = setInterval(function () { go(idx + 1); }, 4200);
+  /* ============================================================
+     1B. ПРИМЕРЫ ПРОЦЕССА — переключатель #product (изолирован от hero)
+     ============================================================ */
+  (function initProductTabs() {
+    var root = $('[data-sx="product-switcher"]');
+    if (!root) return;
+    var tabs = $$('[data-product-switch]', root);
+    var panels = $$('[data-product-panel]', root);
+    if (!tabs.length || !panels.length) return;
+
+    function show(idx) {
+      panels.forEach(function (panel, k) { panel.hidden = k !== idx; });
+      tabs.forEach(function (tab, k) {
+        var on = k === idx;
+        tab.classList.toggle('is-on', on);
+        tab.setAttribute('aria-selected', String(on));
+      });
     }
-    function stopAuto() { clearInterval(auto); auto = null; }
-    root.addEventListener('pointerdown', function () { userTouched = true; stopAuto(); }, { once: true });
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) {
-        visible = es[0].isIntersecting;
-        if (visible) startAuto(); else stopAuto();
-      }, { threshold: 0.5 }).observe(root);
-    } else { startAuto(); }
-    onMotionChange(function () { if (reduced()) stopAuto(); });
+
+    tabs.forEach(function (tab, k) {
+      tab.setAttribute('role', 'tab');
+      tab.addEventListener('click', function () { show(k); });
+    });
+
+    show(0);
   })();
 
   window.sxTrack = window.sxTrack || function () {};
