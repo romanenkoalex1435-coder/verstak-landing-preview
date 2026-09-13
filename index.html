@@ -383,6 +383,72 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 18px)}
 .is-motion-ready [data-motion-decor]{opacity:0;transform:translateY(16px)}
 .is-motion-ready [data-motion-scene].is-in-view [data-motion-decor]{opacity:1;transform:none;transition:opacity var(--motion-enter) var(--motion-ease),transform var(--motion-enter) var(--motion-ease);transition-delay:calc(var(--motion-index,0) * 70ms)}
 @media (prefers-reduced-motion:reduce){.is-motion-ready [data-motion-decor]{opacity:1;transform:none;transition:none}}
+
+/* ==========================================================================
+   SURFACES & CTA — tighter shell edges, flat buttons
+   ========================================================================== */
+.hero .crm-shell,
+#product .crm-shell{
+  border-color:rgba(24,23,19,.14);
+  border-radius:18px;
+  box-shadow:0 2px 4px rgba(24,23,19,.03),0 12px 28px -16px rgba(24,23,19,.24);
+}
+.site-header .btn-primary,
+.hero .btn-primary,
+.final-cta .btn-primary{
+  box-shadow:none;
+  transition:background-color 160ms ease,transform 160ms ease;
+}
+.site-header .btn-primary:focus-visible,
+.hero .btn-primary:focus-visible,
+.final-cta .btn-primary:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:4px;
+}
+@media (hover:hover) and (pointer:fine){
+  .site-header .btn-primary:hover,
+  .hero .btn-primary:hover,
+  .final-cta .btn-primary:hover{transform:translateY(-1px)}
+}
+.site-header .btn-primary:active,
+.hero .btn-primary:active,
+.final-cta .btn-primary:active{transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){
+  .site-header .btn-primary,
+  .hero .btn-primary,
+  .final-cta .btn-primary{transition:none;transform:none}
+}
+
+/* ==========================================================================
+   SCALE — compact mobile rows instead of stacked columns
+   ========================================================================== */
+@media (max-width:760px){
+  [data-motion-scene="scaling"] .scale-grid{gap:18px}
+  [data-motion-scene="scaling"] .scale-col{padding-top:18px}
+  [data-motion-scene="scaling"] .scale-col:first-child{padding-top:0}
+  [data-motion-scene="scaling"] .scale-tag{margin-bottom:6px}
+  [data-motion-scene="scaling"] .scale-col h3{margin-bottom:8px}
+  [data-motion-scene="scaling"] .scale-col ul{flex-direction:row;flex-wrap:wrap;gap:4px 0}
+  [data-motion-scene="scaling"] .scale-col li{display:flex;align-items:baseline}
+  [data-motion-scene="scaling"] .scale-col li + li::before{content:"/";margin-inline:8px;color:rgba(255,255,255,.35)}
+}
+
+/* ==========================================================================
+   FAQ — flat list instead of separate cards
+   ========================================================================== */
+#faq .faq-list{gap:0;border-top:1px solid var(--border)}
+#faq .faq-item{background:transparent;border:0;border-bottom:1px solid var(--border);border-radius:0;box-shadow:none}
+#faq .faq-item[open]{background:rgba(255,255,255,.45);box-shadow:inset 2px 0 var(--accent)}
+#faq .faq-item summary{padding:18px 16px}
+#faq .faq-answer{padding:0 16px 20px}
+#faq .faq-item summary:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
+@media (hover:hover) and (pointer:fine){
+  #faq .faq-item:not([open]) summary:hover{background:rgba(24,23,19,.025)}
+}
+@media (prefers-reduced-motion:no-preference){
+  #faq .faq-item[open] .faq-answer{animation:verstak-answer-in 160ms ease-out both}
+  @keyframes verstak-answer-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+}
 </style>
 </head>
 <body>
