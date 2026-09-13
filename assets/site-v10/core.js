@@ -165,41 +165,28 @@
   })();
 
   /* ============================================================
-     1C. ВИДЕО-ДЕМО #product — один прогон, текст открывается по currentTime
+     1C. ВИДЕО-ДЕМО #product — только скролл, без кнопок управления
      ============================================================ */
   (function initProductVideo() {
     var root = $('[data-sx="product-video"]');
     if (!root) return;
     var video = $('[data-sx="product-video-el"]', root);
     var copy = $('[data-sx="product-video-copy"]', root);
-    var toggle = $('[data-sx="product-video-toggle"]', root);
-    var label = toggle ? $('[data-sx="product-video-toggle-label"]', toggle) : null;
     if (!video) return;
 
     var src = video.getAttribute('data-src');
     var revealAt = parseFloat(video.getAttribute('data-reveal-at')) || 0;
     var sourceAttached = false;
-    var autoplayAttempted = false;
-    var started = false;
     var revealed = false;
 
     var saveData = !!(navigator.connection && navigator.connection.saveData);
     var isMobile = typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 760px)').matches;
     var noAutoplay = saveData || isMobile || reduced();
 
-    function setLabel(text) { if (label) label.textContent = text; else if (toggle) toggle.textContent = text; }
-
     function reveal() {
       if (revealed || !copy) return;
       revealed = true;
       copy.classList.add('is-revealed');
-    }
-
-    function syncLabel() {
-      if (!toggle) return;
-      if (video.ended) { setLabel('Повторить'); return; }
-      if (!video.paused) { setLabel('Пауза'); return; }
-      setLabel(started ? 'Продолжить' : 'Воспроизвести');
     }
 
     function attachSource() {
@@ -211,42 +198,24 @@
     function safePlay() {
       attachSource();
       var p = video.play();
-      if (p && typeof p.catch === 'function') p.catch(function () { reveal(); syncLabel(); });
+      if (p && typeof p.catch === 'function') p.catch(function () { reveal(); });
     }
 
-    function tryAutoplay() {
-      if (autoplayAttempted || noAutoplay || started) return;
-      autoplayAttempted = true;
-      safePlay();
+    function isInViewport() {
+      var r = root.getBoundingClientRect();
+      return r.bottom > 0 && r.top < window.innerHeight;
     }
 
-    function userToggle() {
-      if (video.ended) {
-        video.currentTime = 0;
-        revealed = false;
-        if (copy) copy.classList.remove('is-revealed');
-        safePlay();
-        return;
-      }
-      if (video.paused) { safePlay(); } else { video.pause(); }
-    }
-
-    if (toggle) toggle.addEventListener('click', userToggle);
+    if (noAutoplay) return; /* текст виден сразу по умолчанию (см. базовое правило CSS), видео не запускаем */
 
     video.addEventListener('play', function () {
-      if (!started) { started = true; if (copy) copy.classList.add('is-pending'); }
-      syncLabel();
+      if (copy) copy.classList.add('is-pending');
     });
-    video.addEventListener('pause', syncLabel);
-    video.addEventListener('ended', function () { reveal(); syncLabel(); });
+    video.addEventListener('ended', reveal);
     video.addEventListener('timeupdate', function () {
       if (!revealed && video.currentTime >= revealAt) reveal();
     });
-    video.addEventListener('error', function () {
-      reveal();
-      syncLabel();
-      if (toggle) toggle.disabled = true;
-    });
+    video.addEventListener('error', reveal);
 
     if ('IntersectionObserver' in window) {
       /* грузим source заранее, до появления рядом с экраном */
@@ -255,28 +224,25 @@
       }, { threshold: 0, rootMargin: '200px 0px' });
       preloadObserver.observe(root);
 
-      if (!noAutoplay) {
-        /* запуск один раз при появлении блока; уход из viewport — пауза, без авто-возобновления */
-        new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-              tryAutoplay();
-            } else if (!video.paused && !video.ended) {
-              video.pause();
-            }
-          });
-        }, { threshold: [0, 0.5] }).observe(root);
-      }
+      /* без кнопок: скролл к блоку запускает, уход — пауза, возврат — само продолжает */
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            if (!video.ended) safePlay();
+          } else if (!video.paused) {
+            video.pause();
+          }
+        });
+      }, { threshold: [0, 0.5] }).observe(root);
     } else {
       /* нет IntersectionObserver — не рискуем прятать текст */
       reveal();
     }
 
     document.addEventListener('visibilitychange', function () {
-      if (document.hidden && !video.paused && !video.ended) video.pause();
+      if (document.hidden) { if (!video.paused) video.pause(); }
+      else if (video.paused && !video.ended && isInViewport()) { safePlay(); }
     });
-
-    syncLabel();
   })();
 
   window.sxTrack = window.sxTrack || function () {};
